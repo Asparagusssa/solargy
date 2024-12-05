@@ -46,7 +46,7 @@ class MainBannerController extends Controller
      */
     public function show(MainBanner $mainBanner)
     {
-        return response()->json('Метод не поддерживается для данного запроса', 400);
+        return response()->json('Метод не поддерживается для данного запроса', 405);
     }
 
     /**

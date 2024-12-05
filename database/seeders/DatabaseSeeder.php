@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\MainBanner;
 use App\Models\Option;
 use App\Models\Product;
 use App\Models\ProductPhoto;
@@ -17,15 +18,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::create([
+            'name' => 'Admin',
+            'email' => 'Admin@admin.com',
+            'password' => 'secret-password'
+        ]);
+
         $products = Product::factory(15)->create();
         $products->each(function ($product) {
             ProductPhoto::factory()->count(3)->forProduct($product)->create();
         });
 
         Option::factory(5)->create();
-
-
         Value::factory(20)->create();
+
+        MainBanner::factory(5)->create();
 
     }
 }

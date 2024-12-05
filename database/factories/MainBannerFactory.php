@@ -17,7 +17,10 @@ class MainBannerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'product_id' => 1,
+            'title' => fake()->title,
+            'description' => fake()->text(30),
+            'image' => fake()->imageUrl
         ];
     }
 }
