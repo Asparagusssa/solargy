@@ -2,10 +2,10 @@
 
 ### 1. Клонируйте репозиторий к себе на компьютер и перейдите в него:
 ```bash
-git clone https://github.com/Asparagusssa/fitness-club.git
+git clone https://github.com/Asparagusssa/solargy.git
 ```
 ```bash
-cd fitness-club
+cd solargy
 ```
 ### 2. Установите все необходимые зависимости:
 ```bash
