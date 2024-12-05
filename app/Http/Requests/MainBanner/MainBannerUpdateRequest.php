@@ -3,6 +3,7 @@
 namespace App\Http\Requests\MainBanner;
 
 use App\Http\Requests\Product\BaseFormRequest;
+use Illuminate\Validation\Rule;
 
 class MainBannerUpdateRequest extends BaseFormRequest
 {
@@ -26,6 +27,9 @@ class MainBannerUpdateRequest extends BaseFormRequest
             'title' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'string'],
             'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'order' => ['integer',
+                Rule::unique('main_banners')->ignore($this->main_banner->id)
+            ]
         ];
     }
 }

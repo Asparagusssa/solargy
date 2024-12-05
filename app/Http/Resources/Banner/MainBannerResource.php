@@ -21,6 +21,7 @@ class MainBannerResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'image' => $this->image,
+            'order' => $this->order,
             'product' => new ProductMainBannerResource($this->whenLoaded('product')),
         ];
     }

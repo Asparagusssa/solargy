@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Product::class)->index()->constrained()->cascadeOnDelete();
             $table->string('photo');
-            $table->boolean('is_main')->default(false);
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }

@@ -52,7 +52,7 @@ class ProductController extends Controller
             $imagePath = $photo['photo']->store('products', 'public');
             $product->photos()->create([
                 'photo' => $imagePath,
-                'is_main' => $photo['is_main'] ?? false
+                'order' => $photo['order'] ?? null
             ]);
         }
 
@@ -61,7 +61,26 @@ class ProductController extends Controller
             $this->createOptions($option, $product);
         }
 
-        $product = Product::with('photos', 'options')->find($product->id);
+        $properties = $data['properties'] ?? [];
+        foreach ($properties as $property) {
+
+            $imagePath = isset($property['image']) && $property['image'] instanceof UploadedFile
+                ? $property['image']->store('productPropertyImages', 'public')
+                : null;
+
+            $filePath = isset($property['file']) && $property['file'] instanceof UploadedFile
+                ? $property['file']->store('productPropertyFiles', 'public')
+                : null;
+
+            $product->properties()->create([
+                'title' => $property['title'],
+                'html' => $property['html'],
+                'file' => $filePath,
+                'image' => $imagePath,
+            ]);
+        }
+
+        $product = Product::with('photos', 'options', 'properties')->find($product->id);
 
         $product->options = $product->options->unique('id');
 
@@ -87,13 +106,13 @@ class ProductController extends Controller
                 Storage::disk('public')->delete($photo['photo']);
                 $imagePath = $photoData['photo']->store('products', 'public');
                 $photo->photo = $imagePath ?? $photo->photo;
-                $photo->is_main = $photoData['is_main'] ?? $photo->is_main;
+                $photo->order = $photoData['order'] ?? null;
                 $photo->save();
             } else {
                 $imagePath = $photoData['photo']->store('products', 'public');
                 $product->photos()->create([
                     'photo' => $imagePath,
-                    'is_main' => $photoData['is_main'] ?? false
+                    'order' => $photoData['order'] ?? null
                 ]);
             }
         }
@@ -108,13 +127,17 @@ class ProductController extends Controller
                     $valueData['id'] = $valueData['id'] ?? null;
                     $value = $option->values()->find($valueData['id']);
                     if ($value) {
-                        Storage::disk('public')->delete($value['image']);
-                        $imagePath = $valueData['image']->store('optionValues', 'public');
+                        if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
+                            Storage::disk('public')->delete($value['image']);
+                            $imagePath = $valueData['image']->store('optionValues', 'public');
+                            $value->image = $imagePath;
+                        }
                         $value->value = $valueData['value'] ?? $value->value;
-                        $value->image = $imagePath ?? $value->image;
                         $value->save();
                     } else {
-                        $imagePath = $valueData['image']->store('products', 'public');
+                        if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
+                            $imagePath = $valueData['image']->store('products', 'public');
+                        }
                         $option->values()->create([
                             'value' => $valueData['value'],
                             'image' => $imagePath ?? null
@@ -128,12 +151,65 @@ class ProductController extends Controller
             }
         }
 
+        $properties = $data['properties'] ?? [];
+        foreach ($properties as $propertyData) {
+            $propertyData['id'] = $propertyData['id'] ?? null;
+            $property = $product->properties()->find($propertyData['id']);
+            if ($property) {
+                if (isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile) {
+                    isset($property['image']) ?? Storage::disk('public')->delete($property['image']);
+                    $imagePath = $propertyData['image']->store('productPropertyImages', 'public');
+                    $property->image = $imagePath;
+                }
+                if (isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile) {
+                        isset($property['file']) ?? Storage::disk('public')->delete($property['file']);
+                    $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
+                    $property->file = $filePath;
+                }
+                $property->title = $propertyData['title'] ?? $property->title;
+                $property->html = $propertyData['html'] ?? $property->html;
+
+                $property->save();
+            } else {
+                $imagePath = isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile
+                    ? $propertyData['image']->store('productPropertyImages', 'public')
+                    : null;
+
+                $filePath = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile
+                    ? $propertyData['file']->store('productPropertyFiles', 'public')
+                    : null;
+
+                $title = $propertyData['title'] ?? null;
+                $html = $propertyData['html'] ?? null;
+
+                if (empty($title) || empty($html)) {
+                    throw ValidationException::withMessages([
+                        'option' => ['Поля "properties[title]" и "properties[html]" должно быть заполнено если не указан id изменяемого свойства.']
+                    ]);
+                }
+
+                $product->properties()->create([
+                    'title' => $propertyData['title'],
+                    'html' => $propertyData['html'],
+                    'file' => $filePath,
+                    'image' => $imagePath,
+                ]);
+            }
+        }
+
+
+
         $product->load(['photos' => function ($query) {
-            $query->orderBy('is_main', 'desc');
+            $query->orderBy('order', 'asc');
         }]);
 
-        $product->load('options');
+        $product->load(['options' => function ($query) {
+            $query->orderBy('id', 'asc');
+        }]);
 
+        $product->load(['properties' => function ($query) {
+            $query->orderBy('id', 'asc');
+        }]);
         return response()->json(new ProductResource($product), 200);
     }
 

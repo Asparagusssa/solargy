@@ -17,7 +17,7 @@ class MainBannerController extends Controller
      */
     public function index()
     {
-        $banners = MainBanner::with('product')->get();
+        $banners = MainBanner::with('product')->orderBy('order')->get();
 
         return response()->json(MainBannerResource::collection($banners), 200);
     }
@@ -35,6 +35,8 @@ class MainBannerController extends Controller
         }
 
         $banner = MainBanner::create($data);
+
+        $banner->load('product');
 
         return response()->json(new MainBannerResource($banner), 201);
     }
@@ -65,6 +67,8 @@ class MainBannerController extends Controller
         }
 
         $mainBanner->update($data);
+
+        $mainBanner->load('product');
 
         return response()->json(new MainBannerResource($mainBanner), 200);
     }

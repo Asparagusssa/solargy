@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('image');
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }

@@ -31,9 +31,9 @@ class Product extends Model
         return $this->hasMany(ProductPhoto::class);
     }
 
-    public function descriptions(): HasMany
+    public function properties(): HasMany
     {
-        return $this->hasMany(ProductDescription::class);
+        return $this->hasMany(ProductProperty::class);
     }
 
     public function options(): BelongsToMany

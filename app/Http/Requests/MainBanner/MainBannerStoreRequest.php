@@ -3,6 +3,7 @@
 namespace App\Http\Requests\MainBanner;
 
 use App\Http\Requests\Product\BaseFormRequest;
+use Illuminate\Validation\Rule;
 
 class MainBannerStoreRequest extends BaseFormRequest
 {
@@ -21,11 +22,13 @@ class MainBannerStoreRequest extends BaseFormRequest
      */
     public function rules(): array
     {
+
         return [
             'product_id' => ['required', 'exists:products,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'order' => ['integer', 'unique:main_banners']
         ];
     }
 }

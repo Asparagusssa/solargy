@@ -13,7 +13,7 @@ class ProductPhoto extends Model
     protected $fillable = [
         'product_id',
         'photo',
-        'is_main',
+        'order',
     ];
 
     public function product(): BelongsTo

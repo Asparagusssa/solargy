@@ -13,7 +13,7 @@ class ProductPhotoResource extends JsonResource
         return [
             'id' => $this->id,
             'photo' => $this->photo,
-            'is_main' => $this->is_main,
+            'order' => $this->order,
         ];
     }
 }

@@ -16,6 +16,7 @@ class MainBanner extends Model
         'title',
         'description',
         'image',
+        'order',
     ];
 
     public function product(): BelongsTo
