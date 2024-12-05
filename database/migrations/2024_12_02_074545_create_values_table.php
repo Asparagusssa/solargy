@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('values', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Option::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Option::class)->index()->constrained()->cascadeOnDelete();
             $table->string('value');
             $table->string('image')->nullable();
             $table->timestamps();
@@ -24,9 +24,9 @@ return new class extends Migration
 
         Schema::create('option_values', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Option::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Value::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Product::class)->index()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Option::class)->index()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Value::class)->index()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

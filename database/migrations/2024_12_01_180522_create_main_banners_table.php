@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('main_banners', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Product::class)->index()->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->text('description');
             $table->string('image');

@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('product_descriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Product::class)->index()->constrained()->cascadeOnDelete();
             $table->enum('title', ['property', 'recommendation']);
             $table->text('html');
             $table->string('file')->nullable();
