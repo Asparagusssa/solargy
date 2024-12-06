@@ -6,6 +6,7 @@ use App\Models\MainBanner;
 use App\Models\Option;
 use App\Models\Product;
 use App\Models\ProductPhoto;
+use App\Models\Promo;
 use App\Models\SubBanner;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -35,6 +36,8 @@ class DatabaseSeeder extends Seeder
 
         MainBanner::factory(5)->create();
         SubBanner::factory(5)->create();
+
+        Promo::factory(5)->create();
 
     }
 }

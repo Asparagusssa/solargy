@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MainBannerController;
 use App\Http\Controllers\Api\OptionController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PromoController;
 use App\Http\Controllers\Api\SubBannerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,5 @@ Route::delete('options/{optionId}/values/{valueId}', [OptionController::class, '
 
 Route::apiResource('main-banners', MainBannerController::class);
 Route::apiResource('sub-banners', SubBannerController::class);
+
+Route::apiResource('promos', PromoController::class);

@@ -16,13 +16,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(StartSession::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $handler = clone $exceptions->handler;
-
-        $exceptions->render(function (Throwable $exception) use ($handler) {
-            return response()->json([
-                'error' => true,
-                'message' => $exception->getMessage(),
-                'code' => (int) $exception->getCode()
-            ], 500);
-        });
+//        $handler = clone $exceptions->handler;
+//
+//        $exceptions->render(function (Throwable $exception) use ($handler) {
+//            return response()->json([
+//                'error' => true,
+//                'message' => $exception->getMessage(),
+//                'code' => (int) $exception->getCode()
+//            ], 500);
+//        });
     })->create();
