@@ -32,6 +32,7 @@ class ProductStoreRequest extends BaseFormRequest
             'options.*.name' => ['required_with:options:', 'string', 'max:255'],
             'options.*.values' => ['required_with:options','array'],
             'options.*.values.*.value' => ['required_with:options.*.values', 'string', 'max:255'],
+            'options.*.values.*.price' => ['numeric'],
             'options.*.values.*.image' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
             'properties' => ['array'],
             'properties.*.title' => ['required_with:properties', 'string', 'in:property,recommendation'],

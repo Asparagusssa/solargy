@@ -40,6 +40,7 @@ class OptionController extends Controller
                 : null;
             $option->values()->create([
                 'value' => $value['value'],
+                'price' => $value['price'],
                 'image' => $imagePath,
             ]);
         }
@@ -61,12 +62,14 @@ class OptionController extends Controller
                 Storage::disk('public')->delete($value['image']);
                 $imagePath = $valueData['image']->store('optionValues', 'public');
                 $value->value = $valueData['value'] ?? $value->value;
+                $value->price = $valueData['price'] ?? $value->price;
                 $value->image = $imagePath ?? $value->image;
                 $value->save();
             } else {
                 $imagePath = $valueData['image']->store('optionValues', 'public');
                 $option->values()->create([
                     'value' => $valueData['value'],
+                    'price' => $valueData['price'],
                     'image' => $imagePath ?? null
                 ]);
             }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Option::class)->index()->constrained()->cascadeOnDelete();
             $table->string('value');
+            $table->float('price')->default(0);
             $table->string('image')->nullable();
             $table->timestamps();
         });

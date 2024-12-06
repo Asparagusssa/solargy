@@ -15,6 +15,7 @@ class Value extends Model
         'name',
         'option_id',
         'value',
+        'price',
         'image',
     ];
 

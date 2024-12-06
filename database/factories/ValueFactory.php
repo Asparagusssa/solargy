@@ -20,6 +20,7 @@ class ValueFactory extends Factory
         return [
             'option_id' => Option::query()->inRandomOrder()->first()->id,
             'value' => fake()->word,
+            'price' => fake()->numberBetween(0, 15000),
             'image' => rand(0, 1) ? fake()->imageUrl : null,
         ];
     }

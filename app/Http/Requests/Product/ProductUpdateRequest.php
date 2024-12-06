@@ -35,6 +35,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'options.*.values' => ['array'],
             'options.*.values.*.id' => ['integer', 'exists:values,id'],
             'options.*.values.*.value' => ['string'],
+            'options.*.values.*.price' => ['numeric'],
             'options.*.values.*.image' => ['sometimes', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
             'properties' => ['array'],
             'properties.*.id' => ['integer', 'exists:product_properties,id'],

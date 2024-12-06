@@ -133,6 +133,7 @@ class ProductController extends Controller
                             $value->image = $imagePath;
                         }
                         $value->value = $valueData['value'] ?? $value->value;
+                        $value->price = $valueData['price'] ?? $value->price;
                         $value->save();
                     } else {
                         if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
@@ -140,6 +141,7 @@ class ProductController extends Controller
                         }
                         $option->values()->create([
                             'value' => $valueData['value'],
+                            'price' => $valueData['price'],
                             'image' => $imagePath ?? null
                         ]);
                     }
@@ -239,9 +241,11 @@ class ProductController extends Controller
             $imagePath = isset($value['image']) && $value['image'] instanceof UploadedFile
                 ? $value['image']->store('optionValues', 'public')
                 : null;
+            $value['price'] = $value['price'] ?? 0;
             $createdValue = Value::create([
                 'option_id' => $createdOption->id,
                 'value' => $value['value'],
+                'price' => $value['price'],
                 'image' => $imagePath,
             ]);
 
