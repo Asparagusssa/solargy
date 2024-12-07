@@ -11,6 +11,7 @@ class SubBanner extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
         'image',
         'order',
     ];

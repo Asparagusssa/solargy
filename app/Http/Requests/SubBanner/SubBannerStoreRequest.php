@@ -22,6 +22,7 @@ class SubBannerStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => ['nullable', 'string', 'max:255'],
             'image' => ['required', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
             'order' => ['numeric', 'unique:sub_banners'],
         ];

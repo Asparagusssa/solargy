@@ -17,6 +17,7 @@ class SubBannerFactory extends Factory
     public function definition(): array
     {
         return [
+            'title' => fake()->text('20'),
             'image' => fake()->imageUrl
         ];
     }

@@ -16,6 +16,7 @@ class SubBannerResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'title' => $this->title,
             'image' => $this->image,
             'order' => $this->order,
         ];

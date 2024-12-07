@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sub_banners', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->string('image');
             $table->integer('order')->nullable();
             $table->timestamps();

@@ -23,6 +23,7 @@ class SubBannerUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => ['string', 'max:255', 'sometimes'],
             'image' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
             'order' => ['integer',
                 Rule::unique('sub_banners')->ignore($this->sub_banner->id)
