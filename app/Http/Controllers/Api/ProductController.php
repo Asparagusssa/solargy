@@ -22,9 +22,16 @@ class ProductController extends Controller
     {
 
         $categoryId = $request->query('category');
+        $isTop = $request->query('top');
 
         if($categoryId) {
             $products = Product::with('photos', 'options.values')->orderBy('id')->where('category_id', $categoryId)->paginate(8);
+        }else if($isTop) {
+            $products = Product::with('photos', 'options.values')->orderBy('id')->where('is_top', true)->paginate(4);
+            if($products->count() < 4) {
+                $additionalProducts = Product::with('photos', 'options.values')->orderBy('id')->where('is_top', false)->limit(4 - $products->count())->get();
+                $products = $products->merge($additionalProducts);
+            }
         }else{
             $products = Product::with('photos', 'options.values')->orderBy('id')->paginate(8);
         }
