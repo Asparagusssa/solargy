@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('title', ['property', 'recommendation']);
             $table->text('html');
             $table->string('file')->nullable();
+            $table->text('file_name')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
         });

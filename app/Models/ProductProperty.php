@@ -16,6 +16,7 @@ class ProductProperty extends Model
         'title',
         'html',
         'file',
+        'file_name',
         'image',
     ];
 

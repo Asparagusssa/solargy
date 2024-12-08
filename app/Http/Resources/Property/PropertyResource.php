@@ -19,6 +19,7 @@ class PropertyResource extends JsonResource
             'title' => $this->title,
             'html' => $this->html,
             'file' => $this->file,
+            'file_name' => $this->file_name,
             'image' => $this->image,
         ];
     }

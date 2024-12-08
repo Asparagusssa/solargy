@@ -75,14 +75,19 @@ class ProductController extends Controller
                 ? $property['image']->store('productPropertyImages', 'public')
                 : null;
 
-            $filePath = isset($property['file']) && $property['file'] instanceof UploadedFile
+            $hasFile = isset($property['file']) && $property['file'] instanceof UploadedFile;
+
+            $filePath = $hasFile
                 ? $property['file']->store('productPropertyFiles', 'public')
                 : null;
+
+            $fileName = $hasFile ? $property['file']->getClientOriginalName() : null;
 
             $product->properties()->create([
                 'title' => $property['title'],
                 'html' => $property['html'],
                 'file' => $filePath,
+                'file_name' => $fileName,
                 'image' => $imagePath,
             ]);
         }
@@ -170,10 +175,12 @@ class ProductController extends Controller
                     $imagePath = $propertyData['image']->store('productPropertyImages', 'public');
                     $property->image = $imagePath;
                 }
-                if (isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile) {
-                        isset($property['file']) ?? Storage::disk('public')->delete($property['file']);
+                $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
+                if ($hasFile) {
+                    isset($property['file']) ?? Storage::disk('public')->delete($property['file']);
                     $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
                     $property->file = $filePath;
+                    $property->file_name = $propertyData['file']->getClientOriginalName();
                 }
                 $property->title = $propertyData['title'] ?? $property->title;
                 $property->html = $propertyData['html'] ?? $property->html;
@@ -184,9 +191,12 @@ class ProductController extends Controller
                     ? $propertyData['image']->store('productPropertyImages', 'public')
                     : null;
 
-                $filePath = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile
+                $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
+                $filePath = $hasFile
                     ? $propertyData['file']->store('productPropertyFiles', 'public')
                     : null;
+
+                $fileName = $hasFile ? $propertyData['file']->getClientOriginalName() : null;
 
                 $title = $propertyData['title'] ?? null;
                 $html = $propertyData['html'] ?? null;
@@ -201,6 +211,7 @@ class ProductController extends Controller
                     'title' => $propertyData['title'],
                     'html' => $propertyData['html'],
                     'file' => $filePath,
+                    'file_name' => $fileName,
                     'image' => $imagePath,
                 ]);
             }
