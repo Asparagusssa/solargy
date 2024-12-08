@@ -17,8 +17,17 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams = Team::all();
-        return response()->json(TeamResource::collection($teams), 200);
+        $teams = Team::query()->paginate(8);
+        return response()->json([
+            'data' => TeamResource::collection($teams),
+            'meta' => [
+                'current_page' => $teams->currentPage(),
+                'last_page' => $teams->lastPage(),
+                'per_page' => $teams->perPage(),
+                'total' => $teams->total(),
+                'path' => $teams->path(),
+            ],
+        ], 200);
     }
 
     /**

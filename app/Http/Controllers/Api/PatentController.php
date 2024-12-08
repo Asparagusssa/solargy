@@ -17,8 +17,17 @@ class PatentController extends Controller
      */
     public function index()
     {
-        $data = Patent::orderBy('id')->paginate(4);
-        return response()->json(PatentResource::collection($data), 200);
+        $patents = Patent::orderBy('id')->paginate(4);
+        return response()->json([
+            'data' => PatentResource::collection($patents),
+            'meta' => [
+                'current_page' => $patents->currentPage(),
+                'last_page' => $patents->lastPage(),
+                'per_page' => $patents->perPage(),
+                'total' => $patents->total(),
+                'path' => $patents->path(),
+            ],
+        ], 200);
     }
 
     /**

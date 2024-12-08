@@ -36,8 +36,16 @@ class ProductController extends Controller
             $products = Product::with('photos', 'options.values')->orderBy('id')->paginate(8);
         }
 
-
-        return response()->json(ProductResource::collection($products), 200);
+        return response()->json([
+            'data' => ProductResource::collection($products),
+            'meta' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+                'path' => $products->path(),
+            ],
+        ], 200);
     }
 
     public function show(Product $product)
