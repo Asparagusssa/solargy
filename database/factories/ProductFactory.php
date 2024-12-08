@@ -18,10 +18,16 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id' => Category::factory(),
             'name' => fake()->text('20'),
             'description' => fake()->text('100'),
             'price' => fake()->randomFloat('2', 0, 100000),
         ];
+    }
+
+    public function forCategory(Category $category): ProductFactory
+    {
+        return $this->state([
+            'category_id' => $category->id,
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\MainBanner;
 use App\Models\Option;
 use App\Models\Product;
@@ -26,7 +27,13 @@ class DatabaseSeeder extends Seeder
             'password' => 'secret-password'
         ]);
 
-        $products = Product::factory(15)->create();
+        $category = Category::factory(4)->create();
+
+        $category->each(function ($category) {
+            Product::factory()->count(4)->forCategory($category)->create();
+        });
+
+        $products = Product::all();
         $products->each(function ($product) {
             ProductPhoto::factory()->count(3)->forProduct($product)->create();
         });
