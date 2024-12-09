@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\OptionController;
 use App\Http\Controllers\Api\PatentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromoController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SubBannerController;
 use App\Http\Controllers\Api\TeamController;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ Route::apiResource('sub-banners', SubBannerController::class)->only(['index', 's
 Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
 Route::apiResource('patents', PatentController::class)->only(['index', 'show']);
 Route::apiResource('teams', TeamController::class)->only(['index', 'show']);
+Route::get('search', SearchController::class);
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
