@@ -26,6 +26,8 @@ class ProductController extends Controller
 
         if($categoryId) {
             $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('category_id', $categoryId)->paginate(8);
+
+            dd($products);
         }else if($isTop) {
             $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('is_top', true)->paginate(4);
             if($products->count() < 4) {
@@ -43,12 +45,6 @@ class ProductController extends Controller
         return response()->json([
             'data' => ProductResource::collection($products),
             'meta' => [
-                'links' => [
-                    'first' => $products->url(1),
-                    'last' => $products->url($products->lastPage()),
-                    'next' => $products->nextPageUrl(),
-                    'prev' => $products->previousPageUrl(),
-                ],
                 'current_page' => $products->currentPage(),
                 'last_page' => $products->lastPage(),
                 'per_page' => $products->perPage(),
