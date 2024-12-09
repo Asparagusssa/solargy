@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\MainBanner;
 use App\Models\Option;
+use App\Models\Page;
+use App\Models\PageSection;
 use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\Promo;
@@ -28,7 +30,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $category = Category::factory(4)->create();
-
         $category->each(function ($category) {
             Product::factory()->count(4)->forCategory($category)->create();
         });
@@ -46,5 +47,24 @@ class DatabaseSeeder extends Seeder
 
         Promo::factory(5)->create();
 
+        $pages = [
+            [
+                'title' => 'promo',
+                'url' => 'promo',
+            ],
+            [
+                'title' => 'about',
+                'url' => 'about',
+            ]
+        ];
+
+        foreach ($pages as $page) {
+            Page::create($page);
+        }
+
+        $pages = Page::all();
+        $pages->each(function ($page) {
+            PageSection::factory()->count(3)->forPage($page)->create();
+        });
     }
 }

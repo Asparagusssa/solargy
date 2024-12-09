@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MainBannerController;
 use App\Http\Controllers\Api\OptionController;
+use App\Http\Controllers\Api\PageSectionController;
 use App\Http\Controllers\Api\PatentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromoController;
@@ -28,8 +29,9 @@ Route::apiResource('sub-banners', SubBannerController::class)->only(['index', 's
 Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
 Route::apiResource('patents', PatentController::class)->only(['index', 'show']);
 Route::apiResource('teams', TeamController::class)->only(['index', 'show']);
-Route::get('search', SearchController::class);
+Route::apiResource('page', PageSectionController::class)->only(['index', 'show']);
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
+Route::get('search', SearchController::class);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('products', ProductController::class)->except(['index', 'show']);
@@ -43,4 +45,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('promos', PromoController::class)->except(['index', 'show']);
     Route::apiResource('patents', PatentController::class)->except(['index', 'show']);
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
+
+    Route::apiResource('page', PageSectionController::class)->except(['index', 'show']);
 });
