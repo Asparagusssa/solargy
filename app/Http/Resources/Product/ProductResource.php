@@ -25,7 +25,7 @@ class ProductResource extends JsonResource
             'is_top' => $this->is_top,
             'photos' => ProductPhotoResource::collection($this->whenLoaded('photos')),
             'options' => ProductOptionResource::collection($this->whenLoaded('options')),
-            'properties' => PropertyResource::collection($this->whenLoaded('properties'))
+            'properties' => PropertyResource::collection($this->whenLoaded('properties')),
         ];
     }
 }
