@@ -25,11 +25,11 @@ class ProductController extends Controller
         $isTop = $request->query('top');
 
         if($categoryId) {
-            $products = Product::with('photos', 'options.values')->orderBy('id')->where('category_id', $categoryId)->paginate(8);
+            $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('category_id', $categoryId)->paginate(8);
         }else if($isTop) {
-            $products = Product::with('photos', 'options.values')->orderBy('id')->where('is_top', true)->paginate(4);
+            $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('is_top', true)->paginate(4);
             if($products->count() < 4) {
-                $additionalProducts = Product::with('photos', 'options.values')->orderBy('id')->where('is_top', false)->limit(4 - $products->count())->get();
+                $additionalProducts = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('is_top', false)->limit(4 - $products->count())->get();
                 $products = $products->merge($additionalProducts);
             }
         }else{
@@ -39,6 +39,7 @@ class ProductController extends Controller
         return response()->json([
             'data' => ProductResource::collection($products),
             'meta' => [
+                'links' => $products->links(),
                 'current_page' => $products->currentPage(),
                 'last_page' => $products->lastPage(),
                 'per_page' => $products->perPage(),
@@ -50,7 +51,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load('photos', 'options.values');
+        $product->load('photos', 'options.values', 'properties');
 
         return response()->json(new ProductResource($product));
     }
