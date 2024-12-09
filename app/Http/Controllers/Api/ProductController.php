@@ -31,7 +31,11 @@ class ProductController extends Controller
             if($products->count() < 4) {
                 $additionalProducts = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('is_top', false)->limit(4 - $products->count())->get();
                 $products = $products->merge($additionalProducts);
+                return response()->json([
+                    'data' => ProductResource::collection($products)
+                ]);
             }
+            dd($products);
         }else{
             $products = Product::with('photos', 'options.values')->orderBy('id')->paginate(8);
         }
@@ -39,7 +43,12 @@ class ProductController extends Controller
         return response()->json([
             'data' => ProductResource::collection($products),
             'meta' => [
-                'links' => $products->links(),
+                'links' => [
+                    'first' => $products->url(1),
+                    'last' => $products->url($products->lastPage()),
+                    'next' => $products->nextPageUrl(),
+                    'prev' => $products->previousPageUrl(),
+                ],
                 'current_page' => $products->currentPage(),
                 'last_page' => $products->lastPage(),
                 'per_page' => $products->perPage(),
