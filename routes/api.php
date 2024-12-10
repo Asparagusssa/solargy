@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactSocialController;
 use App\Http\Controllers\Api\FileController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Api\PageSectionController;
 use App\Http\Controllers\Api\PatentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromoController;
+use App\Http\Controllers\Api\PurchasePlaceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SubBannerController;
 use App\Http\Controllers\Api\TeamController;
@@ -34,6 +36,8 @@ Route::apiResource('teams', TeamController::class)->only(['index', 'show']);
 Route::apiResource('pages', PageSectionController::class)->only(['index', 'show']);
 Route::apiResource('contacts', ContactController::class)->only(['index', 'show']);
 Route::apiResource('socials', ContactSocialController::class)->only(['index', 'show']);
+Route::apiResource('purchase-place', PurchasePlaceController::class)->only(['index', 'show']);
+Route::apiResource('companies', CompanyController::class)->only(['index', 'show']);
 
 
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
@@ -55,4 +59,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('pages', PageSectionController::class)->except(['index', 'show']);
     Route::apiResource('contacts', ContactController::class)->except(['index', 'show']);
     Route::apiResource('socials', ContactSocialController::class)->except(['index', 'show']);
+    Route::apiResource('purchase-place', PurchasePlaceController::class)->except(['index', 'show']);
+    Route::apiResource('companies', CompanyController::class)->except(['index', 'show']);
+    Route::delete('custom-details/{customId}', [CompanyController::class, 'destroyCustom']);
+
 });

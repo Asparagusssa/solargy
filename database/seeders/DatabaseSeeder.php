@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Contact;
 use App\Models\ContactSocial;
+use App\Models\CustomDetail;
+use App\Models\Detail;
 use App\Models\MainBanner;
 use App\Models\Option;
 use App\Models\Page;
@@ -13,6 +16,7 @@ use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\ProductProperty;
 use App\Models\Promo;
+use App\Models\PurchasePlace;
 use App\Models\SubBanner;
 use App\Models\Team;
 use App\Models\User;
@@ -54,6 +58,13 @@ class DatabaseSeeder extends Seeder
         Team::factory(8)->create();
         Contact::factory(1)->create();
         ContactSocial::factory(2)->create();
+        PurchasePlace::factory(10)->create();
+        $companies = Company::factory(2)->create();
+
+        $companies->each(function ($company) {
+            Detail::factory(1)->forCompany($company)->create();
+            CustomDetail::factory(10)->forCompany($company)->create();
+        });
 
         $pages = [
             [
