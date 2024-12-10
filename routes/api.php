@@ -29,7 +29,7 @@ Route::apiResource('sub-banners', SubBannerController::class)->only(['index', 's
 Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
 Route::apiResource('patents', PatentController::class)->only(['index', 'show']);
 Route::apiResource('teams', TeamController::class)->only(['index', 'show']);
-Route::apiResource('page', PageSectionController::class)->only(['index', 'show']);
+Route::apiResource('pages', PageSectionController::class)->only(['index', 'show']);
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
 Route::get('search', SearchController::class);
 
@@ -46,5 +46,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('patents', PatentController::class)->except(['index', 'show']);
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
 
-    Route::apiResource('page', PageSectionController::class)->except(['index', 'show']);
+    Route::apiResource('pages', PageSectionController::class)->except(['index', 'show']);
 });
