@@ -18,6 +18,11 @@ class Category extends Model
         'level',
     ];
 
+    public function getPhotoAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);

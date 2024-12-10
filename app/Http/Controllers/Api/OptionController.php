@@ -59,14 +59,18 @@ class OptionController extends Controller
             $valueData['id'] = $valueData['id'] ?? null;
             $value = $option->values()->find($valueData['id']);
             if ($value) {
-                Storage::disk('public')->delete($value['image']);
-                $imagePath = $valueData['image']->store('optionValues', 'public');
+                if ($value->image) {
+                    Storage::disk('public')->delete('optionValues/' . basename($value->image));
+                    $imagePath = $valueData['image']->store('optionValues', 'public');
+                }
                 $value->value = $valueData['value'] ?? $value->value;
                 $value->price = $valueData['price'] ?? $value->price;
                 $value->image = $imagePath ?? $value->image;
                 $value->save();
             } else {
-                $imagePath = $valueData['image']->store('optionValues', 'public');
+                if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
+                    $imagePath = $valueData['image']->store('optionValues', 'public');
+                }
                 $option->values()->create([
                     'value' => $valueData['value'],
                     'price' => $valueData['price'],
@@ -87,7 +91,7 @@ class OptionController extends Controller
         $values = $option->values;
         foreach ($values as $value) {
             if ($value->image) {
-                Storage::disk('public')->delete($value->image);
+                Storage::disk('public')->delete('optionValues/' . basename($value->image));
             }
         }
 
@@ -105,7 +109,7 @@ class OptionController extends Controller
         }
 
         if ($value->image) {
-            Storage::disk('public')->delete($value->image);
+            Storage::disk('public')->delete('optionValues/' . basename($value->image));
         }
 
         $value->delete();

@@ -7,7 +7,7 @@ use App\Http\Resources\Product\ProductPhotoResource;
 use App\Models\ProductPhoto;
 use Illuminate\Http\Request;
 
-class ProductPhotoController extends Controller
+class delete extends Controller
 {
     public function index()
     {

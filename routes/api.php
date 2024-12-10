@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\ContactSocialController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MainBannerController;
@@ -30,6 +32,10 @@ Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
 Route::apiResource('patents', PatentController::class)->only(['index', 'show']);
 Route::apiResource('teams', TeamController::class)->only(['index', 'show']);
 Route::apiResource('pages', PageSectionController::class)->only(['index', 'show']);
+Route::apiResource('contacts', ContactController::class)->only(['index', 'show']);
+Route::apiResource('socials', ContactSocialController::class)->only(['index', 'show']);
+
+
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
 Route::get('search', SearchController::class);
 
@@ -47,4 +53,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
 
     Route::apiResource('pages', PageSectionController::class)->except(['index', 'show']);
+    Route::apiResource('contacts', ContactController::class)->except(['index', 'show']);
+    Route::apiResource('socials', ContactSocialController::class)->except(['index', 'show']);
 });

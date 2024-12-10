@@ -59,7 +59,7 @@ class MainBannerController extends Controller
 
         if ($request->hasFile('image')) {
             if ($mainBanner->image) {
-                Storage::disk('public')->delete($mainBanner->image);
+                Storage::disk('public')->delete('banners/' . basename($mainBanner->image));
             }
 
             $imagePath = $request->file('image')->store('banners', 'public');
@@ -81,7 +81,7 @@ class MainBannerController extends Controller
         $mainBanner->delete();
 
         if ($mainBanner->image) {
-            Storage::disk('public')->delete($mainBanner->image);
+            Storage::disk('public')->delete('banners/' . basename($mainBanner->image));
         }
 
         return response()->json(null, 204);

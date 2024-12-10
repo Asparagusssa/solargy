@@ -24,7 +24,7 @@ class CategoryStoreRequest extends BaseFormRequest
         return [
             'parent_id' => ['nullable', 'exists:categories,id'],
             'name' => ['required', 'max:255'],
-            'photo' => ['nullable', 'string'],
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 
@@ -34,8 +34,6 @@ class CategoryStoreRequest extends BaseFormRequest
             'parent_id.exists' => 'Поле "parent_id" должно быть существующим.',
             'name.required' => 'Поле "name" является обязательным.',
             'name.max' => 'Поле "name" не должно превышать 255 символов.',
-            'photo.string' => 'Поле "photo" должно быть строкой.',
-            'level.numeric' => 'Поле "price" должно быть числом.',
         ];
     }
 }

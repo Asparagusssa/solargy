@@ -9,6 +9,7 @@ use App\Http\Resources\Category\CategoryChildrenResource;
 use App\Http\Resources\Category\CategoryParentResource;
 use App\Http\Resources\Category\CategoryResource;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -44,6 +45,10 @@ class CategoryController extends Controller
             $data['level'] = 0;
         }
 
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('categories', 'public');
+        }
+
         $category = Category::create($data);
 
         return response()->json(new CategoryResource($category), 201);
@@ -52,6 +57,13 @@ class CategoryController extends Controller
     public function update(CategoryUpdateRequest $request, Category $category)
     {
         $data = $request->validated();
+        if ($request->hasFile('photo')) {
+            if ($category->photo) {
+                Storage::disk('public')->delete('categories/' . basename($category->photo));
+            }
+            $imagePath = $request->file('photo')->store('categories', 'public');
+            $data['photo'] = $imagePath;
+        }
 
         $category->update($data);
 

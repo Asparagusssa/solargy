@@ -70,7 +70,7 @@ class PageSectionController extends Controller
                 $pageSection = PageSection::find($sectionId);
                 if($data['sections'][$i]['image']){
                     if ($pageSection->image) {
-                        Storage::disk('public')->delete($pageSection->image);
+                        Storage::disk('public')->delete('pageSections/' . basename($pageSection->image));
                     }
                     $imagePath = $request->file('sections.'.$i.'.image')->store('pageSections', 'public');
                     $data['sections'][$i]['image'] = $imagePath;
@@ -98,7 +98,7 @@ class PageSectionController extends Controller
         $pageSection = PageSection::findOrFail($id);
 
         if ($pageSection->image) {
-            Storage::disk('public')->delete($pageSection->image);
+            Storage::disk('public')->delete('pageSections/' . basename($pageSection->image));
         }
         $pageSection->delete();
         return response()->json(null, 204);

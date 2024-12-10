@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -19,6 +20,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $handler = clone $exceptions->handler;
 
         $exceptions->render(function (Throwable $exception) use ($handler) {
+            if ($exception instanceof ModelNotFoundException) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Not found',
+                    'code' => 404
+                ], 404);
+            }
+
             return response()->json([
                 'error' => true,
                 'message' => $exception->getMessage(),

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Contact;
+use App\Models\ContactSocial;
 use App\Models\MainBanner;
 use App\Models\Option;
 use App\Models\Page;
@@ -50,6 +52,8 @@ class DatabaseSeeder extends Seeder
 
         Promo::factory(5)->create();
         Team::factory(8)->create();
+        Contact::factory(1)->create();
+        ContactSocial::factory(2)->create();
 
         $pages = [
             [

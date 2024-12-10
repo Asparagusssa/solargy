@@ -7,7 +7,6 @@ use App\Http\Requests\Patent\PatentStoreRequest;
 use App\Http\Requests\Patent\PatentUpdateRequest;
 use App\Http\Resources\Patent\PatentResource;
 use App\Models\Patent;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PatentController extends Controller
@@ -64,7 +63,7 @@ class PatentController extends Controller
 
         if ($request->hasFile('file')) {
             if ($patent->file) {
-                Storage::disk('public')->delete($patent->file);
+                Storage::disk('public')->delete('patents/' . basename($patent->file));
             }
             $filePath = $request->file('file')->store('patents', 'public');
             $data['file'] = $filePath;
@@ -81,7 +80,7 @@ class PatentController extends Controller
     public function destroy(Patent $patent)
     {
         if ($patent->file) {
-            Storage::disk('public')->delete($patent->file);
+            Storage::disk('public')->delete('patents/' . basename($patent->file));
         }
         $patent->delete();
         return response()->json(null, 204);

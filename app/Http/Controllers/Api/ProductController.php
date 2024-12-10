@@ -126,7 +126,7 @@ class ProductController extends Controller
             $photoData['id'] = $photoData['id'] ?? null;
             $photo = $product->photos()->find($photoData['id']);
             if ($photo) {
-                Storage::disk('public')->delete($photo['photo']);
+                Storage::disk('public')->delete('products/' . basename($photo->photo));
                 $imagePath = $photoData['photo']->store('products', 'public');
                 $photo->photo = $imagePath ?? $photo->photo;
                 $photo->order = $photoData['order'] ?? null;
@@ -151,7 +151,7 @@ class ProductController extends Controller
                     $value = $option->values()->find($valueData['id']);
                     if ($value) {
                         if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
-                            Storage::disk('public')->delete($value['image']);
+                            Storage::disk('public')->delete('optionValues/' . basename($value->image));
                             $imagePath = $valueData['image']->store('optionValues', 'public');
                             $value->image = $imagePath;
                         }
@@ -182,13 +182,13 @@ class ProductController extends Controller
             $property = $product->properties()->find($propertyData['id']);
             if ($property) {
                 if (isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile) {
-                    isset($property['image']) ?? Storage::disk('public')->delete($property['image']);
+                    Storage::disk('public')->delete('productPropertyImages/' . basename($property['image']));
                     $imagePath = $propertyData['image']->store('productPropertyImages', 'public');
                     $property->image = $imagePath;
                 }
                 $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
                 if ($hasFile) {
-                    isset($property['file']) ?? Storage::disk('public')->delete($property['file']);
+                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
                     $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
                     $property->file = $filePath;
                     $property->file_name = $propertyData['file']->getClientOriginalName();
@@ -249,7 +249,17 @@ class ProductController extends Controller
         $photos = $product->photos;
         foreach ($photos as $photo) {
             if ($photo->photo) {
-                Storage::disk('public')->delete($photo->photo);
+                Storage::disk('public')->delete('products/' . basename($photo->photo));
+            }
+        }
+
+        $properties = $product->properties;
+        foreach ($properties as $property) {
+            if ($property->image) {
+                Storage::disk('public')->delete('productPropertyImages/' . basename($property->image));
+            }
+            if ($property->file) {
+                Storage::disk('public')->delete('productPropertyFiles/' . basename($property->file));
             }
         }
 
