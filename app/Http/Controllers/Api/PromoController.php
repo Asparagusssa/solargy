@@ -65,7 +65,7 @@ class PromoController extends Controller
 
         if ($request->hasFile('image')) {
             if ($promo->image) {
-                Storage::disk('public')->delete($promo->image);
+                Storage::disk('public')->delete('promos/' . basename($promo->image));
             }
             $imagePath = $request->file('image')->store('promos', 'public');
             $data['image'] = $imagePath;
@@ -82,7 +82,7 @@ class PromoController extends Controller
     public function destroy(Promo $promo)
     {
         if ($promo->image) {
-            Storage::disk('public')->delete($promo->image);
+            Storage::disk('public')->delete('promos/' . basename($promo->image));
         }
         $promo->delete();
         return response()->json(null, 204);

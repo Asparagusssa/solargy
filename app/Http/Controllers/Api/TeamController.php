@@ -63,7 +63,7 @@ class TeamController extends Controller
 
         if ($request->hasFile('image')) {
             if ($team->image) {
-                Storage::disk('public')->delete($team->image);
+                Storage::disk('public')->delete('teams/' . basename($team->image));
             }
             $imagePath = $request->file('image')->store('teams', 'public');
             $data['image'] = $imagePath;
@@ -79,6 +79,11 @@ class TeamController extends Controller
     public function destroy(Team $team)
     {
         $team->delete();
+
+        if ($team->image) {
+            Storage::disk('public')->delete('teams/' . basename($team->image));
+        }
+
         return response()->json(null, 204);
     }
 }

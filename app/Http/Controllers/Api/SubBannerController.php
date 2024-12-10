@@ -41,7 +41,7 @@ class SubBannerController extends Controller
      */
     public function show(SubBanner $subBanner)
     {
-        return response()->json('Метод не поддерживается для данного запроса', 405);
+        return response()->json(new SubBannerResource($subBanner), 200);
     }
 
     /**
@@ -54,7 +54,7 @@ class SubBannerController extends Controller
 
         if ($request->hasFile('image')) {
             if ($subBanner->image) {
-                Storage::disk('public')->delete($subBanner->image);
+                Storage::disk('public')->delete('banners/' . basename($subBanner->image));
             }
 
             $imagePath = $request->file('image')->store('banners', 'public');
@@ -72,7 +72,7 @@ class SubBannerController extends Controller
     public function destroy(SubBanner $subBanner)
     {
         if ($subBanner->image) {
-            Storage::disk('public')->delete($subBanner->image);
+            Storage::disk('public')->delete('banners/' . basename($subBanner->image));
         }
         $subBanner->delete();
         return response()->json(null, 204);
