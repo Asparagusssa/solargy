@@ -21,6 +21,10 @@ class CategoryController extends Controller
             $category->children = $category->children()->orderBy('id')->get();
         }
 
+        foreach ($categories as $category) {
+            $category->products = $category->products()->orderBy('id')->get();
+        }
+
         return response()->json(CategoryChildrenResource::collection($categories), 200);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Category;
 
+use App\Http\Resources\Product\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +20,7 @@ class CategoryChildrenResource extends JsonResource
             'name' => $this->name,
             'photo' => $this->photo,
             'level' => $this->level,
+            'products' => ProductResource::collection($this->products),
             'children' => CategoryChildrenResource::collection($this->children),
         ];
     }
