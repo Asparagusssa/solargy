@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Product;
 use App\Models\ProductPhoto;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
 class ProductPhotoFactory extends Factory
 {
@@ -14,7 +13,7 @@ class ProductPhotoFactory extends Factory
     public function definition(): array
     {
         return [
-            'test/1.jpg'
+            'photo' => 'test/1.jpg'
         ];
     }
 

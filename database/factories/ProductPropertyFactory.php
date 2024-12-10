@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
+use App\Models\ProductProperty;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,18 @@ class ProductPropertyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->randomElement(['property', 'recommendation']),
+            'html' => fake()->text('300'),
+            'file' => null,
+            'file_name' => null,
+            'image' => 'test/1.jpg',
         ];
+    }
+
+    public function forProduct(Product $product): ProductPropertyFactory
+    {
+        return $this->state([
+            'product_id' => $product->id,
+        ]);
     }
 }

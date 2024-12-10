@@ -9,6 +9,7 @@ use App\Models\Page;
 use App\Models\PageSection;
 use App\Models\Product;
 use App\Models\ProductPhoto;
+use App\Models\ProductProperty;
 use App\Models\Promo;
 use App\Models\SubBanner;
 use App\Models\Team;
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
         $products = Product::all();
         $products->each(function ($product) {
             ProductPhoto::factory()->count(3)->forProduct($product)->create();
+            ProductProperty::factory()->count(2)->forProduct($product)->create();
         });
 
         Option::factory(5)->create();

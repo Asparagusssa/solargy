@@ -20,7 +20,7 @@ class PageSectionFactory extends Factory
         return [
             'title' => fake()->text('20'),
             'html' => fake()->text('300'),
-            'test/1.jpg'
+            'image' => 'test/1.jpg'
         ];
     }
 
