@@ -19,7 +19,7 @@ class PromoFactory extends Factory
         return [
             'title' => fake()->text('20'),
             'description' => fake()->text,
-            'image' => fake()->imageUrl,
+            'image' => 'test/1.jpg',
             'start' => fake()->dateTimeBetween('-1 year', 'now','Europe/Samara'),
             'end' => fake()->dateTimeBetween('now+1 day', '+1 year','Europe/Samara'),
         ];

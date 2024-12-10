@@ -18,7 +18,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => fake()->text('20'),
-            'photo' => fake()->imageUrl(),
+            'photo' => 'test/1.jpg'
         ];
     }
 }

@@ -14,7 +14,7 @@ class ProductPhotoFactory extends Factory
     public function definition(): array
     {
         return [
-            'photo' => fake()->imageUrl(),
+            'test/1.jpg'
         ];
     }
 

@@ -18,7 +18,7 @@ class SubBannerFactory extends Factory
     {
         return [
             'title' => fake()->text('20'),
-            'image' => fake()->imageUrl
+            'image' => 'test/1.jpg'
         ];
     }
 }

@@ -20,7 +20,7 @@ class MainBannerFactory extends Factory
             'product_id' => 1,
             'title' => fake()->title,
             'description' => fake()->text(30),
-            'image' => fake()->imageUrl
+            'image' => 'test/1.jpg'
         ];
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\Promo;
 use App\Models\SubBanner;
+use App\Models\Team;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Value;
@@ -46,6 +47,7 @@ class DatabaseSeeder extends Seeder
         SubBanner::factory(5)->create();
 
         Promo::factory(5)->create();
+        Team::factory(8)->create();
 
         $pages = [
             [
