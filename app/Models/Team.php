@@ -17,4 +17,9 @@ class Team extends Model
         'phone',
         'email',
     ];
+
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
 }

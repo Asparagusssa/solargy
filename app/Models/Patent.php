@@ -12,4 +12,9 @@ class Patent extends Model
         'file',
         'file_name',
     ];
+
+    public function getFileAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
 }

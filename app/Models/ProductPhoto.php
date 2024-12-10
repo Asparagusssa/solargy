@@ -16,6 +16,11 @@ class ProductPhoto extends Model
         'order',
     ];
 
+    public function getPhotoAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);

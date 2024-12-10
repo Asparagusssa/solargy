@@ -15,4 +15,9 @@ class SubBanner extends Model
         'image',
         'order',
     ];
+
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
 }

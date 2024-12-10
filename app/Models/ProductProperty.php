@@ -20,6 +20,16 @@ class ProductProperty extends Model
         'image',
     ];
 
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
+    public function getFileAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);

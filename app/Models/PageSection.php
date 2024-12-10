@@ -18,6 +18,11 @@ class PageSection extends Model
         'image',
     ];
 
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
     public function page(): BelongsTo
     {
         return $this->belongsTo(Page::class);

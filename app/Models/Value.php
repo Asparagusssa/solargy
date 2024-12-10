@@ -19,6 +19,11 @@ class Value extends Model
         'image',
     ];
 
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
     public function option(): BelongsTo
     {
         return $this->belongsTo(Option::class);

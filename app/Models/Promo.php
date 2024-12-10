@@ -18,4 +18,9 @@ class Promo extends Model
         'end',
         'is_archived',
     ];
+
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
 }

@@ -36,7 +36,7 @@ class ProductController extends Controller
                 ]);
             }
         }else{
-            $products = Product::with('photos', 'options.values')->orderBy('id')->paginate(8);
+            $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->paginate(8);
         }
 
         return response()->json([
