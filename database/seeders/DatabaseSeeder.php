@@ -55,6 +55,10 @@ class DatabaseSeeder extends Seeder
             [
                 'title' => 'about',
                 'url' => 'about',
+            ],
+            [
+                'title' => 'delivery',
+                'url' => 'delivery',
             ]
         ];
 
