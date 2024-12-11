@@ -17,21 +17,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(StartSession::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-//        $handler = clone $exceptions->handler;
-//
-//        $exceptions->render(function (Throwable $exception) use ($handler) {
-//            if ($exception instanceof ModelNotFoundException) {
-//                return response()->json([
-//                    'error' => true,
-//                    'message' => 'Not found',
-//                    'code' => 404
-//                ], 404);
-//            }
-//
-//            return response()->json([
-//                'error' => true,
-//                'message' => $exception->getMessage(),
-//                'code' => (int) $exception->getCode()
-//            ], 500);
-//        });
+        $handler = clone $exceptions->handler;
+
+        $exceptions->render(function (Throwable $exception) use ($handler) {
+            if ($exception instanceof ModelNotFoundException) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Not found',
+                    'code' => 404
+                ], 404);
+            }
+
+            return response()->json([
+                'error' => true,
+                'message' => $exception->getMessage(),
+                'code' => (int) $exception->getCode()
+            ], 500);
+        });
     })->create();
