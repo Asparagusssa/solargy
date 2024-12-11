@@ -68,6 +68,12 @@ class CategoryController extends Controller
             $imagePath = $request->file('photo')->store('categories', 'public');
             $data['photo'] = $imagePath;
         }
+        if (isset($data['parent_id'])) {
+            $parentCategory = Category::find($data['parent_id']);
+            $data['level'] = $parentCategory ? $parentCategory->level + 1 : 0;
+        }else {
+            $data['level'] = 0;
+        }
 
         $category->update($data);
 

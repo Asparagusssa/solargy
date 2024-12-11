@@ -34,7 +34,6 @@ class CategoryUpdateRequest extends BaseFormRequest
             'parent_id.exists' => 'Поле "parent_id" должно быть существующим.',
             'name.string' => 'Поле "name" должно быть строкой.',
             'name.max' => 'Поле "name" не должно превышать 255 символов.',
-            'photo.string' => 'Поле "photo" должно быть строкой.',
         ];
     }
 }
