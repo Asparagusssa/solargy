@@ -9,6 +9,7 @@ use App\Http\Resources\Product\ProductAllResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Option;
 use App\Models\Product;
+use App\Models\ProductPhoto;
 use App\Models\Value;
 use DB;
 use Illuminate\Http\Request;
@@ -331,5 +332,16 @@ class ProductController extends Controller
                 }
             }
         }
+    }
+
+    public function deletePhotos($photoId)
+    {
+        $photo = ProductPhoto::find($photoId);
+        if($photo->photo) {
+            Storage::disk('public')->delete('products/' . basename($photo->photo));
+        }
+        $photo->delete();
+
+        return response()->json(null, 204);
     }
 }
