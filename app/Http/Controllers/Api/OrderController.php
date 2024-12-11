@@ -20,7 +20,6 @@ class OrderController extends Controller
             'items.*.options.*.name' => 'sometimes|string',
             'items.*.options.*.values' => 'sometimes|array',
             'items.*.options.*.values.*.value' => 'sometimes|string',
-            'items.*.options.*.values.*.price' => 'sometimes|numeric',
             'userInfo' => 'required|array',
             'userInfo.*.name' => 'required|string',
             'userInfo.*.phone' => 'required|string',

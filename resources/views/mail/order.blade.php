@@ -19,23 +19,16 @@
     @foreach ($items as $item)
         <li>
             <strong>Название:</strong> {{ $item['name'] }} <br>
-            <strong>Цена:</strong> {{ $item['price'] }} руб.
             @if (isset($item['options']))
                 <ul>
                     @foreach ($item['options'] as $option)
                         <li>
-                            <strong>Опция:</strong> {{ $option['name'] }}
-                            <ul>
-                                @foreach ($option['values'] as $value)
-                                    <li>
-                                        <strong>Значение:</strong> {{ $value['value'] }}: {{ $value['price'] }} руб.
-                                    </li>
-                                @endforeach
-                            </ul>
+                            <strong>{{ $option['name'] }}:</strong> {{ $option['values'][0]['value'] }}
                         </li>
                     @endforeach
                 </ul>
             @endif
+            <strong>Цена:</strong> {{ $item['price'] }} руб.
         </li>
     @endforeach
 </ul>
