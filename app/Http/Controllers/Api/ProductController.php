@@ -152,12 +152,12 @@ class ProductController extends Controller
         $options = $data['options'] ?? [];
         foreach ($options as $optionData) {
             $optionData['id'] = $optionData['id'] ?? null;
-            $option = $product->options()->find($optionData['id']);
+            $option = Option::find($optionData['id']);
             if ($option) {
                 $values = $optionData['values'] ?? [];
                 foreach ($values as $valueData) {
                     $valueData['id'] = $valueData['id'] ?? null;
-                    $value = $option->values()->find($valueData['id']);
+                    $value = Value::find($valueData['id']);
                     if ($value) {
                         if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                             Storage::disk('public')->delete('optionValues/' . basename($value->image));
@@ -167,16 +167,22 @@ class ProductController extends Controller
                         $value->value = $valueData['value'] ?? $value->value;
                         $value->price = $valueData['price'] ?? $value->price;
                         $value->save();
+                        $product->options()->attach($option->id, ['value_id' => $value->id]);
+
                     } else {
                         if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                             $imagePath = $valueData['image']->store('products', 'public');
                         }
-                        $option->values()->create([
+                        $newValue = $option->values()->create([
                             'value' => $valueData['value'],
                             'price' => $valueData['price'],
                             'image' => $imagePath ?? null
                         ]);
+                        $product->options()->attach($option->id, ['value_id' => $newValue->id]);
+
                     }
+
+
                 }
                 $option->name = $optionData['name'] ?? $option->name;
                 $option->save();
@@ -319,18 +325,19 @@ class ProductController extends Controller
                         'option' => ['Поле "id" или "values[value]" должно быть заполнено.']
                     ]);
                 }
-            } else {
-                $exists = DB::table('option_values')
-                    ->where('option_id', $option['id'])
-                    ->where('product_id', $productId)
-                    ->exists();
-
-                if (!$exists) {
-                    throw ValidationException::withMessages([
-                        'option' => ['Поле "id" должно существовать в таблице options и быть привязано к редактируемому товару.']
-                    ]);
-                }
             }
+//            } else {
+//                $exists = DB::table('option_values')
+//                    ->where('option_id', $option['id'])
+//                    ->where('product_id', $productId)
+//                    ->exists();
+//
+//                if (!$exists) {
+//                    throw ValidationException::withMessages([
+//                        'option' => ['Поле "id" должно существовать в таблице options и быть привязано к редактируемому товару.']
+//                    ]);
+//                }
+//            }
         }
     }
 
