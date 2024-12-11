@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Requests\Product\ProductStoreRequest;
+use App\Http\Resources\Product\ProductAllResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Option;
 use App\Models\Product;
@@ -20,9 +21,9 @@ class ProductController extends Controller
 
     public function getAllProducts()
     {
-        $data = Product::with('photos', 'options.values', 'properties')->orderBy('id')->get();
+        $data = Product::with('photos', 'options.values', 'properties', 'category')->orderBy('id')->get();
 
-        return response()->json(ProductResource::collection($data));
+        return response()->json(ProductAllResource::collection($data));
     }
 
     public function index(Request $request)
