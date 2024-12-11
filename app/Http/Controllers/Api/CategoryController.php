@@ -77,7 +77,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return response()->json(new CategoryResource($category), 200);
+        return response()->json(new CategoryResource($category->fresh()), 200);
     }
 
     public function destroy(Category $category)
