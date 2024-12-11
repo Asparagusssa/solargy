@@ -18,6 +18,13 @@ use Illuminate\Validation\ValidationException;
 class ProductController extends Controller
 {
 
+    public function getAllProducts()
+    {
+        $data = Product::with('photos', 'options.values', 'properties')->orderBy('id')->get();
+
+        return response()->json(ProductResource::collection($data));
+    }
+
     public function index(Request $request)
     {
 

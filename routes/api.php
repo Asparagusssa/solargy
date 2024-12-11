@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\PromoController;
 use App\Http\Controllers\Api\PurchasePlaceController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\SubBannerController;
+use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\TeamController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,8 @@ Route::apiResource('socials', ContactSocialController::class)->only(['index', 's
 Route::apiResource('purchase-place', PurchasePlaceController::class)->only(['index', 'show']);
 Route::apiResource('companies', CompanyController::class)->only(['index', 'show']);
 
+Route::post('support', [SupportController::class, 'submitForm']);
+
 
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
 Route::get('search', SearchController::class);
@@ -62,5 +65,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('purchase-place', PurchasePlaceController::class)->except(['index', 'show']);
     Route::apiResource('companies', CompanyController::class)->except(['index', 'show']);
     Route::delete('custom-details/{customId}', [CompanyController::class, 'destroyCustom']);
+
+    Route::get('all-products', [ProductController::class, 'getAllProducts']);
 
 });
