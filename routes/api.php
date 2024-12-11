@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CallController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\ContactController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MainBannerController;
 use App\Http\Controllers\Api\OptionController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PageSectionController;
 use App\Http\Controllers\Api\PatentController;
 use App\Http\Controllers\Api\ProductController;
@@ -41,6 +43,9 @@ Route::apiResource('purchase-place', PurchasePlaceController::class)->only(['ind
 Route::apiResource('companies', CompanyController::class)->only(['index', 'show']);
 
 Route::post('support', [SupportController::class, 'submitForm']);
+Route::post('order', [OrderController::class, 'submitForm']);
+Route::post('call', [CallController::class, 'submitForm']);
+
 
 
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
