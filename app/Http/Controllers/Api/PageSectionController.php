@@ -68,7 +68,7 @@ class PageSectionController extends Controller
             $sectionId = $data['sections'][$i]['id'] ?? null;
             if($sectionId){
                 $pageSection = PageSection::find($sectionId);
-                if($data['sections'][$i]['image']){
+                if(isset($data['sections'][$i]['image'])){
                     if ($pageSection->image) {
                         Storage::disk('public')->delete('pageSections/' . basename($pageSection->image));
                     }
@@ -81,6 +81,7 @@ class PageSectionController extends Controller
                     $imagePath = $request->file('sections.'.$i.'.image')->store('pageSections', 'public');
                     $data['sections'][$i]['image'] = $imagePath;
                 }
+                $data['sections'][$i]['html'] = $data['sections'][$i]['html'] ?? "пусто";
                 $pageSection = PageSection::create($data['sections'][$i]);
             }
             $data['sections'][$i] = $pageSection;

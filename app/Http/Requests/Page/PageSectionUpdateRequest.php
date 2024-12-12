@@ -22,7 +22,6 @@ class PageSectionUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'exists:pages,id'],
             'sections' => ['required', 'array'],
             'sections.*.id' => ['sometimes', 'exists:page_sections,id'],
             'sections.*.title' => ['sometimes', 'string', 'max:255'],
