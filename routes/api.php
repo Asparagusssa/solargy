@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('options/{optionId}/values/{valueId}', [OptionController::class, 'destroyValue']);
     Route::delete('productPhoto/{ProductPhoto}', [ProductController::class, 'deletePhotos']);
     Route::delete('products/{product}/values/{value}', [ProductController::class, 'deletePivot']);
+    Route::delete('productProperties/{property}', [ProductController::class, 'deleteProperty']);
 
     Route::apiResource('main-banners', MainBannerController::class)->except(['index', 'show']);
     Route::apiResource('sub-banners', SubBannerController::class)->except(['index', 'show']);

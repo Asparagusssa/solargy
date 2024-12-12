@@ -10,6 +10,7 @@ use App\Http\Resources\Product\ProductResource;
 use App\Models\Option;
 use App\Models\Product;
 use App\Models\ProductPhoto;
+use App\Models\ProductProperty;
 use App\Models\Value;
 use DB;
 use Illuminate\Http\Request;
@@ -360,5 +361,22 @@ class ProductController extends Controller
         $data = $product->values()->detach($value->id);
 
         return response()->json($data);
+    }
+
+    public function deleteProperty($propertyId)
+    {
+        $property = ProductProperty::find($propertyId);
+
+        if($property->image) {
+            Storage::disk('public')->delete('productPropertyImages' . basename($property->image));
+        }
+
+        if($property->file) {
+            Storage::disk('public')->delete('productPropertyFile' . basename($property->file));
+        }
+
+        $property->delete();
+
+        return response()->json(null, 204);
     }
 }
