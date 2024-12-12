@@ -351,4 +351,14 @@ class ProductController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function deletePivot($productId, $valueId)
+    {
+        $product = Product::findOrFail($productId);
+        $value = Value::findOrFail($valueId);
+
+        $data = $product->values()->detach($value->id);
+
+        return response()->json($data);
+    }
 }
