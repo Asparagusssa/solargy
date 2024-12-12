@@ -75,6 +75,9 @@ class PageSectionController extends Controller
                     $imagePath = $request->file('sections.'.$i.'.image')->store('pageSections', 'public');
                     $data['sections'][$i]['image'] = $imagePath;
                 }
+                $data['sections'][$i]['html'] = $data['sections'][$i]['html'] ?? $pageSection->html;
+                $data['sections'][$i]['title'] = $data['sections'][$i]['title'] ?? $pageSection->title;
+
                 $pageSection->update($data['sections'][$i]);
             } else {
                 if($data['sections'][$i]['image']){
