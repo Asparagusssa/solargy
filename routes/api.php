@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
 
     Route::apiResource('pages', PageSectionController::class)->except(['index', 'show']);
+
     Route::apiResource('contacts', ContactController::class)->except(['index', 'show']);
     Route::apiResource('socials', ContactSocialController::class)->except(['index', 'show']);
     Route::apiResource('purchase-place', PurchasePlaceController::class)->except(['index', 'show']);

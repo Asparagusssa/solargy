@@ -327,18 +327,6 @@ class ProductController extends Controller
                     ]);
                 }
             }
-//            } else {
-//                $exists = DB::table('option_values')
-//                    ->where('option_id', $option['id'])
-//                    ->where('product_id', $productId)
-//                    ->exists();
-//
-//                if (!$exists) {
-//                    throw ValidationException::withMessages([
-//                        'option' => ['Поле "id" должно существовать в таблице options и быть привязано к редактируемому товару.']
-//                    ]);
-//                }
-//            }
         }
     }
 
