@@ -25,6 +25,8 @@ class FileController extends Controller
         }
 
         $fullPath = storage_path('app/public/' . $path);
+
+
         if (!file_exists($fullPath)) {
             return response()->json(['message' => 'Файл не найден'], 404);
         }
