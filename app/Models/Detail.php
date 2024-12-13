@@ -20,6 +20,11 @@ class Detail extends Model
         'phone',
     ];
 
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
     public function company(): hasOne
     {
         return $this->hasOne(Company::class);

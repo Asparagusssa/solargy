@@ -16,4 +16,9 @@ class PurchasePlace extends Model
         'image',
         'url',
     ];
+
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
 }
