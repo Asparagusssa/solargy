@@ -19,7 +19,11 @@ class PageSectionController extends Controller
      */
     public function index()
     {
-        $pages = Page::with('sections')->orderBy('id')->get();
+        $pages = Page::with([
+            'sections' => function ($query) {
+                $query->orderBy('id');
+            },
+        ])->orderBy('id')->get();
 
         return response()->json(PageResource::collection($pages), 200);
     }

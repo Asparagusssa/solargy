@@ -17,7 +17,14 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $data = Company::with('detail', 'customs')->orderBy('id')->get();
+        $data = Company::with([
+            'detail' => function ($query) {
+                $query->orderBy('id');
+            },
+            'customs' => function ($query) {
+                $query->orderBy('id');
+            },
+        ])->orderBy('id')->get();
 
         return response()->json(CompanyResource::collection($data), 200);
     }
