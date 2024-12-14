@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Patent;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,7 +17,7 @@ class PatentResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'date' => $this->date instanceof Carbon ? $this->date->format('d.m.Y') : Carbon::parse($this->date)->format('d.m.Y'),
+            'date' => $this->date,
             'file' => $this->file,
             'file_name' => $this->file_name,
         ];
