@@ -16,7 +16,11 @@ class OptionController extends Controller
 {
     public function index()
     {
-        $data = Option::with('values')->orderBy('id')->get();
+        $data = Option::with([
+            'values' => function ($query) {
+                $query->orderBy('id');
+            },
+        ])->orderBy('id')->get();
 
         return response()->json(OptionResource::collection($data));
     }
