@@ -23,30 +23,76 @@ class ProductController extends Controller
 
     public function getAllProducts()
     {
-        $data = Product::with('photos', 'options.values', 'properties', 'category')->orderBy('id')->get();
+        $data = Product::with([
+            'photos' => function ($query) {
+                $query->orderBy('id');
+            },
+            'options.values' => function ($query) {
+                $query->orderBy('id');
+            },
+            'properties' => function ($query) {
+                $query->orderBy('id');
+            },
+            'category' => function ($query) {
+                $query->orderBy('id');
+            }
+        ])->orderBy('id')->get();
 
         return response()->json(ProductAllResource::collection($data));
     }
 
+
     public function index(Request $request)
     {
-
         $categoryId = $request->query('category');
         $isTop = $request->query('top');
 
-        if($categoryId) {
-            $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('category_id', $categoryId)->paginate(8);
-        }else if($isTop) {
-            $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('is_top', true)->paginate(4);
-            if($products->count() < 4) {
-                $additionalProducts = Product::with('photos', 'options.values', 'properties')->orderBy('id')->where('is_top', false)->limit(4 - $products->count())->get();
-                $products = $products->merge($additionalProducts);
+        $query = Product::with([
+            'photos' => function ($query) {
+                $query->orderBy('order');
+            },
+            'options.values' => function ($query) {
+                $query->orderBy('id');
+            },
+            'properties' => function ($query) {
+                $query->orderBy('id');
+            },
+            'category' => function ($query) {
+                $query->orderBy('id');
+            },
+        ])->orderBy('id');
+
+        if ($categoryId) {
+            $products = $query->where('category_id', $categoryId)->paginate(8);
+        } elseif ($isTop) {
+            $products = $query->where('is_top', true)->paginate(4);
+
+            if ($products->count() < 4) {
+                $additionalProducts = Product::with([
+                    'photos' => function ($query) {
+                        $query->orderBy('order');
+                    },
+                    'options.values' => function ($query) {
+                        $query->orderBy('id');
+                    },
+                    'properties' => function ($query) {
+                        $query->orderBy('id');
+                    },
+                    'category' => function ($query) {
+                        $query->orderBy('id');
+                    },
+                ])->where('is_top', false)->orderBy('id')->limit(4 - $products->count())->get();
+
+                $products = $products->getCollection()->merge($additionalProducts)
+                    ->sortBy('id')
+                    ->values();
+
                 return response()->json([
                     'data' => ProductResource::collection($products)
                 ]);
             }
-        }else{
-            $products = Product::with('photos', 'options.values', 'properties')->orderBy('id')->paginate(8);
+        } else {
+            $products = $query->paginate(8);
         }
 
         return response()->json([
@@ -60,6 +106,7 @@ class ProductController extends Controller
             ],
         ], 200);
     }
+
 
     public function show(Product $product)
     {
