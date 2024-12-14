@@ -13,7 +13,7 @@ class ContactSocialController extends Controller
 {
     public function index()
     {
-        $contactSocials = ContactSocial::all();
+        $contactSocials = ContactSocial::orderBy('id')->get();
 
         return response()->json(ContactSocialResource::collection($contactSocials), 200);
     }

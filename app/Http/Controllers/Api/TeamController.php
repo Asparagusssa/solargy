@@ -17,7 +17,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $teams = Team::all();
+        $teams = Team::orderBy('id')->get();
         return response()->json(TeamResource::collection($teams));
     }
 

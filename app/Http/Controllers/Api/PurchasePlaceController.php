@@ -17,7 +17,7 @@ class PurchasePlaceController extends Controller
      */
     public function index()
     {
-        $data = PurchasePlace::orderBy('type')->get();
+        $data = PurchasePlace::orderBy('id')->get();
 
         return response()->json(PurchasePlaceResource::collection($data), 200);
     }

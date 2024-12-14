@@ -18,7 +18,7 @@ class PromoController extends Controller
      */
     public function index()
     {
-        $promos = Promo::all();
+        $promos = Promo::orderBy('id')->get();
         return response()->json(PromoResource::collection($promos), 200);
     }
 
