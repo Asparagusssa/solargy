@@ -23,7 +23,7 @@ class SubBannerStoreRequest extends FormRequest
     {
         return [
             'title' => ['nullable', 'string', 'max:255'],
-            'image' => ['required', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'image' => ['required', 'image', 'mimes:jpg,png,jpeg,gif', 'max:5120'],
             'order' => ['numeric', 'unique:sub_banners'],
         ];
     }

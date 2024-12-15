@@ -27,7 +27,7 @@ class MainBannerStoreRequest extends BaseFormRequest
             'product_id' => ['required', 'exists:products,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
             'order' => ['integer', 'unique:main_banners']
         ];
     }

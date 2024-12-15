@@ -27,7 +27,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'is_top' => ['boolean'],
             'photos' => ['array'],
             'photos.*.id' => ['integer', 'exists:product_photos,id'],
-            'photos.*.photo' => ['sometimes','image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'photos.*.photo' => ['sometimes','image', 'mimes:jpg,png,jpeg,gif', 'max:5120'],
             'photos.*.order' => ['integer'],
             'options' => ['array'],
             'options.*.id' => ['integer', 'exists:options,id'],
@@ -36,13 +36,13 @@ class ProductUpdateRequest extends BaseFormRequest
             'options.*.values.*.id' => ['integer', 'exists:values,id'],
             'options.*.values.*.value' => ['string'],
             'options.*.values.*.price' => ['numeric'],
-            'options.*.values.*.image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'options.*.values.*.image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:5120'],
             'properties' => ['array'],
             'properties.*.id' => ['integer', 'exists:product_properties,id'],
             'properties.*.title' => ['string', 'in:property,recommendation'],
             'properties.*.html' => ['string'],
             'properties.*.file' => ['nullable', 'file', 'max:10240'],
-            'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
+            'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:5120'],
         ];
     }
 

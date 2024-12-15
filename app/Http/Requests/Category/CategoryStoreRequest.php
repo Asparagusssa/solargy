@@ -24,7 +24,7 @@ class CategoryStoreRequest extends BaseFormRequest
         return [
             'parent_id' => ['nullable', 'exists:categories,id'],
             'name' => ['required', 'max:255'],
-            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
         ];
     }
 
