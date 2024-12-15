@@ -30,7 +30,9 @@
             @endif
             <strong>Цена:</strong> {{ $item['price'] }} руб. <br>
             <strong>Количество:</strong> {{ $item['quantity'] }}
-            <div>------------------</div>
+            @if(!$loop->last)
+                <div>------------------</div>
+            @endif
         </li>
     @endforeach
 </ul>

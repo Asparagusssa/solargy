@@ -46,19 +46,10 @@ class ProductUpdateRequest extends BaseFormRequest
         ];
     }
 
-//    public function messages(): array
-//    {
-//        return [
-//            'category_id.exists' => 'Поле "category_id" должно быть существующим.',
-//            'name.string' => 'Поле "name" должно быть строкой.',
-//            'name.max' => 'Поле "name" не должно превышать 255 символов.',
-//            'description.string' => 'Поле "description" должно быть строкой.',
-//            'price.numeric' => 'Поле "price" должно быть числом.',
-//            'is_top.boolean' => 'Поле "is_top" должно быть логическим типом.',
-//            'photos.array' => 'Поле "photos" должно быть массивом.',
-//            'photos.*.photo.string' => 'Поле "photo" должно быть строкой.',
-//            'photos.*.is_main.boolean' => 'Поле "is_main" должно быть логическим типом.',
-//            'options.*.values.*.value.required_without' => 'Поле "value" обязательно для заполнения, если не указан "options[id]".',
-//        ];
-//    }
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'is_top' => filter_var($this->is_top, FILTER_VALIDATE_BOOLEAN),
+        ]);
+    }
 }

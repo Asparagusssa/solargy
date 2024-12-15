@@ -30,4 +30,11 @@ class PromoStoreRequest extends FormRequest
             'is_archived' => ['nullable', 'boolean'],
         ];
     }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'is_archived' => filter_var($this->is_archived, FILTER_VALIDATE_BOOLEAN),
+        ]);
+    }
 }

@@ -31,4 +31,11 @@ class PromoUpdateRequest extends FormRequest
             'is_archived' => ['boolean', 'sometimes'],
         ];
     }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'is_archived' => filter_var($this->is_archived, FILTER_VALIDATE_BOOLEAN),
+        ]);
+    }
 }
