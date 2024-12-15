@@ -28,7 +28,9 @@
                     @endforeach
                 </ul>
             @endif
-            <strong>Цена:</strong> {{ $item['price'] }} руб.
+            <strong>Цена:</strong> {{ $item['price'] }} руб. <br>
+            <strong>Количество:</strong> {{ $item['quantity'] }}
+            <div>------------------</div>
         </li>
     @endforeach
 </ul>

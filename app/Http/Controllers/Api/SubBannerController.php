@@ -14,7 +14,7 @@ class SubBannerController extends Controller
 {
     public function index()
     {
-        $banners = SubBanner::query()->orderBy('order')->get();
+        $banners = SubBanner::query()->orderBy('id')->orderBy('order')->get();
 
         return response()->json(SubBannerResource::collection($banners), 200);
     }
