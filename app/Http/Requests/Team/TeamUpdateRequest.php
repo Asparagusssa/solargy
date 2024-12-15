@@ -24,7 +24,7 @@ class TeamUpdateRequest extends FormRequest
         return [
             'name' => ['string', 'max:255', 'sometimes'],
             'description' => ['string', 'max:255', 'sometimes'],
-            'image' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:5120', 'sometimes'],
+            'image' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:10240', 'sometimes'],
             'phone' => ['string', 'max:255', 'sometimes'],
             'email' => ['email', 'max:255', 'sometimes'],
         ];

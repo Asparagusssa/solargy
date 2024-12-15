@@ -26,7 +26,7 @@ class MainBannerUpdateRequest extends BaseFormRequest
             'product_id' => ['sometimes', 'exists:products,id'],
             'title' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'string'],
-            'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
+            'image' => ['sometimes', 'image', 'max:10240'],
             'order' => ['integer',
                 Rule::unique('main_banners')->ignore($this->main_banner->id)
             ]

@@ -25,7 +25,7 @@ class PurchasePlaceUpdateRequest extends FormRequest
             'name' => ['sometimes', 'string', 'max:255'],
             'type' => ['sometimes', 'string', 'in:marketplace,partner,store,retailer'],
             'url' => ['sometimes', 'string', 'url'],
-            'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:5120'],
+            'image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
         ];
     }
 }

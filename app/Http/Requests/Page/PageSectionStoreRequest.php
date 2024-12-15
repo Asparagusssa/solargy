@@ -26,7 +26,7 @@ class PageSectionStoreRequest extends FormRequest
             'sections' => ['required', 'array'],
             'sections.*.title' => ['required', 'string', 'max:255'],
             'sections.*.html' => ['required', 'string'],
-            'sections.*.image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
+            'sections.*.image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ];
     }
 }

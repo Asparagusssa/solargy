@@ -26,7 +26,7 @@ class PageSectionUpdateRequest extends FormRequest
             'sections.*.id' => ['sometimes', 'exists:page_sections,id'],
             'sections.*.title' => ['sometimes', 'string', 'max:255'],
             'sections.*.html' => ['sometimes', 'string'],
-            'sections.*.image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
+            'sections.*.image' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ];
     }
 }

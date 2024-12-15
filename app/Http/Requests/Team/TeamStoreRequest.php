@@ -24,7 +24,7 @@ class TeamStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:5120'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
             'phone' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
         ];
