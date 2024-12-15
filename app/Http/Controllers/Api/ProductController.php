@@ -27,7 +27,7 @@ class ProductController extends Controller
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
             },
-            'options.values' => function ($query) {
+            'options' => function ($query) {
                 $query->orderBy('id');
             },
             'properties' => function ($query) {
@@ -51,7 +51,7 @@ class ProductController extends Controller
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
             },
-            'options.values' => function ($query) {
+            'options' => function ($query) {
                 $query->orderBy('id');
             },
             'properties' => function ($query) {
@@ -72,7 +72,7 @@ class ProductController extends Controller
                     'photos' => function ($query) {
                         $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
                     },
-                    'options.values' => function ($query) {
+                    'options' => function ($query) {
                         $query->orderBy('id');
                     },
                     'properties' => function ($query) {
@@ -110,18 +110,22 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-
-//        dd($product->load('options'));
         $product->load([
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
             },
-            'options.values' => function ($query) {
-                $query->orderBy('id');
+            'options' => function ($query) use ($product) {
+                $query->with(['values' => function ($query) use ($product) {
+                    $query->whereHas('products', function ($query) use ($product) {
+                        $query->where('product_id', $product->id);
+                    });
+                }])
+                    ->orderBy('id');
             },
             'properties' => function ($query) {
                 $query->orderBy('id');
-            }]);
+            },
+        ]);
 
         return response()->json(new ProductResource($product));
     }
@@ -174,6 +178,23 @@ class ProductController extends Controller
         $product = Product::with('photos', 'options', 'properties')->find($product->id);
 
         $product->options = $product->options->unique('id');
+
+        $product->load([
+            'photos' => function ($query) {
+                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
+            },
+            'options' => function ($query) use ($product) {
+                $query->with(['values' => function ($query) use ($product) {
+                    $query->whereHas('products', function ($query) use ($product) {
+                        $query->where('product_id', $product->id);
+                    });
+                }])
+                    ->orderBy('id');
+            },
+            'properties' => function ($query) {
+                $query->orderBy('id');
+            },
+        ]);
 
 
         return response()->json(new ProductResource($product), 201);
@@ -304,17 +325,22 @@ class ProductController extends Controller
 
 
 
-        $product->load(['photos' => function ($query) {
-            $query->orderBy('order', 'asc');
-        }]);
-
-        $product->load(['options' => function ($query) {
-            $query->orderBy('id', 'asc');
-        }]);
-
-        $product->load(['properties' => function ($query) {
-            $query->orderBy('id', 'asc');
-        }]);
+        $product->load([
+            'photos' => function ($query) {
+                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
+            },
+            'options' => function ($query) use ($product) {
+                $query->with(['values' => function ($query) use ($product) {
+                    $query->whereHas('products', function ($query) use ($product) {
+                        $query->where('product_id', $product->id);
+                    });
+                }])
+                    ->orderBy('id');
+            },
+            'properties' => function ($query) {
+                $query->orderBy('id');
+            },
+        ]);
         return response()->json(new ProductResource($product), 200);
     }
 
