@@ -110,7 +110,18 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $product->load('photos', 'options.values', 'properties');
+
+//        dd($product->load('options'));
+        $product->load([
+            'photos' => function ($query) {
+                $query->orderBy('id')->orderBy('order');
+            },
+            'options.values' => function ($query) {
+                $query->orderBy('id');
+            },
+            'properties' => function ($query) {
+                $query->orderBy('id');
+            }]);
 
         return response()->json(new ProductResource($product));
     }
