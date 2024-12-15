@@ -126,6 +126,8 @@ class ProductController extends Controller
                 $query->orderBy('id');
             },
         ]);
+        $product->options = $product->options->unique('id');
+
 
         return response()->json(new ProductResource($product));
     }
@@ -195,6 +197,8 @@ class ProductController extends Controller
                 $query->orderBy('id');
             },
         ]);
+
+        $product->options = $product->options->unique('id');
 
 
         return response()->json(new ProductResource($product), 201);
@@ -335,12 +339,15 @@ class ProductController extends Controller
                         $query->where('product_id', $product->id);
                     });
                 }])
+                    ->distinct() // Убираем дубли
                     ->orderBy('id');
             },
             'properties' => function ($query) {
                 $query->orderBy('id');
             },
         ]);
+        $product->options = $product->options->unique('id');
+
         return response()->json(new ProductResource($product), 200);
     }
 
