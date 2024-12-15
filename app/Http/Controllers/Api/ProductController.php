@@ -25,7 +25,7 @@ class ProductController extends Controller
     {
         $data = Product::with([
             'photos' => function ($query) {
-                $query->orderBy('id')->orderBy('order');
+                $query->orderByRaw('`order` IS NULL, `order` ASC')->orderBy('id', 'ASC');
             },
             'options.values' => function ($query) {
                 $query->orderBy('id');
@@ -49,7 +49,7 @@ class ProductController extends Controller
 
         $query = Product::with([
             'photos' => function ($query) {
-                $query->orderBy('id')->orderBy('order');
+                $query->orderByRaw('`order` IS NULL, `order` ASC')->orderBy('id', 'ASC');
             },
             'options.values' => function ($query) {
                 $query->orderBy('id');
@@ -70,7 +70,7 @@ class ProductController extends Controller
             if ($products->count() < 4) {
                 $additionalProducts = Product::with([
                     'photos' => function ($query) {
-                        $query->orderBy('id')->orderBy('order');
+                        $query->orderByRaw('`order` IS NULL, `order` ASC')->orderBy('id', 'ASC');
                     },
                     'options.values' => function ($query) {
                         $query->orderBy('id');
@@ -114,7 +114,7 @@ class ProductController extends Controller
 //        dd($product->load('options'));
         $product->load([
             'photos' => function ($query) {
-                $query->orderBy('id')->orderBy('order');
+                $query->orderByRaw('`order` IS NULL, `order` ASC')->orderBy('id', 'ASC');
             },
             'options.values' => function ($query) {
                 $query->orderBy('id');

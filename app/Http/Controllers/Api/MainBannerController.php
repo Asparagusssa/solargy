@@ -17,7 +17,7 @@ class MainBannerController extends Controller
      */
     public function index()
     {
-        $banners = MainBanner::with('product')->orderBy('id')->orderBy('order')->get();
+        $banners = MainBanner::with('product')->orderByRaw('`order` IS NULL, `order` ASC')->orderBy('id', 'ASC')->get();
 
         return response()->json(MainBannerResource::collection($banners), 200);
     }
