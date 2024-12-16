@@ -20,4 +20,9 @@ class ContactSocial extends Model
     {
         return $value ? url('storage/' . $value) : null;
     }
+
+    public function getImageFooterAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
 }

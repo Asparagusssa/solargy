@@ -15,6 +15,7 @@ class ContactSocialResource extends JsonResource
             'platform' => $this->platform,
             'url' => $this->url,
             'image' => $this->image,
+            'image_footer' => $this->image_footer
         ];
     }
 }
