@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->string('platform');
             $table->text('url');
             $table->string('image');
-            $table->string('image_footer');
             $table->timestamps();
         });
     }
