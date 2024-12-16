@@ -341,7 +341,6 @@ class ProductController extends Controller
                         $query->where('product_id', $product->id);
                     });
                 }])
-                    ->distinct() // Убираем дубли
                     ->orderBy('id');
             },
             'properties' => function ($query) {
