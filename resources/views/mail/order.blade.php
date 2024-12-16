@@ -29,7 +29,7 @@
                 </ul>
             @endif
             <strong>Цена:</strong> {{ $item['price'] }} руб. <br>
-            <strong>Количество:</strong> {{ $item['quantity'] }}
+            <strong>Количество:</strong> {{ $item['quantity'] ?? 1 }}
             @if(!$loop->last)
                 <div>------------------</div>
             @endif
