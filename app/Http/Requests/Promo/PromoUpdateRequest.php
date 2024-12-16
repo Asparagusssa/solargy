@@ -25,7 +25,7 @@ class PromoUpdateRequest extends FormRequest
         return [
             'title' => ['string', 'max:255', 'sometimes'],
             'description' => ['string', 'sometimes'],
-            'image' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:10240', 'sometimes'],
+            'image' => ['image', 'nullable', 'mimes:jpeg,png,jpg,gif', 'max:10240', 'sometimes'],
             'start' => ['date', 'sometimes'],
             'end' => ['date', 'sometimes'],
             'is_archived' => ['boolean', 'sometimes'],

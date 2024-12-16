@@ -24,7 +24,7 @@ class PromoStoreRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
+            'image' => ['required', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
             'start' => ['required', 'date', 'before:end'],
             'end' => ['required', 'date', 'after:start'],
             'is_archived' => ['nullable', 'boolean'],

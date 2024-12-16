@@ -24,7 +24,7 @@ class PatentUpdateRequest extends FormRequest
         return [
             'title' => ['sometimes', 'string'],
             'date' => ['sometimes', 'date'],
-            'file' => ['sometimes', 'file', 'max:10240'],
+            'file' => ['sometimes', 'nullable', 'file', 'max:10240'],
         ];
     }
 }

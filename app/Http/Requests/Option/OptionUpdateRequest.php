@@ -27,7 +27,7 @@ class OptionUpdateRequest extends BaseFormRequest
             'values.*.id' => ['required_with:values:', 'numeric'],
             'values.*.value' => ['string'],
             'values.*.price' => ['numeric'],
-            'values.*.image' => ['image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
+            'values.*.image' => ['image', 'nullable', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
         ];
     }
 }

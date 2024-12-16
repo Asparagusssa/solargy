@@ -24,7 +24,7 @@ class SubBannerUpdateRequest extends FormRequest
     {
         return [
             'title' => ['string', 'max:255', 'sometimes'],
-            'image' => ['image', 'max:10240'],
+            'image' => ['image', 'nullable', 'max:10240'],
             'order' => ['integer',
                 Rule::unique('sub_banners')->ignore($this->sub_banner->id)
             ]

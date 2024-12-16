@@ -27,7 +27,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'is_top' => ['boolean'],
             'photos' => ['array'],
             'photos.*.id' => ['integer', 'exists:product_photos,id'],
-            'photos.*.photo' => ['sometimes','image', 'max:10240'],
+            'photos.*.photo' => ['sometimes', 'nullable', 'image', 'max:10240'],
             'photos.*.order' => ['sometimes', 'integer'],
             'options' => ['array'],
             'options.*.id' => ['integer', 'exists:options,id'],
