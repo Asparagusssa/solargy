@@ -27,6 +27,11 @@ class ContactSocialController extends Controller
             $data['image'] = $imagePath;
         }
 
+        if($request->hasFile('image_footer')) {
+            $imagePath = $request->file('image_footer')->store('contactSocials', 'public');
+            $data['image_footer'] = $imagePath;
+        }
+
         $contactSocial = ContactSocial::create($data);
         return response()->json(new ContactSocialResource($contactSocial), 201);
     }
@@ -50,6 +55,15 @@ class ContactSocialController extends Controller
             $imagePath = $request->file('image')->store('contactSocials', 'public');
             $data['image'] = $imagePath;
         }
+
+        if($request->hasFile('image_footer')) {
+            if ($contactSocial->image_footer) {
+                Storage::disk('public')->delete('contactSocials/' . basename($contactSocial->image_footer));
+            }
+            $imagePath = $request->file('image_footer')->store('contactSocials', 'public');
+            $data['image_footer'] = $imagePath;
+        }
+
         $contactSocial->update($data);
         return response()->json(new ContactSocialResource($contactSocial), 200);
     }
@@ -59,6 +73,9 @@ class ContactSocialController extends Controller
         $contactSocial = ContactSocial::findOrFail($id);
         if ($contactSocial->image) {
             Storage::disk('public')->delete('contactSocials/' . basename($contactSocial->image));
+        }
+        if ($contactSocial->image_footer) {
+            Storage::disk('public')->delete('contactSocials/' . basename($contactSocial->image_footer));
         }
         $contactSocial->delete();
 

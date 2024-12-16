@@ -17,6 +17,7 @@ class ContactSocialStoreRequest extends FormRequest
             'platform' => ['required', 'string', 'max:255'],
             'url' => ['required', 'string', 'url'],
             'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
+            'image_footer' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
         ];
     }
 

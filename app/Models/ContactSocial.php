@@ -13,6 +13,7 @@ class ContactSocial extends Model
         'platform',
         'url',
         'image',
+        'image_footer'
     ];
 
     public function getImageAttribute($value)
