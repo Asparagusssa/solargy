@@ -244,6 +244,12 @@ class ProductController extends Controller
             $option = Option::find($optionData['id']);
             if ($option) {
                 $values = $optionData['values'] ?? [];
+                if ($values == [] && empty($optionData['name'])){
+                    foreach ($option->values as $val) {
+                        $product->options()->attach($option->id, ['value_id' => $val->id]);
+                    }
+                }
+
                 foreach ($values as $valueData) {
                     $valueData['id'] = $valueData['id'] ?? null;
                     $value = Value::find($valueData['id']);
