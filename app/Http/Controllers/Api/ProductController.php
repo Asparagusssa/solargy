@@ -220,7 +220,7 @@ class ProductController extends Controller
             $photo = $product->photos()->find($photoData['id']);
             if ($photo) {
                 $imagePath = null;
-                if (isset($photoData['photo']) && $photoData['photo'] instanceof UploadedFile && $imagePath !== null) {
+                if (isset($photoData['photo']) && $photoData['photo'] instanceof UploadedFile) {
                     Storage::disk('public')->delete('products/' . basename($photo->photo));
                     $imagePath = $photoData['photo']->store('products', 'public');
                 }
