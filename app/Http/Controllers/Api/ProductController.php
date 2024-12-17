@@ -219,11 +219,14 @@ class ProductController extends Controller
             $photoData['id'] = $photoData['id'] ?? null;
             $photo = $product->photos()->find($photoData['id']);
             if ($photo) {
+                $imagePath = null;
                 if (isset($photoData['photo']) && $photoData['photo'] instanceof UploadedFile) {
                     Storage::disk('public')->delete('products/' . basename($photo->photo));
                     $imagePath = $photoData['photo']->store('products', 'public');
                 }
-                $photo->photo = $imagePath ?? $photo->photo;
+                if ($imagePath !== null) {
+                    $photo->photo = $imagePath;
+                }
                 $photo->order = $photoData['order'] ?? $photo->order;
                 $photo->save();
             } else {
