@@ -16,8 +16,11 @@ class EmailTypeController extends Controller
      */
     public function index()
     {
-        $data = EmailType::with('emails')->get();
-
+        $data = EmailType::with([
+            'emails' => function ($query) {
+                $query->orderBy('id');
+            }
+        ])->orderBy('id')->get();
         return response()->json(EmailTypeResource::collection($data));
     }
 
@@ -50,7 +53,7 @@ class EmailTypeController extends Controller
             $type->update($request->only('type'));
         }
         if ($request->has('email_id')) {
-            $type->emails()->sync($request->email_id);
+            $type->emails()->attach($request->email_id);
         }
         return response()->json(new EmailTypeResource($type->load('emails')));
     }

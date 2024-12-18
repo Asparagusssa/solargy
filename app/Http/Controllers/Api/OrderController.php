@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Mail\Order;
 use App\Mail\Support;
+use App\Models\EmailType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,9 +26,14 @@ class OrderController extends Controller
             'userInfo.*.name' => 'required|string',
             'userInfo.*.phone' => 'required|string',
             'userInfo.*.price' => 'required|numeric',
+            'email-type' => 'required|exists:email_types,id',
         ]);
 
-        Mail::to('grechapo40@yandex.ru')->send(new Order($validatedData['items'], $validatedData['userInfo']));
+        $type = EmailType::findOrFail($request->input('email-type'));
+
+        $emailAddresses = $type->emails->pluck('email')->toArray();
+
+        Mail::to($emailAddresses)->send(new Order($validatedData['items'], $validatedData['userInfo']));
 
         return response()->json('OK', 200);
     }

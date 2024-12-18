@@ -16,7 +16,7 @@ class EmailController extends Controller
      */
     public function index()
     {
-        $data = Email::all();
+        $data = Email::orderBy('id')->get();
         return response()->json(EmailResource::collection($data));
     }
 
