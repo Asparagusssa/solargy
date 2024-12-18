@@ -36,7 +36,7 @@ class ProductController extends Controller
             'category' => function ($query) {
                 $query->orderBy('id');
             }
-        ])->orderBy('id')->get();
+        ])->orderBy('name')->get();
 
         return response()->json(ProductAllResource::collection($data));
     }

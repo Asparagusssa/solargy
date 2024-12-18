@@ -22,7 +22,7 @@ class CategoryController extends Controller
         }
 
         foreach ($categories as $category) {
-            $category->products = $category->products()->orderBy('id')->get();
+            $category->products = $category->products()->orderBy('name')->get();
         }
 
         return response()->json(CategoryChildrenResource::collection($categories), 200);

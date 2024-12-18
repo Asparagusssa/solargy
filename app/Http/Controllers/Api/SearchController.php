@@ -13,7 +13,7 @@ class SearchController extends Controller
     {
         $q = mb_strtolower(request('q'));
         $product = Product::with(['photos', 'options', 'properties'])->whereRaw('lower(name) like ?', ["%{$q}%"])
-            ->orderBy('is_top')
+            ->orderBy('name')
             ->get();
 
         return response()->json(ProductResource::collection($product), 200);
