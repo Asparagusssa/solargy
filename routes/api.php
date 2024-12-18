@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactSocialController;
+use App\Http\Controllers\Api\EmailController;
+use App\Http\Controllers\Api\EmailTypeController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MainBannerController;
@@ -41,6 +43,8 @@ Route::apiResource('contacts', ContactController::class)->only(['index', 'show']
 Route::apiResource('socials', ContactSocialController::class)->only(['index', 'show']);
 Route::apiResource('purchase-place', PurchasePlaceController::class)->only(['index', 'show']);
 Route::apiResource('companies', CompanyController::class)->only(['index', 'show']);
+Route::apiResource('emails', EmailController::class)->only(['index', 'show']);
+Route::apiResource('email-types', EmailTypeController::class)->only(['index', 'show']);
 
 Route::post('support', [SupportController::class, 'submitForm']);
 Route::post('order', [OrderController::class, 'submitForm']);
@@ -68,6 +72,10 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
 
     Route::apiResource('pages', PageSectionController::class)->except(['index', 'show']);
+    Route::apiResource('emails', EmailController::class)->except(['index', 'show']);
+    Route::apiResource('email-types', EmailTypeController::class)->except(['index', 'show']);
+    Route::delete('email-types/{typeId}/emails/{emailId}', [EmailTypeController::class, 'destroyPivot']);
+
 
     Route::apiResource('contacts', ContactController::class)->except(['index', 'show']);
     Route::apiResource('socials', ContactSocialController::class)->except(['index', 'show']);

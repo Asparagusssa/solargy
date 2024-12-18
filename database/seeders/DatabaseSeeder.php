@@ -8,6 +8,8 @@ use App\Models\Contact;
 use App\Models\ContactSocial;
 use App\Models\CustomDetail;
 use App\Models\Detail;
+use App\Models\Email;
+use App\Models\EmailType;
 use App\Models\MainBanner;
 use App\Models\Option;
 use App\Models\Page;
@@ -59,6 +61,24 @@ class DatabaseSeeder extends Seeder
         Contact::factory(1)->create();
         ContactSocial::factory(2)->create();
         PurchasePlace::factory(10)->create();
+        Email::factory(6)->create();
+
+        $types = [
+            [
+                'type' => 'order'
+            ],
+            [
+                'type' => 'contact'
+            ],
+            [
+                'type' => 'support'
+            ]
+        ];
+
+        foreach ($types as $type) {
+            EmailType::create($type);
+        }
+
         $companies = Company::factory(2)->create();
 
         $companies->each(function ($company) {
