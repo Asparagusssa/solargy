@@ -24,8 +24,15 @@ class PurchasePlaceStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'in:marketplace,partner,store,retailer'],
-            'url' => ['nullable', 'string'],
+            'url' => ['sometimes','nullable', 'url'],
             'image' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'url' => $this->url === 'null' ? '' : $this->url,
+        ]);
     }
 }
