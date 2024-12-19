@@ -53,7 +53,7 @@ class EmailTypeController extends Controller
             $type->update($request->only('type'));
         }
         if ($request->has('email_id')) {
-            $type->emails()->attach($request->email_id);
+            $type->emails()->syncWithoutDetaching($request->email_id);
         }
         return response()->json(new EmailTypeResource($type->load('emails')));
     }
