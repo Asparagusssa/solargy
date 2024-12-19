@@ -24,7 +24,7 @@ class PurchasePlaceStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'string', 'in:marketplace,partner,store,retailer'],
-            'url' => ['nullable', 'string', 'url'],
+            'url' => ['nullable', 'string'],
             'image' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
         ];
     }
