@@ -118,9 +118,10 @@ class ProductController extends Controller
                 $query->with(['values' => function ($query) use ($product) {
                     $query->whereHas('products', function ($query) use ($product) {
                         $query->where('product_id', $product->id);
-                    });
+                    })
+                    ->orderBy('value');
                 }])
-                    ->orderBy('id');
+                ->orderBy('id');
             },
             'properties' => function ($query) {
                 $query->orderBy('id');
@@ -189,9 +190,10 @@ class ProductController extends Controller
                 $query->with(['values' => function ($query) use ($product) {
                     $query->whereHas('products', function ($query) use ($product) {
                         $query->where('product_id', $product->id);
-                    });
+                    })
+                    ->orderBy('value');
                 }])
-                    ->orderBy('id');
+                ->orderBy('id');
             },
             'properties' => function ($query) {
                 $query->orderBy('id');
@@ -348,9 +350,10 @@ class ProductController extends Controller
                 $query->with(['values' => function ($query) use ($product) {
                     $query->whereHas('products', function ($query) use ($product) {
                         $query->where('product_id', $product->id);
-                    });
+                    })
+                    ->orderBy('value');
                 }])
-                    ->orderBy('id');
+                ->orderBy('id');
             },
             'properties' => function ($query) {
                 $query->orderBy('id');
