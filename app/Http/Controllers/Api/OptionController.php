@@ -63,13 +63,15 @@ class OptionController extends Controller
             $valueData['id'] = $valueData['id'] ?? null;
             $value = $option->values()->find($valueData['id']);
             if ($value) {
-                if ($value->image && isset($valueData['image'])) {
+                if ($value->image && isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                     Storage::disk('public')->delete('optionValues/' . basename($value->image));
                     $imagePath = $valueData['image']->store('optionValues', 'public');
                 }
                 $value->value = $valueData['value'] ?? $value->value;
                 $value->price = $valueData['price'] ?? $value->price;
-                $value->image = $imagePath ?? $value->image;
+                if (isset($imagePath)) {
+                    $value->image = $imagePath;
+                }
                 $value->save();
             } else {
                 if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
