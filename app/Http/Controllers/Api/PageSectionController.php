@@ -17,13 +17,20 @@ class PageSectionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pages = Page::with([
-            'sections' => function ($query) {
-                $query->orderBy('id');
-            },
-        ])->orderBy('id')->get();
+        $isChangeable = $request->query('changeable', false);
+
+        if ($isChangeable) {
+            $pages = Page::with([
+                'sections' => function ($query) {
+                    $query->orderBy('id');
+                },
+            ])->where('is_changeable', true)->get();
+            return response()->json(PageResource::collection($pages), 200);
+        }
+
+        $pages = Page::orderBy('id')->get();
 
         return response()->json(PageResource::collection($pages), 200);
     }
@@ -42,12 +49,16 @@ class PageSectionController extends Controller
             }
         }
 
-        $page = Page::find($data['id']);
+        $page = Page::where('is_changeable', '=', true)->findOrFail($data['id']);
         foreach ($data['sections'] as $sectionData) {
             $page->sections()->create($sectionData);
         }
 
-        $page->load('sections');
+        $page->load([
+            'sections' => function ($query) {
+                $query->orderBy('id');
+            }
+        ]);
 
         return response()->json(new PageResource($page), 201);
     }
@@ -57,7 +68,11 @@ class PageSectionController extends Controller
      */
     public function show(Page $page)
     {
-        return response()->json(new PageResource($page->load('sections')), 200);
+        return response()->json(new PageResource($page->load([
+            'sections' => function ($query) {
+                $query->orderBy('id');
+            },
+        ])), 200);
     }
 
     /**
@@ -79,9 +94,6 @@ class PageSectionController extends Controller
                     $imagePath = $request->file('sections.'.$i.'.image')->store('pageSections', 'public');
                     $data['sections'][$i]['image'] = $imagePath;
                 }
-                $data['sections'][$i]['html'] = $data['sections'][$i]['html'] ?? $pageSection->html;
-                $data['sections'][$i]['title'] = $data['sections'][$i]['title'] ?? $pageSection->title;
-
                 $pageSection->update($data['sections'][$i]);
             } else {
                 if($data['sections'][$i]['image']){
@@ -94,7 +106,10 @@ class PageSectionController extends Controller
             $data['sections'][$i] = $pageSection;
         }
 
-        $page->load('sections');
+        $page->load([
+            'sections' => function ($query) {
+                $query->orderBy('id');
+            }]);
         return response()->json(new PageResource($page), 200);
     }
 

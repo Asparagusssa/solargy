@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Page;
 
+use App\Http\Resources\Seo\SeoResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,6 +17,7 @@ class PageResource extends JsonResource
             'url' => $this->url,
 
             'sections' => PageSectionResource::collection($this->whenLoaded('sections')),
+            'seos' => SeoResource::collection($this->whenLoaded('seos')),
         ];
     }
 }

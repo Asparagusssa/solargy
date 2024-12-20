@@ -21,8 +21,8 @@ return new class extends Migration
 
         Schema::create('email_email_type', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Email::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(EmailType::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Email::class)->index()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(EmailType::class)->index()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

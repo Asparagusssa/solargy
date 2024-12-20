@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PromoController;
 use App\Http\Controllers\Api\PurchasePlaceController;
 use App\Http\Controllers\Api\SearchController;
+use App\Http\Controllers\Api\SeoController;
 use App\Http\Controllers\Api\SubBannerController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\TeamController;
@@ -45,6 +46,7 @@ Route::apiResource('purchase-place', PurchasePlaceController::class)->only(['ind
 Route::apiResource('companies', CompanyController::class)->only(['index', 'show']);
 Route::apiResource('emails', EmailController::class)->only(['index', 'show']);
 Route::apiResource('email-types', EmailTypeController::class)->only(['index', 'show']);
+Route::apiResource('seos', SeoController::class)->only(['index', 'show']);
 
 Route::post('support', [SupportController::class, 'submitForm']);
 Route::post('order', [OrderController::class, 'submitForm']);
@@ -70,6 +72,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('promos', PromoController::class)->except(['index', 'show']);
     Route::apiResource('patents', PatentController::class)->except(['index', 'show']);
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
+    Route::apiResource('seos', SeoController::class)->except(['index', 'show']);
 
     Route::apiResource('pages', PageSectionController::class)->except(['index', 'show']);
     Route::apiResource('emails', EmailController::class)->except(['index', 'show']);
