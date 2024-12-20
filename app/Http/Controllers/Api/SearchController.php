@@ -3,19 +3,62 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Product\ProductResource;
+use App\Models\Category;
+use App\Models\Page;
+use App\Models\PageSection;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Models\Promo;
 
 class SearchController extends Controller
 {
     public function __invoke()
     {
         $q = mb_strtolower(request('q'));
-        $product = Product::with(['photos', 'options', 'properties'])->whereRaw('lower(name) like ?', ["%{$q}%"])
+        $products = Product::with([
+            'photos' => function ($query) {
+                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC')->first();
+            }
+        ])->whereRaw('lower(name) like ?', ["%{$q}%"])
+            ->orWhereRaw('lower(description) like ?', ["%{$q}%"])
+            ->orWhereRaw('CAST(price AS TEXT) LIKE ?', ["%{$q}%"])
             ->orderBy('name')
             ->get();
 
-        return response()->json(ProductResource::collection($product), 200);
+        $newPromos = Promo::query()
+            ->whereRaw('lower(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('lower(description) like ?', ["%{$q}%"])
+            ->where('is_archived', false)
+            ->orderBy('title')
+            ->get();
+
+        $archivePromos = Promo::query()
+            ->whereRaw('lower(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('lower(description) like ?', ["%{$q}%"])
+            ->where('is_archived', true)
+            ->orderBy('title')
+            ->get();
+
+        $categories = Category::query()
+            ->whereRaw('lower(name) like ?', ["%{$q}%"])
+            ->orderBy('name')
+            ->get();
+
+        $pages = PageSection::query()
+            ->whereRaw('lower(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('lower(html) like ?', ["%{$q}%"])
+            ->orderBy('title')
+            ->get();
+
+
+
+        $results = [
+            'products' => $products,
+            'newPromos' => $newPromos,
+            'archivePromos' => $archivePromos,
+            'categories' => $categories,
+            'pages' => $pages
+        ];
+
+        return response()->json($results);
     }
 }
