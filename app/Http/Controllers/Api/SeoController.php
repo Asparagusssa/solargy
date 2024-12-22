@@ -56,7 +56,7 @@ class SeoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SeoUpdateRequest $request, seo $seo)
+    public function update(SeoUpdateRequest $request, Seo $seo)
     {
         $data = $request->validated();
 
@@ -68,7 +68,7 @@ class SeoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(seo $seo)
+    public function destroy(Seo $seo)
     {
         $seo->delete();
         return response()->json(null, 204);
