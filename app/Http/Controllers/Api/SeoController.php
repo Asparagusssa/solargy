@@ -22,7 +22,7 @@ class SeoController extends Controller
             'seos' => function ($query) {
                 $query->orderBy('id');
             }
-        ])->orderBy('id')->get();
+        ])->orderBy('title')->get();
 
         return response()->json(PageResource::collection($data));
     }

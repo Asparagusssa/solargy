@@ -24,13 +24,13 @@ class PageSectionController extends Controller
         if ($isChangeable) {
             $pages = Page::with([
                 'sections' => function ($query) {
-                    $query->orderBy('id');
+                    $query->orderBy('title');
                 },
             ])->where('is_changeable', true)->get();
             return response()->json(PageResource::collection($pages), 200);
         }
 
-        $pages = Page::orderBy('id')->get();
+        $pages = Page::orderBy('title')->get();
 
         return response()->json(PageResource::collection($pages), 200);
     }
