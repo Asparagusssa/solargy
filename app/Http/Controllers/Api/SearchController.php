@@ -15,7 +15,7 @@ class SearchController extends Controller
         $q = mb_strtolower(request('q'));
         $products = Product::with([
             'photos' => function ($query) {
-                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC')->first();
+                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC')->get();
             }
         ])->whereRaw('lower(name) like ?', ["%{$q}%"])
             ->orWhereRaw('lower(description) like ?', ["%{$q}%"])
@@ -66,7 +66,7 @@ class SearchController extends Controller
         $q = mb_strtolower(request('q'));
         $products = Product::with([
             'photos' => function ($query) {
-                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC')->first();
+                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC')->get();
             }
         ])->whereRaw('lower(name) like ?', ["%{$q}%"])
             ->orWhereRaw('lower(description) like ?', ["%{$q}%"])
