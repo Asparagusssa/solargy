@@ -32,6 +32,27 @@ class PromoUpdateRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'title.string' => 'Поле "Заголовок" должно быть строкой.',
+            'title.max' => 'Поле "Заголовок" не должно превышать 255 символов.',
+
+            'description.string' => 'Поле "Описание" должно быть строкой.',
+
+            'image.image' => 'Поле "Изображение" должно быть изображением.',
+            'image.nullable' => 'Поле "Изображение" может быть пустым.',
+            'image.mimes' => 'Поле "Изображение" должно быть в формате: jpeg, png, jpg, gif.',
+            'image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+
+            'start.date' => 'Поле "Дата начала" должно быть датой.',
+
+            'end.date' => 'Поле "Дата окончания" должно быть датой.',
+
+            'is_archived.boolean' => 'Поле "Архивировано" должно быть булевым значением.',
+        ];
+    }
+
     public function prepareForValidation()
     {
         $this->merge([

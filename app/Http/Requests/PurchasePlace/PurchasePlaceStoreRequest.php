@@ -29,6 +29,30 @@ class PurchasePlaceStoreRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Поле "Название" обязательно для заполнения.',
+            'name.string' => 'Поле "Название" должно быть строкой.',
+            'name.max' => 'Поле "Название" не должно превышать 255 символов.',
+
+            'type.required' => 'Поле "Тип" обязательно для заполнения.',
+            'type.string' => 'Поле "Тип" должно быть строкой.',
+            'type.in' => 'Поле "Тип" должно быть одним из значений: marketplace, partner, store, retailer.',
+
+            'url.sometimes' => 'Поле "URL" может быть пустым, если не указано.',
+            'url.nullable' => 'Поле "URL" может быть пустым.',
+            'url.url' => 'Поле "URL" должно быть действительным URL.',
+
+            'image.sometimes' => 'Поле "Изображение" может быть пустым.',
+            'image.nullable' => 'Поле "Изображение" может быть пустым.',
+            'image.image' => 'Поле "Изображение" должно быть изображением.',
+            'image.mimes' => 'Поле "Изображение" должно быть в формате: jpeg, png, jpg, gif, svg.',
+            'image.max' => 'Размер изображения не должен превышать 10 МБ.',
+        ];
+    }
+
+
     protected function prepareForValidation(): void
     {
         $this->merge([

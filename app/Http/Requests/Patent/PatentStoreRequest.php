@@ -23,8 +23,20 @@ class PatentStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string'],
-            'date' => ['required', 'date'],
             'file' => ['required', 'file', 'max:10240'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Поле "Заголовок" обязательно для заполнения.',
+            'title.string' => 'Поле "Заголовок" должно быть строкой.',
+
+            'file.required' => 'Поле "Файл" обязательно для загрузки.',
+            'file.file' => 'Поле "Файл" должно быть файлом.',
+            'file.max' => 'Размер файла не должен превышать 10 МБ.',
+        ];
+    }
+
 }

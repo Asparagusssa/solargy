@@ -42,6 +42,62 @@ class ProductStoreRequest extends BaseFormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'category_id.required' => 'Поле "Категория" обязательно для заполнения.',
+            'category_id.exists' => 'Категория с указанным "ID" не существует.',
+
+            'name.required' => 'Поле "Название" обязательно для заполнения.',
+            'name.max' => 'Поле "Название" не должно превышать 255 символов.',
+
+            'description.required' => 'Поле "Описание" обязательно для заполнения.',
+
+            'price.required' => 'Поле "Цена" обязательно для заполнения.',
+            'price.numeric' => 'Поле "Цена" должно быть числовым значением.',
+
+            'is_top.nullable' => 'Поле "Является ли топом" может быть пустым.',
+            'is_top.boolean' => 'Поле "Является ли топом" должно быть булевым значением.',
+
+            'photos.array' => 'Поле "Фотографии" должно быть массивом.',
+            'photos.*.photo.required_with' => 'Поле "Фото" обязательно, если указаны другие фотографии.',
+            'photos.*.photo.image' => 'Поле "Фото" должно быть изображением.',
+            'photos.*.photo.mimes' => 'Поле "Фото" должно быть в формате: jpeg, png, jpg, gif.',
+            'photos.*.photo.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+            'photos.*.order.sometimes' => 'Поле "Порядок" не обязательно, но если указано, оно должно быть числовым значением.',
+
+            'options.array' => 'Поле "Опции" должно быть массивом.',
+            'options.*.name.required_with' => 'Поле "Название опции" обязательно, если указаны другие опции.',
+            'options.*.name.string' => 'Поле "Название опции" должно быть строкой.',
+            'options.*.name.max' => 'Поле "Название опции" не должно превышать 255 символов.',
+            'options.*.values.required_with' => 'Поле "Значения опции" обязательно, если указаны другие значения.',
+            'options.*.values.array' => 'Поле "Значения опции" должно быть массивом.',
+            'options.*.values.*.value.required_with' => 'Поле "Значение" обязательно, если указаны другие значения.',
+            'options.*.values.*.value.string' => 'Поле "Значение" должно быть строкой.',
+            'options.*.values.*.value.max' => 'Поле "Значение" не должно превышать 255 символов.',
+            'options.*.values.*.price.numeric' => 'Поле "Цена" должно быть числовым значением.',
+            'options.*.values.*.image.nullable' => 'Поле "Изображение" может быть пустым.',
+            'options.*.values.*.image.image' => 'Поле "Изображение" должно быть изображением.',
+            'options.*.values.*.image.mimes' => 'Поле "Изображение" должно быть в формате: jpeg, png, jpg, gif.',
+            'options.*.values.*.image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+
+            'properties.array' => 'Поле "Свойства" должно быть массивом.',
+            'properties.*.title.required_with' => 'Поле "Название свойства" обязательно, если указаны другие свойства.',
+            'properties.*.title.string' => 'Поле "Название свойства" должно быть строкой.',
+            'properties.*.title.in' => 'Поле "Название свойства" должно быть одним из значений: property, recommendation.',
+            'properties.*.html.required_with' => 'Поле "HTML" обязательно, если указаны другие свойства.',
+            'properties.*.html.string' => 'Поле "HTML" должно быть строкой.',
+            'properties.*.file.nullable' => 'Поле "Файл" может быть пустым.',
+            'properties.*.file.file' => 'Поле "Файл" должно быть файлом.',
+            'properties.*.file.max' => 'Размер файла не должен превышать 10 МБ.',
+            'properties.*.image.nullable' => 'Поле "Изображение" может быть пустым.',
+            'properties.*.image.image' => 'Поле "Изображение" должно быть изображением.',
+            'properties.*.image.mimes' => 'Поле "Изображение" должно быть в формате: jpeg, png, jpg, gif.',
+            'properties.*.image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+        ];
+    }
+
+
     public function prepareForValidation()
     {
         $this->merge([

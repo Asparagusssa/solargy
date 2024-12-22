@@ -17,7 +17,6 @@ class PatentResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'date' => $this->date,
             'file' => $this->file,
             'file_name' => $this->file_name,
         ];

@@ -42,6 +42,8 @@ class PatentController extends Controller
             $data['file_name'] = $request->file('file')->getClientOriginalName();
         }
 
+        $data['date'] = now();
+
         $patent = Patent::create($data);
         return response()->json(new PatentResource($patent), 201);
     }

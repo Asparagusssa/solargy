@@ -29,4 +29,26 @@ class OptionStoreRequest extends BaseFormRequest
             'values.*.image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Поле "Название" обязательно для заполнения.',
+            'name.string' => 'Поле "Название" должно быть строкой.',
+
+            'values.sometimes' => 'Поле "Значения" не обязательно, но должно быть массивом при наличии.',
+            'values.array' => 'Поле "Значения" должно быть массивом.',
+
+            'values.*.value.required_with' => 'Поле "Значение" обязательно, если указаны другие значения.',
+            'values.*.value.string' => 'Поле "Значение" должно быть строкой.',
+
+            'values.*.price.required_with' => 'Поле "Цена" обязательно, если указаны другие значения.',
+            'values.*.price.numeric' => 'Поле "Цена" должно быть числовым значением.',
+
+            'values.*.image.nullable' => 'Поле "Изображение" может быть пустым.',
+            'values.*.image.image' => 'Поле "Изображение" должно быть изображением.',
+            'values.*.image.mimes' => 'Поле "Изображение" должно быть в формате: jpg, png, jpeg, gif.',
+            'values.*.image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+        ];
+    }
 }

@@ -28,4 +28,22 @@ class ContactStoreRequest extends FormRequest
             'map' => ['required', 'string'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'address.required' => 'Поле "Адрес" обязательно для заполнения.',
+            'address.string' => 'Поле "Адрес" должно быть строкой.',
+
+            'phone.required' => 'Поле "Телефон" обязательно для заполнения.',
+            'phone.string' => 'Поле "Телефон" должно быть строкой.',
+
+            'email.required' => 'Поле "Email" обязательно для заполнения.',
+            'email.email' => 'Поле "Email" должно быть действительным адресом электронной почты.',
+
+            'map.required' => 'Поле "Карта" обязательно для заполнения.',
+            'map.string' => 'Поле "Карта" должно быть строкой.',
+        ];
+    }
+
 }

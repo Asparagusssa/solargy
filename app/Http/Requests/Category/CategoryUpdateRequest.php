@@ -31,9 +31,13 @@ class CategoryUpdateRequest extends BaseFormRequest
     public function messages(): array
     {
         return [
-            'parent_id.exists' => 'Поле "parent_id" должно быть существующим.',
-            'name.string' => 'Поле "name" должно быть строкой.',
-            'name.max' => 'Поле "name" не должно превышать 255 символов.',
+            'parent_id.exists' => 'Выбранная категория-родитель недействительна.',
+            'name.string' => 'Поле "Название" должно быть строкой.',
+            'name.max' => 'Поле "Название" не должно превышать 255 символов.',
+            'photo.image' => 'Поле "Фото" должно быть изображением.',
+            'photo.mimes' => 'Фото должно быть в одном из следующих форматов: jpeg, png, jpg, gif.',
+            'photo.max' => 'Размер файла фото не должен превышать 10 МБ.',
         ];
     }
+
 }

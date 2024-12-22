@@ -46,6 +46,57 @@ class ProductUpdateRequest extends BaseFormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'category_id.exists' => 'Категория с указанным "ID" не существует.',
+
+            'name.string' => 'Поле "Название" должно быть строкой.',
+            'name.max' => 'Поле "Название" не должно превышать 255 символов.',
+
+            'description.string' => 'Поле "Описание" должно быть строкой.',
+
+            'price.numeric' => 'Поле "Цена" должно быть числовым значением.',
+
+            'is_top.boolean' => 'Поле "Является ли топом" должно быть булевым значением.',
+
+            'photos.array' => 'Поле "Фотографии" должно быть массивом.',
+            'photos.*.id.integer' => 'Поле "ID фотографии" должно быть целым числом.',
+            'photos.*.id.exists' => 'Фотография с указанным "ID" не существует.',
+            'photos.*.photo.sometimes' => 'Поле "Фото" может быть пустым, но если оно указано, должно быть изображением.',
+            'photos.*.photo.max' => 'Размер файла фотографии не должен превышать 10 МБ.',
+            'photos.*.order.sometimes' => 'Поле "Порядок" не обязательно, но если указано, оно должно быть целым числом.',
+
+            'options.array' => 'Поле "Опции" должно быть массивом.',
+            'options.*.id.integer' => 'Поле "ID опции" должно быть целым числом.',
+            'options.*.id.exists' => 'Опция с указанным "ID" не существует.',
+            'options.*.name.string' => 'Поле "Название опции" должно быть строкой.',
+            'options.*.values.array' => 'Поле "Значения опции" должно быть массивом.',
+            'options.*.values.*.id.integer' => 'Поле "ID значения" должно быть целым числом.',
+            'options.*.values.*.id.exists' => 'Значение с указанным "ID" не существует.',
+            'options.*.values.*.value.string' => 'Поле "Значение" должно быть строкой.',
+            'options.*.values.*.price.numeric' => 'Поле "Цена" должно быть числовым значением.',
+            'options.*.values.*.image.nullable' => 'Поле "Изображение" может быть пустым.',
+            'options.*.values.*.image.image' => 'Поле "Изображение" должно быть изображением.',
+            'options.*.values.*.image.mimes' => 'Поле "Изображение" должно быть в формате: jpg, png, jpeg, gif.',
+            'options.*.values.*.image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+
+            'properties.array' => 'Поле "Свойства" должно быть массивом.',
+            'properties.*.id.integer' => 'Поле "ID свойства" должно быть целым числом.',
+            'properties.*.id.exists' => 'Свойство с указанным "ID" не существует.',
+            'properties.*.title.string' => 'Поле "Название свойства" должно быть строкой.',
+            'properties.*.title.in' => 'Поле "Название свойства" должно быть одним из значений: property, recommendation.',
+            'properties.*.html.string' => 'Поле "HTML" должно быть строкой.',
+            'properties.*.file.nullable' => 'Поле "Файл" может быть пустым.',
+            'properties.*.file.file' => 'Поле "Файл" должно быть файлом.',
+            'properties.*.file.max' => 'Размер файла не должен превышать 10 МБ.',
+            'properties.*.image.nullable' => 'Поле "Изображение" может быть пустым.',
+            'properties.*.image.image' => 'Поле "Изображение" должно быть изображением.',
+            'properties.*.image.mimes' => 'Поле "Изображение" должно быть в формате: jpg, png, jpeg, gif.',
+            'properties.*.image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+        ];
+    }
+
     public function prepareForValidation()
     {
         $this->merge([

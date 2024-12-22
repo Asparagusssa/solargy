@@ -27,4 +27,20 @@ class SeoUpdateRequest extends FormRequest
             'content' => ['sometimes', 'string'],
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'page_id.sometimes' => 'Поле "ID страницы" может быть пропущено.',
+            'page_id.integer' => 'Поле "ID страницы" должно быть целым числом.',
+            'page_id.exists' => 'Страница с указанным "ID" не существует.',
+
+            'name.sometimes' => 'Поле "Название" может быть пропущено.',
+            'name.string' => 'Поле "Название" должно быть строкой.',
+            'name.max' => 'Поле "Название" не должно превышать 255 символов.',
+
+            'content.sometimes' => 'Поле "Контент" может быть пропущено.',
+            'content.string' => 'Поле "Контент" должно быть строкой.',
+        ];
+    }
 }

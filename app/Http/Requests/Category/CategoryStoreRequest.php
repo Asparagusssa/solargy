@@ -31,9 +31,12 @@ class CategoryStoreRequest extends BaseFormRequest
     public function messages(): array
     {
         return [
-            'parent_id.exists' => 'Поле "parent_id" должно быть существующим.',
-            'name.required' => 'Поле "name" является обязательным.',
-            'name.max' => 'Поле "name" не должно превышать 255 символов.',
+            'parent_id.exists' => 'Выбранная категория-родитель недействительна.',
+            'name.required' => 'Поле "Название" обязательно для заполнения.',
+            'name.max' => 'Поле "Название" не должно превышать 255 символов.',
+            'photo.image' => 'Поле "Фото" должно быть изображением.',
+            'photo.mimes' => 'Фото должно быть в одном из следующих форматов: jpeg, png, jpg, gif.',
+            'photo.max' => 'Размер файла фото не должен превышать 10 МБ.',
         ];
     }
 }

@@ -23,8 +23,20 @@ class PatentUpdateRequest extends FormRequest
     {
         return [
             'title' => ['sometimes', 'string'],
-            'date' => ['sometimes', 'date'],
             'file' => ['sometimes', 'nullable', 'file', 'max:10240'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'title.sometimes' => 'Поле "Заголовок" не обязательно, но если указано, оно должно быть строкой.',
+            'title.string' => 'Поле "Заголовок" должно быть строкой.',
+
+            'file.sometimes' => 'Поле "Файл" не обязательно, но если указано, оно должно быть файлом.',
+            'file.nullable' => 'Поле "Файл" может быть пустым.',
+            'file.file' => 'Поле "Файл" должно быть файлом.',
+            'file.max' => 'Размер файла не должен превышать 10 МБ.',
         ];
     }
 }
