@@ -55,7 +55,8 @@ Route::post('call', [CallController::class, 'submitForm']);
 
 
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
-Route::get('search', SearchController::class);
+Route::get('search', [SearchController::class, 'search']);
+Route::get('search-fast', [SearchController::class, 'searchFast']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('products', ProductController::class)->except(['index', 'show']);
