@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Mail\Order;
 use App\Mail\Support;
 use App\Models\EmailType;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Storage;
 
 class OrderController extends Controller
 {
@@ -16,6 +18,7 @@ class OrderController extends Controller
         $validatedData = $request->validate([
             'items' => 'required|array',
             'items.*.name' => 'required|string',
+            'items.*.photo' => 'required|string',
             'items.*.price' => 'required|numeric',
             'items.*.quantity' => 'sometimes|required|numeric',
             'items.*.options' => 'sometimes|array',
