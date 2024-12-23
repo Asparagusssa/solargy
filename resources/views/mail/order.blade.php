@@ -18,7 +18,7 @@
 <ul>
     @foreach ($items as $item)
         <li>
-            <strong>Название:</strong> {{ $item['name'] }} <br>
+            <strong>Название:</strong> {{ $item['name'] }} (<a style="text-decoration: none; color: blue" href="{{ $item['url'] }}">Ссылка на товар</a>)<br>
             @if (isset($item['photo']))
                 <img src="{{ $item['photo_base64'] }}" alt="{{ $item['name'] }}" style="max-width: 200px;"/><br>
             @endif

@@ -18,6 +18,7 @@ class OrderController extends Controller
         $validatedData = $request->validate([
             'items' => 'required|array',
             'items.*.name' => 'required|string',
+            'items.*.url' => 'required|url',
             'items.*.photo' => 'sometimes',
             'items.*.price' => 'required|numeric',
             'items.*.quantity' => 'sometimes|required|numeric',
