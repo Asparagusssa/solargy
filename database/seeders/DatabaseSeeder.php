@@ -23,7 +23,6 @@ use App\Models\Seo;
 use App\Models\SubBanner;
 use App\Models\Team;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Value;
 use Illuminate\Database\Seeder;
 
