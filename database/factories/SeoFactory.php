@@ -19,7 +19,7 @@ class SeoFactory extends Factory
         return [
             'page_id' => 1,
             'name' => fake()->title(),
-            'content' => fake()->paragraph(),
+            'content' => fake()->paragraph()
         ];
     }
 }
