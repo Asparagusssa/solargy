@@ -19,7 +19,7 @@ use App\Models\ProductPhoto;
 use App\Models\ProductProperty;
 use App\Models\Promo;
 use App\Models\PurchasePlace;
-use App\Models\seo;
+use App\Models\Seo;
 use App\Models\SubBanner;
 use App\Models\Team;
 use App\Models\User;
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
         ContactSocial::factory(2)->create();
         PurchasePlace::factory(10)->create();
         Email::factory(6)->create();
-        seo::factory(10)->create();
+        Seo::factory(10)->create();
 
         $types = [
             [

@@ -8,7 +8,7 @@ use App\Http\Requests\Seo\SeoUpdateRequest;
 use App\Http\Resources\Page\PageResource;
 use App\Http\Resources\Seo\SeoResource;
 use App\Models\Page;
-use App\Models\seo;
+use App\Models\Seo;
 use Illuminate\Http\Request;
 
 class SeoController extends Controller
@@ -34,7 +34,7 @@ class SeoController extends Controller
     {
         $data = $request->validated();
 
-        $seo = seo::create($data);
+        $seo = Seo::create($data);
 
         return response()->json(new PageResource($seo));
     }
