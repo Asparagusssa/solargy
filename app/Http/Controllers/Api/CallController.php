@@ -17,7 +17,7 @@ class CallController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string',
-            'comment' => 'sometimes|string',
+            'comment' => 'sometimes',
             'email-type' => 'required|exists:email_types,id',
         ]);
 

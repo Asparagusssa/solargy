@@ -34,7 +34,7 @@ class SeoController extends Controller
     {
         $data = $request->validated();
         $seo = Seo::create($data);
-        return response()->json(new PageResource($seo));
+        return response()->json(new SeoResource($seo));
     }
 
     /**
