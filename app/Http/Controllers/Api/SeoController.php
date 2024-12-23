@@ -33,9 +33,7 @@ class SeoController extends Controller
     public function store(SeoStoreRequest $request)
     {
         $data = $request->validated();
-
         $seo = Seo::create($data);
-
         return response()->json(new PageResource($seo));
     }
 
