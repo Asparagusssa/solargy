@@ -455,6 +455,25 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
+    public function deleteAllPivot($productId, $optionId)
+    {
+        $product = Product::findOrFail($productId);
+        $option = Option::findOrFail($optionId);
+
+        $values = $product->values()->wherePivot('option_id', $option->id)->get();
+
+        if ($values->isEmpty()) {
+            return response()->json(['message' => 'Нет привязанных значний опции'], 404);
+        }
+
+        foreach ($values as $value) {
+            $product->values()->detach($value->id);
+        }
+
+        return response()->json(['message' => 'Все значения опции отвязаны'], 200);
+
+    }
+
     public function deleteProperty($propertyId)
     {
         $property = ProductProperty::find($propertyId);
