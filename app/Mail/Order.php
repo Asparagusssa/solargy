@@ -27,9 +27,7 @@ class Order extends Mailable
 
         foreach ($this->items as &$item) {
             if (isset($item['photo'])) {
-                $path = public_path('storage/products/' . basename($item['photo']));
-                $imageData = base64_encode(file_get_contents($path));
-                $item['photo_base64'] = 'data:image/png;base64,' . $imageData;
+                $item['photo_url'] = $item['photo'];
             }
         }
 
