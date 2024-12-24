@@ -65,7 +65,7 @@ class ProductController extends Controller
         if ($categoryId) {
             $products = $query->where('category_id', $categoryId)->paginate(8);
         } elseif ($isTop) {
-            $products = $query->where('is_top', true)->paginate(4);
+            $products = $query->where('is_top', true)->orderBy('is_top')->paginate(4);
 
             if ($products->count() < 4) {
                 $additionalProducts = Product::with([
@@ -81,10 +81,9 @@ class ProductController extends Controller
                     'category' => function ($query) {
                         $query->orderBy('id');
                     },
-                ])->where('is_top', false)->orderBy('id')->limit(4 - $products->count())->get();
+                ])->where('is_top', false)->orderBy('is_top')->limit(4 - $products->count())->get();
 
                 $products = $products->getCollection()->merge($additionalProducts)
-                    ->sortBy('id')
                     ->values();
 
                 return response()->json([
