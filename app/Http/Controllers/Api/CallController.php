@@ -24,6 +24,7 @@ class CallController extends Controller
         $type = EmailType::findOrFail($request->input('email-type'));
         $emailAddresses = $type->emails->pluck('email')->toArray();
 
+        $validatedData['comment'] = $request->input('comment') ?? 'Пустое сообщение';
         Mail::to($emailAddresses)->send(new Call([
             'name' => $validatedData['name'],
             'phone' => $validatedData['phone'],
