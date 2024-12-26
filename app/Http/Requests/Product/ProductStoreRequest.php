@@ -35,7 +35,7 @@ class ProductStoreRequest extends BaseFormRequest
             'options.*.values.*.price' => ['numeric'],
             'options.*.values.*.image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
             'properties' => ['array'],
-            'properties.*.title' => ['required_with:properties', 'string', 'in:property,recommendation'],
+            'properties.*.title' => ['required_with:properties', 'string', 'in:property,description,photo,instruction,recommendation,guaranty'],
             'properties.*.html' => ['required_with:properties', 'string'],
             'properties.*.file' => ['nullable', 'file', 'max:10240'],
             'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],

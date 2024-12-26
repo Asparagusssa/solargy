@@ -39,7 +39,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'options.*.values.*.image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
             'properties' => ['array'],
             'properties.*.id' => ['integer', 'exists:product_properties,id'],
-            'properties.*.title' => ['string', 'in:property,recommendation'],
+            'properties.*.title' => ['string', 'in:property,description,photo,instruction,recommendation,guaranty'],
             'properties.*.html' => ['string'],
             'properties.*.file' => ['nullable', 'file', 'max:10240'],
             'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],

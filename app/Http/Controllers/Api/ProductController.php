@@ -109,6 +109,8 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
+        $order = ['property', 'description', 'photo', 'instruction', 'recommendation', 'guaranty'];
+
         $product->load([
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
@@ -128,6 +130,9 @@ class ProductController extends Controller
         ]);
         $product->options = $product->options->unique('id');
 
+        $product->properties = $product->properties->sortBy(function ($property) use ($order) {
+            return array_search($property->title, $order);
+        })->values();
 
         return response()->json(new ProductResource($product));
     }
