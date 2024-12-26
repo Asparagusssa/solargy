@@ -139,6 +139,7 @@ class ProductController extends Controller
 
     public function store(ProductStoreRequest $request)
     {
+        $order = ['property', 'description', 'photo', 'instruction', 'recommendation', 'guaranty'];
 
         $data = $request->validated();
 
@@ -206,12 +207,17 @@ class ProductController extends Controller
 
         $product->options = $product->options->unique('id');
 
+        $product->properties = $product->properties->sortBy(function ($property) use ($order) {
+            return array_search($property->title, $order);
+        })->values();
 
         return response()->json(new ProductResource($product), 201);
     }
 
     public function update(ProductUpdateRequest $request, Product $product)
     {
+        $order = ['property', 'description', 'photo', 'instruction', 'recommendation', 'guaranty'];
+
         $data = $request->validated();
 
         if ($request->input('options')) {
@@ -364,6 +370,10 @@ class ProductController extends Controller
             },
         ]);
         $product->options = $product->options->unique('id');
+
+        $product->properties = $product->properties->sortBy(function ($property) use ($order) {
+            return array_search($property->title, $order);
+        })->values();
 
         return response()->json(new ProductResource($product), 200);
     }

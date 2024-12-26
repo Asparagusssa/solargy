@@ -7,6 +7,11 @@ return new class extends Migration {
     public function up(): void
     {
         DB::statement("ALTER TABLE product_properties ALTER COLUMN title TYPE VARCHAR USING title::VARCHAR");
+
+        DB::statement("
+            ALTER TABLE product_properties
+            DROP CONSTRAINT IF EXISTS product_properties_title_check
+        ");
     }
 
     public function down(): void
