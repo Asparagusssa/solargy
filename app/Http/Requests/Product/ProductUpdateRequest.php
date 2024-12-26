@@ -85,7 +85,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'properties.*.id.integer' => 'Поле "ID свойства" должно быть целым числом.',
             'properties.*.id.exists' => 'Свойство с указанным "ID" не существует.',
             'properties.*.title.string' => 'Поле "Название свойства" должно быть строкой.',
-            'properties.*.title.in' => 'Поле "Название свойства" должно быть одним из значений: property, recommendation.',
+            'properties.*.title.in' => 'Поле "Название свойства" должно быть одним из значений: property, description, photo, instruction, recommendation, guaranty.',
             'properties.*.html.string' => 'Поле "HTML" должно быть строкой.',
             'properties.*.file.nullable' => 'Поле "Файл" может быть пустым.',
             'properties.*.file.file' => 'Поле "Файл" должно быть файлом.',

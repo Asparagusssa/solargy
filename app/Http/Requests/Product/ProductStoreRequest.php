@@ -84,7 +84,7 @@ class ProductStoreRequest extends BaseFormRequest
             'properties.array' => 'Поле "Свойства" должно быть массивом.',
             'properties.*.title.required_with' => 'Поле "Название свойства" обязательно, если указаны другие свойства.',
             'properties.*.title.string' => 'Поле "Название свойства" должно быть строкой.',
-            'properties.*.title.in' => 'Поле "Название свойства" должно быть одним из значений: property, recommendation.',
+            'properties.*.title.in' => 'Поле "Название свойства" должно быть одним из значений: property, description, photo, instruction, recommendation, guaranty.',
             'properties.*.html.required_with' => 'Поле "HTML" обязательно, если указаны другие свойства.',
             'properties.*.html.string' => 'Поле "HTML" должно быть строкой.',
             'properties.*.file.nullable' => 'Поле "Файл" может быть пустым.',
