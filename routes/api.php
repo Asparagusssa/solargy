@@ -58,6 +58,7 @@ Route::post('call', [CallController::class, 'submitForm']);
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
 Route::get('search', [SearchController::class, 'search']);
 Route::get('search-fast', [SearchController::class, 'searchFast']);
+Route::get('search/options', [SearchController::class, 'searchOptions']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('products', ProductController::class)->except(['index', 'show']);
@@ -68,6 +69,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('products/{product}/values/{value}', [ProductController::class, 'deletePivot']);
     Route::delete('products/{product}/options/{option}', [ProductController::class, 'deleteAllPivot']);
     Route::delete('productProperties/{property}', [ProductController::class, 'deleteProperty']);
+    Route::post('products/{product}/related', [ProductController::class, 'addRelatedProducts']);
+    Route::delete('products/{product}/related/{relatedProduct}', [ProductController::class, 'removeRelatedProduct']);
 
     Route::apiResource('main-banners', MainBannerController::class)->except(['index', 'show']);
     Route::apiResource('sub-banners', SubBannerController::class)->except(['index', 'show']);

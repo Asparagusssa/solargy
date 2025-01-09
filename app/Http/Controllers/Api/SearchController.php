@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Option;
 use App\Models\PageSection;
 use App\Models\Product;
 use App\Models\Promo;
@@ -87,5 +88,15 @@ class SearchController extends Controller
         ];
 
         return response()->json($results);
+    }
+
+    public function searchOptions()
+    {
+        $q = mb_strtolower(request('q'));
+        $options = Option::query()
+            ->whereRaw('lower(name) like ?', ["%{$q}%"])
+            ->orderBy('name')
+            ->get();
+        return response()->json($options);
     }
 }
