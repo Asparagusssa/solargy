@@ -50,4 +50,14 @@ class Product extends Model
         return $this->belongsToMany(Value::class, 'option_values', 'product_id', 'value_id')
             ->withPivot('option_id');
     }
+
+    public function relatedProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'related_products', 'product_id', 'related_product_id');
+    }
+
+    public function inverseRelatedProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(self::class, 'related_products', 'related_product_id', 'product_id');
+    }
 }

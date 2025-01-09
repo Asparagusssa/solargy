@@ -127,6 +127,9 @@ class ProductController extends Controller
             'properties' => function ($query) {
                 $query->orderBy('id');
             },
+            'relatedProducts' => function ($query) {
+                $query->orderBy('id');
+            }
         ]);
         $product->options = $product->options->unique('id');
 
@@ -503,5 +506,34 @@ class ProductController extends Controller
         $property->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function addRelatedProducts(Request $request, Product $product)
+    {
+        $request->validate([
+            'related_product_ids' => ['required', 'array'],
+            'related_product_ids.*' => ['exists:products,id'],
+        ]);
+
+        foreach ($request->related_product_ids as $relatedProductId) {
+            if ($relatedProductId != $product->id) {
+                $product->relatedProducts()->syncWithoutDetaching($relatedProductId);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Related products added successfully.',
+            'related_products' => $product->relatedProducts,
+        ]);
+    }
+
+    public function removeRelatedProduct(Request $request, Product $product, Product $relatedProduct)
+    {
+        $product->relatedProducts()->detach($relatedProduct->id);
+
+        return response()->json([
+            'message' => 'Related product removed successfully.',
+            'related_products' => $product->relatedProducts,
+        ]);
     }
 }
