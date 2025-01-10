@@ -128,8 +128,8 @@ class ProductController extends Controller
             'properties' => function ($query) {
                 $query->orderBy('id');
             },
-            'relatedProducts' => function ($query) {
-                $query->orderBy('id');
+            'relatedProducts.photos' => function ($query) {
+                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
             }
         ]);
         $product->options = $product->options->unique('id');
@@ -137,6 +137,12 @@ class ProductController extends Controller
         $product->properties = $product->properties->sortBy(function ($property) use ($order) {
             return array_search($property->title, $order);
         })->values();
+
+        $product->related_products = $product->relatedProducts->map(function ($relatedProduct) {
+            $relatedProduct->photo = $relatedProduct->photos->first()?->photo ?? null;
+            unset($relatedProduct->photos);
+            return $relatedProduct;
+        });
 
         return response()->json(new ProductResource($product));
     }
