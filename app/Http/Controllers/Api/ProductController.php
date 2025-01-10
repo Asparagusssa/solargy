@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\ProductCopyAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Requests\Product\ProductStoreRequest;
@@ -536,4 +537,15 @@ class ProductController extends Controller
             'related_products' => $product->relatedProducts,
         ]);
     }
+
+    public function copyProduct($product_id, ProductCopyAction $productCopyAction)
+    {
+        try {
+            $newProduct = $productCopyAction($product_id);
+            return response()->json('New product successfully copied', 201);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 404);
+        }
+    }
+
 }
