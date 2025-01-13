@@ -20,7 +20,7 @@ class OptionController extends Controller
             'values' => function ($query) {
                 $query->orderBy('id');
             },
-        ])->orderBy('id')->get();
+        ])->orderBy('name')->get();
 
         return response()->json(OptionResource::collection($data));
     }
