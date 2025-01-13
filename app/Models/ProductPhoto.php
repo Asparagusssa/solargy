@@ -14,6 +14,7 @@ class ProductPhoto extends Model
         'product_id',
         'photo',
         'order',
+        'type'
     ];
 
     public function getPhotoAttribute($value)

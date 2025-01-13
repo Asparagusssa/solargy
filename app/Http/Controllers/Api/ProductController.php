@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Actions\ValueCopyAction;
 use App\Actions\ProductCopyAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductUpdateRequest;
@@ -203,10 +204,16 @@ class ProductController extends Controller
 
         $photos = $data['photos'] ?? [];
         foreach ($photos as $photo) {
-            $imagePath = $photo['photo']->store('products', 'public');
+            $file = $photo['photo'];
+            $fileType = $file->getMimeType();
+            $isImage = str_starts_with($fileType, 'image/');
+            $isVideo = str_starts_with($fileType, 'video/');
+            $type = $isImage ? 'image' : ($isVideo ? 'video' : null);
+            $filePath = $file->store("products", 'public');
             $product->photos()->create([
-                'photo' => $imagePath,
-                'order' => $photo['order'] ?? null
+                'photo' => $filePath,
+                'type' => $type,
+                'order' => $photo['order'] ?? null,
             ]);
         }
 
@@ -229,6 +236,9 @@ class ProductController extends Controller
                 : null;
 
             $fileName = $hasFile ? $property['file']->getClientOriginalName() : null;
+            if (isset($data['filename'])) {
+                $fileName = $data['filename'];
+            }
 
             $product->properties()->create([
                 'title' => $property['title'],
@@ -286,22 +296,35 @@ class ProductController extends Controller
         foreach ($photos as $photoData) {
             $photoData['id'] = $photoData['id'] ?? null;
             $photo = $product->photos()->find($photoData['id']);
+            $filePath = null;
+            $type = null;
+
             if ($photo) {
-                $imagePath = null;
                 if (isset($photoData['photo']) && $photoData['photo'] instanceof UploadedFile) {
+                    $fileType = $photoData['photo']->getMimeType();
+                    $isImage = str_starts_with($fileType, 'image/');
+                    $isVideo = str_starts_with($fileType, 'video/');
+                    $type = $isImage ? 'image' : ($isVideo ? 'video' : null);
                     Storage::disk('public')->delete('products/' . basename($photo->photo));
-                    $imagePath = $photoData['photo']->store('products', 'public');
+                    $filePath = $photoData['photo']->store('products', 'public');
                 }
-                if ($imagePath !== null) {
-                    $photo->photo = $imagePath;
+                if ($filePath !== null) {
+                    $photo->photo = $filePath;
                 }
                 $photo->order = $photoData['order'] ?? $photo->order;
+                $photo->type = $type;
                 $photo->save();
             } else {
-                $imagePath = $photoData['photo']->store('products', 'public');
+                $file = $photoData['photo'];
+                $fileType = $file->getMimeType();
+                $isImage = str_starts_with($fileType, 'image/');
+                $isVideo = str_starts_with($fileType, 'video/');
+                $type = $isImage ? 'image' : ($isVideo ? 'video' : null);
+                $filePath = $file->store("products", 'public');
                 $product->photos()->create([
-                    'photo' => $imagePath,
-                    'order' => $photoData['order'] ?? null
+                    'photo' => $filePath,
+                    'type' => $type,
+                    'order' => $photoData['order'] ?? null,
                 ]);
             }
         }
@@ -365,10 +388,16 @@ class ProductController extends Controller
                     $property->image = $imagePath;
                 }
                 $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
+                $fileUpload = false;
                 if ($hasFile) {
                     Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
                     $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
                     $property->file = $filePath;
+                    $fileUpload = true;
+                }
+                if (isset($propertyData['filename']) && isset($property->file)) {
+                    $property->file_name = $propertyData['filename'];
+                }else if($fileUpload) {
                     $property->file_name = $propertyData['file']->getClientOriginalName();
                 }
                 $property->title = $propertyData['title'] ?? $property->title;
@@ -386,6 +415,9 @@ class ProductController extends Controller
                     : null;
 
                 $fileName = $hasFile ? $propertyData['file']->getClientOriginalName() : null;
+                if (isset($propertyData['filename'])) {
+                    $fileName = $propertyData['filename'];
+                }
 
                 $title = $propertyData['title'] ?? null;
                 $html = $propertyData['html'] ?? null;
@@ -430,7 +462,6 @@ class ProductController extends Controller
         $product->properties = $product->properties->sortBy(function ($property) use ($order) {
             return array_search($property->title, $order);
         })->values();
-
         return response()->json(new ProductResource($product), 200);
     }
 
@@ -595,6 +626,16 @@ class ProductController extends Controller
         try {
             $newProduct = $productCopyAction($product_id);
             return response()->json('New product successfully copied', 201);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 404);
+        }
+    }
+
+    public function copyValue($value_id, ValueCopyAction $valueCopyAction)
+    {
+        try {
+            $newValue = $valueCopyAction($value_id);
+            return response()->json('New value successfully copied', 201);
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 404);
         }

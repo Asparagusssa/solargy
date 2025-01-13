@@ -26,7 +26,7 @@ class ProductStoreRequest extends BaseFormRequest
             'price' => ['required', 'numeric'],
             'is_top' => ['nullable', 'boolean'],
             'photos' => ['array'],
-            'photos.*.photo' => ['required_with:photos', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
+            'photos.*.photo' => ['required_with:photos', 'file', 'mimes:jpeg,png,jpg,gif,mp4,avi,mov', 'max:51200',],
             'photos.*.order' => ['sometimes', 'integer'],
             'options' => ['array'],
             'options.*.name' => ['required_with:options:', 'string', 'max:255'],
@@ -38,6 +38,7 @@ class ProductStoreRequest extends BaseFormRequest
             'properties.*.title' => ['required_with:properties', 'string', 'in:property,description,photo,instruction,recommendation,guaranty'],
             'properties.*.html' => ['required_with:properties', 'string'],
             'properties.*.file' => ['nullable', 'file', 'max:10240'],
+            'properties.*.filename' => ['nullable', 'string', 'max:255'],
             'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
         ];
     }
