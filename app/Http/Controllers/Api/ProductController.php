@@ -25,53 +25,17 @@ class ProductController extends Controller
 
     public function getAllProducts(Request $request)
     {
-//        $minPrice = 0;
-//        $maxPrice = Product::max('price');
-//
-//        if (request('minPrice')) {
-//            $minPrice = request('minPrice');
-//        }
-//        if (request('maxPrice')) {
-//            $maxPrice = request('maxPrice');
-//        }
-//
-//        $query = Product::with([
-//            'photos' => function ($query) {
-//                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
-//            },
-//            'options' => function ($query) {
-//                $query->orderBy('id');
-//            },
-//            'properties' => function ($query) {
-//                $query->orderBy('id');
-//            },
-//            'category' => function ($query) {
-//                $query->orderBy('id');
-//            }
-//        ])
-//            ->where('price', '>=', $minPrice)
-//            ->where('price', '<=', $maxPrice)
-//            ->orderBy('name');
-//
-//        if (request('top')) {
-//            $isTop = (bool) request('top');
-//            $query = $query->where('is_top', $isTop);
-//        }
-//
-//        $products = $query->paginate(10);
-//
-//        return response()->json([
-//            'data' => ProductAllResource::collection($products),
-//            'meta' => [
-//                'current_page' => $products->currentPage(),
-//                'last_page' => $products->lastPage(),
-//                'per_page' => $products->perPage(),
-//                'total' => $products->total(),
-//                'path' => $products->path(),
-//            ],
-//        ], 200);
+        $minPrice = 0;
+        $maxPrice = Product::max('price');
 
-        $data = Product::with([
+        if (request('minPrice')) {
+            $minPrice = request('minPrice');
+        }
+        if (request('maxPrice')) {
+            $maxPrice = request('maxPrice');
+        }
+
+        $query = Product::with([
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
             },
@@ -84,9 +48,45 @@ class ProductController extends Controller
             'category' => function ($query) {
                 $query->orderBy('id');
             }
-        ])->orderBy('name')->get();
+        ])
+            ->where('price', '>=', $minPrice)
+            ->where('price', '<=', $maxPrice)
+            ->orderBy('name');
 
-        return response()->json(ProductAllResource::collection($data));
+        if (request('top')) {
+            $isTop = (bool) request('top');
+            $query = $query->where('is_top', $isTop);
+        }
+
+        $products = $query->paginate(10);
+
+        return response()->json([
+            'data' => ProductAllResource::collection($products),
+            'meta' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+                'path' => $products->path(),
+            ],
+        ], 200);
+
+//        $data = Product::with([
+//            'photos' => function ($query) {
+//                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
+//            },
+//            'options' => function ($query) {
+//                $query->orderBy('id');
+//            },
+//            'properties' => function ($query) {
+//                $query->orderBy('id');
+//            },
+//            'category' => function ($query) {
+//                $query->orderBy('id');
+//            }
+//        ])->orderBy('name')->get();
+
+//        return response()->json(ProductAllResource::collection($data));
     }
 
 
