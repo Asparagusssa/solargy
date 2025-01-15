@@ -26,6 +26,8 @@ class OptionStoreRequest extends BaseFormRequest
             'values' => ['sometimes', 'array'],
             'values.*.value' => ['required_with:values:', 'string'],
             'values.*.price' => ['required_with:values', 'numeric'],
+            'values.*.from-library' => ['boolean'],
+            'values.*.image-library' => ['string'],
             'values.*.image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
         ];
     }
@@ -50,5 +52,21 @@ class OptionStoreRequest extends BaseFormRequest
             'values.*.image.mimes' => 'Поле "Изображение" должно быть в формате: jpg, png, jpeg, gif.',
             'values.*.image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
         ];
+    }
+
+    public function prepareForValidation()
+    {
+        if (isset($this->values) && is_array($this->values)) {
+            $values = array_map(function ($value) {
+                if (isset($value['from-library'])) {
+                    $value['from-library'] = filter_var($value['from-library'], FILTER_VALIDATE_BOOLEAN);
+                }
+                return $value;
+            }, $this->values);
+
+            $this->merge([
+                'values' => $values,
+            ]);
+        }
     }
 }

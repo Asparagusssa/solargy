@@ -39,9 +39,14 @@ class OptionController extends Controller
         $values = $data['values'] ?? [];
 
         foreach ($values as $value) {
-            $imagePath = isset($value['image']) && $value['image'] instanceof UploadedFile
-                ? $value['image']->store('optionValues', 'public')
-                : null;
+            if (isset($value['from-library']) && isset($value['image-library'])) {
+                $path = $value['image-library'];
+                $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+            } else {
+                $imagePath = isset($value['image']) && $value['image'] instanceof UploadedFile
+                    ? $value['image']->store('optionValues', 'public')
+                    : null;
+            }
             $option->values()->create([
                 'value' => $value['value'],
                 'price' => $value['price'],
@@ -63,7 +68,12 @@ class OptionController extends Controller
             $valueData['id'] = $valueData['id'] ?? null;
             $value = $option->values()->find($valueData['id']);
             if ($value) {
-                if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
+                if (isset($valueData['from-library']) && isset($valueData['image-library'])) {
+                    Storage::disk('public')->delete('optionValues/' . basename($value->image));
+                    $path = $valueData['image-library'];
+                    $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                    $value->image = $imagePath;
+                } else if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                     Storage::disk('public')->delete('optionValues/' . basename($value->image));
                     $imagePath = $valueData['image']->store('optionValues', 'public');
                     $value->image = $imagePath;
@@ -72,6 +82,10 @@ class OptionController extends Controller
                 $value->price = $valueData['price'] ?? $value->price;
                 $value->save();
             } else {
+                if (isset($value['from-library']) && isset($value['image-library'])) {
+                    $path = $value['image-library'];
+                    $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                }
                 if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                     $imagePath = $valueData['image']->store('optionValues', 'public');
                 }

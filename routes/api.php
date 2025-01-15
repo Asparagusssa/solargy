@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\EmailController;
 use App\Http\Controllers\Api\EmailTypeController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\ImageController;
+use App\Http\Controllers\Api\ImageLibraryController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MainBannerController;
 use App\Http\Controllers\Api\OptionController;
@@ -97,4 +98,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('all-products', [ProductController::class, 'getAllProducts']);
 
     Route::post('/upload-image', [ImageController::class, 'uploadImage']);
+    Route::apiResource('/library-images', ImageLibraryController::class);
 });

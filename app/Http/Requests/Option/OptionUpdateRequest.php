@@ -27,6 +27,8 @@ class OptionUpdateRequest extends BaseFormRequest
             'values.*.id' => ['required_with:values:', 'numeric'],
             'values.*.value' => ['string'],
             'values.*.price' => ['numeric'],
+            'values.*.from-library' => ['boolean'],
+            'values.*.image-library' => ['string'],
             'values.*.image' => ['image', 'nullable', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
         ];
     }
@@ -52,4 +54,19 @@ class OptionUpdateRequest extends BaseFormRequest
         ];
     }
 
+    public function prepareForValidation()
+    {
+        if (isset($this->values) && is_array($this->values)) {
+            $values = array_map(function ($value) {
+                if (isset($value['from-library'])) {
+                    $value['from-library'] = filter_var($value['from-library'], FILTER_VALIDATE_BOOLEAN);
+                }
+                return $value;
+            }, $this->values);
+
+            $this->merge([
+                'values' => $values,
+            ]);
+        }
+    }
 }
