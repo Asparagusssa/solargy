@@ -108,7 +108,7 @@ class ProductController extends Controller
             'category' => function ($query) {
                 $query->orderBy('id');
             },
-        ])->orderBy('id');
+        ])->orderBy('name');
 
         if ($categoryId) {
             $products = $query->where('category_id', $categoryId)->paginate(8);
@@ -157,7 +157,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        $order = ['property', 'description', 'photo', 'instruction', 'recommendation', 'guaranty'];
+        $order = ['description', 'property', 'photo', 'instruction', 'recommendation', 'guaranty'];
 
         $product->load([
             'photos' => function ($query) {
