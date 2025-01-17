@@ -93,7 +93,11 @@ class SearchController extends Controller
     public function searchOptions()
     {
         $q = mb_strtolower(request('q'));
-        $options = Option::query()
+        $options = Option::with([
+            'values' => function ($query) {
+                $query->orderBy('id');
+            },
+        ])
             ->whereRaw('lower(name) like ?', ["%{$q}%"])
             ->orderBy('name')
             ->get();
