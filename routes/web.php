@@ -3,6 +3,6 @@
 use App\Http\Controllers\Api\FileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return 'hello world!';
-});
+Route::any('{any}', function () {
+    return redirect('https://solargy.shop');
+})->where('any', '.*');

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Product;
 
-use App\Http\Resources\Category\CategoryResource;
 use App\Http\Resources\Option\ProductOptionResource;
 use App\Http\Resources\Property\PropertyResource;
 use Illuminate\Http\Request;
@@ -28,6 +27,7 @@ class ProductResource extends JsonResource
             'options' => ProductOptionResource::collection($this->whenLoaded('options')),
             'properties' => PropertyResource::collection($this->whenLoaded('properties')),
             'related_products' => RelatedProductResource::collection($this->whenLoaded('relatedProducts')),
+            'option_prices' => ProductOptionPriceResource::collection($this->whenLoaded('optionPrices')),
         ];
     }
 }

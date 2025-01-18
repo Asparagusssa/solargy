@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PageSectionController;
 use App\Http\Controllers\Api\PatentController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProductOptionPriceController;
 use App\Http\Controllers\Api\PromoController;
 use App\Http\Controllers\Api\PurchasePlaceController;
 use App\Http\Controllers\Api\SearchController;
@@ -96,6 +97,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('custom-details/{customId}', [CompanyController::class, 'destroyCustom']);
 
     Route::get('all-products', [ProductController::class, 'getAllProducts']);
+    Route::apiResource('product-option-prices', ProductOptionPriceController::class);
 
     Route::post('/upload-image', [ImageController::class, 'uploadImage']);
     Route::apiResource('/library-images', ImageLibraryController::class);

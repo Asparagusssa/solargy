@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Actions\ValueCopyAction;
 use App\Actions\ProductCopyAction;
+use App\Actions\ValueCopyAction;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Requests\Product\ProductStoreRequest;
+use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Resources\Product\ProductAllResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Models\Option;
@@ -14,7 +14,6 @@ use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\ProductProperty;
 use App\Models\Value;
-use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -70,23 +69,6 @@ class ProductController extends Controller
                 'path' => $products->path(),
             ],
         ], 200);
-
-//        $data = Product::with([
-//            'photos' => function ($query) {
-//                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
-//            },
-//            'options' => function ($query) {
-//                $query->orderBy('id');
-//            },
-//            'properties' => function ($query) {
-//                $query->orderBy('id');
-//            },
-//            'category' => function ($query) {
-//                $query->orderBy('id');
-//            }
-//        ])->orderBy('name')->get();
-
-//        return response()->json(ProductAllResource::collection($data));
     }
 
 
@@ -177,6 +159,9 @@ class ProductController extends Controller
             },
             'relatedProducts.photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
+            },
+            'optionPrices' => function ($query) {
+                $query->orderBy('id');
             }
         ]);
         $product->options = $product->options->unique('id');
@@ -437,8 +422,6 @@ class ProductController extends Controller
                 ]);
             }
         }
-
-
 
         $product->load([
             'photos' => function ($query) {
