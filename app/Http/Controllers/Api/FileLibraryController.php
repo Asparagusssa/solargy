@@ -28,7 +28,7 @@ class FileLibraryController extends Controller
         $filePath = $request->file('file')->store('fileLibrary', 'public');
         $file = FileLibrary::query()->create([
             'file' => $filePath,
-            'file_name' => $data->file_name,
+            'file_name' => $data['file_name'],
         ]);
 
         return response()->json($file->only('id', 'file', 'file_name'));
