@@ -83,8 +83,8 @@ class OptionController extends Controller
                 $value->price = $valueData['price'] ?? $value->price;
                 $value->save();
             } else {
-                if (isset($value['from-library']) && isset($value['image-library'])) {
-                    $path = $value['image-library'];
+                if (isset($valueData['from-library']) && isset($valueData['image-library'])) {
+                    $path = $valueData['image-library'];
                     $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
                 }
                 if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
