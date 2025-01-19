@@ -26,10 +26,9 @@ class FileLibraryController extends Controller
         $data = $request->validated();
 
         $filePath = $request->file('file')->store('fileLibrary', 'public');
-        $fileName = $request->file('file')->getClientOriginalName();
         $file = FileLibrary::query()->create([
             'file' => $filePath,
-            'file_name' => $fileName,
+            'file_name' => $data->file_name,
         ]);
 
         return response()->json($file->only('id', 'file', 'file_name'));
@@ -45,7 +44,6 @@ class FileLibraryController extends Controller
         $fileName = $request->file('file')->getClientOriginalName();
 
         $data['file'] = $filePath;
-        $data['file_name'] = $fileName;
         $fileLibrary->update($data);
 
         return response()->json($fileLibrary->only('id', 'file', 'file_name'));
