@@ -42,7 +42,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'properties.*.title' => ['string', 'in:property,description,photo,instruction,recommendation,guaranty'],
             'properties.*.html' => ['string'],
             'properties.*.file' => ['nullable', 'file', 'max:10240'],
-            'properties.*.filename' => ['nullable', 'string', 'max:255'],
+            'properties.*.filename' => ['required_with:properties.*.file-library', 'string', 'max:255'],
             'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
             'properties.*.from-library' => ['boolean'],
             'properties.*.file-library' => ['string'],
@@ -102,8 +102,18 @@ class ProductUpdateRequest extends BaseFormRequest
 
     public function prepareForValidation()
     {
-        $this->merge([
-            'is_top' => filter_var($this->is_top, FILTER_VALIDATE_BOOLEAN),
-        ]);
+        if (isset($this->properties) && is_array($this->properties)) {
+            $properties = array_map(function ($property) {
+                if (isset($property['from-library'])) {
+                    $property['from-library'] = filter_var($property['from-library'], FILTER_VALIDATE_BOOLEAN);
+                }
+                return $property;
+            }, $this->properties);
+
+            $this->merge([
+                'properties' => $properties,
+                'is_top' => filter_var($this->is_top, FILTER_VALIDATE_BOOLEAN),
+            ]);
+        }
     }
 }
