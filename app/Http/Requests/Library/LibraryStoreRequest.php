@@ -22,7 +22,7 @@ class LibraryStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => ['required', 'image', 'max:10240'],
+            'file' => ['required', 'file', 'max:10240'],
         ];
     }
 }

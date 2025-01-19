@@ -44,6 +44,8 @@ class ProductUpdateRequest extends BaseFormRequest
             'properties.*.file' => ['nullable', 'file', 'max:10240'],
             'properties.*.filename' => ['nullable', 'string', 'max:255'],
             'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
+            'properties.*.from-library' => ['boolean'],
+            'properties.*.image-library' => ['string'],
         ];
     }
 

@@ -67,13 +67,14 @@ class OptionController extends Controller
         foreach ($values as $valueData) {
             $valueData['id'] = $valueData['id'] ?? null;
             $value = $option->values()->find($valueData['id']);
-            if ($value) {
-                if (isset($valueData['from-library']) && isset($valueData['image-library'])) {
-                    Storage::disk('public')->delete('optionValues/' . basename($value->image));
-                    $path = $valueData['image-library'];
-                    $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
-                    $value->image = $imagePath;
-                } else if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
+            if ($value) {if (isset($valueData['from-library']) && isset($valueData['image-library'])) {
+                Storage::disk('public')->delete('optionValues/' . basename($value->image));
+                $path = $valueData['image-library'];
+                $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                $value->image = $imagePath;
+            }
+
+                if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                     Storage::disk('public')->delete('optionValues/' . basename($value->image));
                     $imagePath = $valueData['image']->store('optionValues', 'public');
                     $value->image = $imagePath;

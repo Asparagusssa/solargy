@@ -367,6 +367,12 @@ class ProductController extends Controller
             $propertyData['id'] = $propertyData['id'] ?? null;
             $property = $product->properties()->find($propertyData['id']);
             if ($property) {
+                if (isset($propertyData['from-library']) && isset($propertyData['image-library'])) {
+                    Storage::disk('public')->delete('productPropertyImages/' . basename($property->image));
+                    $path = $propertyData['image-library'];
+                    $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                    $property->image = $imagePath;
+                }
                 if (isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile) {
                     Storage::disk('public')->delete('productPropertyImages/' . basename($property['image']));
                     $imagePath = $propertyData['image']->store('productPropertyImages', 'public');
@@ -374,6 +380,13 @@ class ProductController extends Controller
                 }
                 $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
                 $fileUpload = false;
+                if (isset($propertyData['from-library']) && isset($propertyData['image-library'])) {
+                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
+                    $path = $propertyData['image-library'];
+                    $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                    $property->file = $filePath;
+                    $fileUpload = true;
+                }
                 if ($hasFile) {
                     Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
                     $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
@@ -393,6 +406,13 @@ class ProductController extends Controller
                 $imagePath = isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile
                     ? $propertyData['image']->store('productPropertyImages', 'public')
                     : null;
+
+                if (isset($propertyData['from-library']) && isset($propertyData['image-library'])) {
+                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
+                    $path = $propertyData['image-library'];
+                    $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                    $property->file = $filePath;
+                }
 
                 $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
                 $filePath = $hasFile
