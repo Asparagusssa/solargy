@@ -408,9 +408,8 @@ class ProductController extends Controller
                 $imagePath = isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile
                     ? $propertyData['image']->store('productPropertyImages', 'public')
                     : null;
-
+                $filePath = null;
                 if (isset($propertyData['from-library']) && isset($propertyData['file-library'])) {
-                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
                     $path = $propertyData['file-library'];
                     $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
                 }
