@@ -382,9 +382,9 @@ class ProductController extends Controller
                 }
                 $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
                 $fileUpload = false;
-                if (isset($propertyData['from-library']) && isset($propertyData['image-library'])) {
+                if (isset($propertyData['from-library']) && isset($propertyData['file-library'])) {
                     Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
-                    $path = $propertyData['image-library'];
+                    $path = $propertyData['file-library'];
                     $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
                     $property->file = $filePath;
                     $fileUpload = true;
@@ -409,17 +409,16 @@ class ProductController extends Controller
                     ? $propertyData['image']->store('productPropertyImages', 'public')
                     : null;
 
-                if (isset($propertyData['from-library']) && isset($propertyData['image-library'])) {
+                if (isset($propertyData['from-library']) && isset($propertyData['file-library'])) {
                     Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
-                    $path = $propertyData['image-library'];
+                    $path = $propertyData['file-library'];
                     $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
-                    $property->file = $filePath;
                 }
 
                 $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
-                $filePath = $hasFile
-                    ? $propertyData['file']->store('productPropertyFiles', 'public')
-                    : null;
+                if($hasFile) {
+                    $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
+                }
 
                 $fileName = $hasFile ? $propertyData['file']->getClientOriginalName() : null;
                 if (isset($propertyData['filename'])) {
