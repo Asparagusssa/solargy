@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ContactSocialController;
 use App\Http\Controllers\Api\EmailController;
 use App\Http\Controllers\Api\EmailTypeController;
 use App\Http\Controllers\Api\FileController;
+use App\Http\Controllers\Api\FileLibraryController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\ImageLibraryController;
 use App\Http\Controllers\Api\LoginController;
@@ -102,4 +103,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::post('/upload-image', [ImageController::class, 'uploadImage']);
     Route::apiResource('/library-images', ImageLibraryController::class);
+    Route::apiResource('/library-files', FileLibraryController::class);
 });
