@@ -97,6 +97,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('custom-details/{customId}', [CompanyController::class, 'destroyCustom']);
 
     Route::get('all-products', [ProductController::class, 'getAllProducts']);
+    Route::get('products-for-select', [ProductController::class, 'productsForSelect']);
     Route::apiResource('product-option-prices', ProductOptionPriceController::class);
 
     Route::post('/upload-image', [ImageController::class, 'uploadImage']);

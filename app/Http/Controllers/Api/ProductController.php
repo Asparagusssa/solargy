@@ -22,6 +22,11 @@ use Illuminate\Validation\ValidationException;
 class ProductController extends Controller
 {
 
+    public function productsForSelect()
+    {
+        return response()->json(ProductResource::collection(Product::orderBy('name')->get()));
+    }
+
     public function getAllProducts(Request $request)
     {
         $minPrice = 0;
