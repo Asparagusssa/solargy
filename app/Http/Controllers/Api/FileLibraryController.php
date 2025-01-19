@@ -41,7 +41,6 @@ class FileLibraryController extends Controller
         $fileLibrary = FileLibrary::findOrFail($file_id);
         Storage::disk('public')->delete('fileLibrary/' . basename($fileLibrary->file));
         $filePath = $request->file('file')->store('fileLibrary', 'public');
-        $fileName = $request->file('file')->getClientOriginalName();
 
         $data['file'] = $filePath;
         $fileLibrary->update($data);
