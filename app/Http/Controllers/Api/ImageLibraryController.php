@@ -12,26 +12,26 @@ class ImageLibraryController extends Controller
 {
     public function index()
     {
-        $image = ImageLibrary::query()->get(['id', 'file']);
+        $image = ImageLibrary::query()->get(['id', 'image']);
         return response()->json($image);
     }
 
     public function show($imageLibrary_id)
     {
         $imageLibrary = ImageLibrary::query()->findOrFail($imageLibrary_id);
-        return response()->json($imageLibrary->only('id', 'file'));
+        return response()->json($imageLibrary->only('id', 'image'));
     }
 
     public function store(LibraryStoreRequest $request)
     {
         $data = $request->validated();
 
-        $imagePath = $request->file('file')->store('library', 'public');
+        $imagePath = $request->file('image')->store('library', 'public');
         $createdImage = ImageLibrary::query()->create([
-            'file' => $imagePath,
+            'image' => $imagePath,
         ]);
 
-        return response()->json($createdImage->only('id', 'file'));
+        return response()->json($createdImage->only('id', 'image'));
     }
 
     public function update(LibraryUpdateRequest $request, $imageLibrary_id)
@@ -39,19 +39,19 @@ class ImageLibraryController extends Controller
         $data = $request->validated();
 
         $imageLibrary = ImageLibrary::findOrFail($imageLibrary_id);
-        Storage::disk('public')->delete('library/' . basename($imageLibrary->file));
-        $imagePath = $request->file('file')->store('library', 'public');
+        Storage::disk('public')->delete('library/' . basename($imageLibrary->image));
+        $imagePath = $request->file('image')->store('library', 'public');
 
-        $data['file'] = $imagePath;
+        $data['image'] = $imagePath;
         $imageLibrary->update($data);
 
-        return response()->json($imageLibrary->only('id', 'file'));
+        return response()->json($imageLibrary->only('id', 'image'));
     }
 
     public function destroy($imageLibrary_id)
     {
         $imageLibrary = ImageLibrary::findOrFail($imageLibrary_id);
-        Storage::disk('public')->delete('library/' . basename($imageLibrary->file));
+        Storage::disk('public')->delete('library/' . basename($imageLibrary->image));
         $imageLibrary->delete();
 
         return response()->json(null, 204);

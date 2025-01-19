@@ -355,10 +355,7 @@ class ProductController extends Controller
                             'image' => $imagePath ?? null
                         ]);
                         $product->options()->attach($option->id, ['value_id' => $newValue->id]);
-
                     }
-
-
                 }
                 $option->name = $optionData['name'] ?? $option->name;
                 $option->save();
