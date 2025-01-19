@@ -10,6 +10,7 @@ class FileLibraryRequest extends FormRequest
     {
         return [
             'file' => ['required', 'file'],
+            'file_name' => ['required', 'string'],
         ];
     }
 
