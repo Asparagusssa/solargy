@@ -19,7 +19,7 @@ class ProductOptionPriceController extends Controller
     {
         $validated = $request->validate([
             'product_id' => 'required|exists:products,id',
-            'options' => 'required|json',
+            'options' => 'required|array',
             'options.*' => 'integer|exists:values,id',
             'price' => 'required|numeric|min:0',
         ]);
