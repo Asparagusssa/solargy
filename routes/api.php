@@ -56,7 +56,7 @@ Route::post('support', [SupportController::class, 'submitForm']);
 Route::post('order', [OrderController::class, 'submitForm']);
 Route::post('call', [CallController::class, 'submitForm']);
 
-
+Route::apiResource('product-option-prices', ProductOptionPriceController::class);
 
 Route::get('/download/{path}', [FileController::class, 'download'])->where('path', '.*');
 Route::get('search', [SearchController::class, 'search']);
@@ -99,7 +99,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('all-products', [ProductController::class, 'getAllProducts']);
     Route::get('products-for-select', [ProductController::class, 'productsForSelect']);
-    Route::apiResource('product-option-prices', ProductOptionPriceController::class);
 
     Route::post('/upload-image', [ImageController::class, 'uploadImage']);
     Route::apiResource('/library-images', ImageLibraryController::class);
