@@ -30,6 +30,7 @@ class ProductOptionPrice extends Model
             if ($option && $value) {
                 $details[] = [
                     'option' => $option->name,
+                    'option_id' => $option->id,
                     'value' => $value->value,
                 ];
             }
