@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\FileLibrary;
 use App\Models\Patent;
 use App\Models\ProductProperty;
 
@@ -12,6 +13,7 @@ class FileController extends Controller
     {
         $property = ProductProperty::where('file', $path)->first();
         $patent = Patent::where('file', $path)->first();
+        $library = FileLibrary::where('file', $path)->first();
 
         switch (true) {
             case $property:
@@ -19,6 +21,9 @@ class FileController extends Controller
                 break;
             case $patent:
                 $originalFileName = $patent->file_name;
+                break;
+            case $library:
+                $originalFileName = $library->file_name;
                 break;
             default:
                 return response()->json(['message' => 'Файл не найден'], 404);
