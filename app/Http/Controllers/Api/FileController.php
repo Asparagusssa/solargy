@@ -11,19 +11,19 @@ class FileController extends Controller
 {
     public function download($path)
     {
+        $library = FileLibrary::where('file', $path)->first();
         $property = ProductProperty::where('file', $path)->first();
         $patent = Patent::where('file', $path)->first();
-        $library = FileLibrary::where('file', $path)->first();
 
         switch (true) {
+            case $library:
+                $originalFileName = $library->file_name;
+                break;
             case $property:
                 $originalFileName = $property->file_name;
                 break;
             case $patent:
                 $originalFileName = $patent->file_name;
-                break;
-            case $library:
-                $originalFileName = $library->file_name;
                 break;
             default:
                 return response()->json(['message' => 'Файл не найден'], 404);

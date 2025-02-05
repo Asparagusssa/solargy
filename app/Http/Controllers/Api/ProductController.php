@@ -420,9 +420,9 @@ class ProductController extends Controller
                 $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
                 if($hasFile) {
                     $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
-                }
+                    $fileName = $propertyData['file']->getClientOriginalName();
 
-                $fileName = $hasFile ? $propertyData['file']->getClientOriginalName() : null;
+                }
                 if (isset($propertyData['filename'])) {
                     $fileName = $propertyData['filename'];
                 }
