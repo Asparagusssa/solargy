@@ -45,7 +45,9 @@ class ProductUpdateRequest extends BaseFormRequest
             'properties.*.filename' => ['required_with:properties.*.file-library', 'string', 'max:255'],
             'properties.*.image' => ['nullable','image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],
             'properties.*.from-library' => ['boolean'],
-            'properties.*.file-library' => ['string'],
+            'properties.*.files' => ['array'],
+            'properties.*.files.*.file_path' => ['string', 'max:255'],
+            'properties.*.files.*.file_name' => ['string', 'max:255'],
         ];
     }
 

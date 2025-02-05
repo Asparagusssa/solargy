@@ -371,37 +371,37 @@ class ProductController extends Controller
         foreach ($properties as $propertyData) {
             $propertyData['id'] = $propertyData['id'] ?? null;
             $property = $product->properties()->find($propertyData['id']);
-            if ($property) {
-                if (isset($propertyData['from-library']) && isset($propertyData['image-library'])) {
+            if ($property) {if (isset($propertyData['image-library'])) {
                     Storage::disk('public')->delete('productPropertyImages/' . basename($property->image));
                     $path = $propertyData['image-library'];
                     $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
                     $property->image = $imagePath;
                 }
-                if (isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile) {
-                    Storage::disk('public')->delete('productPropertyImages/' . basename($property['image']));
-                    $imagePath = $propertyData['image']->store('productPropertyImages', 'public');
-                    $property->image = $imagePath;
+
+//                if (isset($propertyData['file-library'])) {
+//                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
+//                    $path = $propertyData['file-library'];
+//                    $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+//                    $property->file = $filePath;
+//                }
+
+                // Обновление файлов свойства
+                if (isset($propertyData['files'])) {
+                    foreach ($propertyData['files'] as $file) {
+                        $path = $file['file_path'];
+                        $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                        $fileName = $file['file_name'] ?? 'Имя файла';
+
+                        $property->files()->create([
+                            'file' => $filePath,
+                            'filename' => $fileName,
+                        ]);
+
+                    }
                 }
-                $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
-                $fileUpload = false;
-                if (isset($propertyData['from-library']) && isset($propertyData['file-library'])) {
-                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
-                    $path = $propertyData['file-library'];
-                    $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
-                    $property->file = $filePath;
-                    $fileUpload = true;
-                }
-                if ($hasFile) {
-                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
-                    $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
-                    $property->file = $filePath;
-                    $fileUpload = true;
-                }
+
                 if (isset($propertyData['filename']) && isset($property->file)) {
                     $property->file_name = $propertyData['filename'];
-                }else if($fileUpload) {
-                    $property->file_name = $propertyData['file']->getClientOriginalName();
                 }
                 $property->title = $propertyData['title'] ?? $property->title;
                 $property->html = $propertyData['html'] ?? $property->html;
@@ -411,20 +411,19 @@ class ProductController extends Controller
                 $imagePath = isset($propertyData['image']) && $propertyData['image'] instanceof UploadedFile
                     ? $propertyData['image']->store('productPropertyImages', 'public')
                     : null;
-                $filePath = null;
-                if (isset($propertyData['from-library']) && isset($propertyData['file-library'])) {
-                    $path = $propertyData['file-library'];
-                    $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
-                }
 
-                $hasFile = isset($propertyData['file']) && $propertyData['file'] instanceof UploadedFile;
-                if($hasFile) {
-                    $filePath = $propertyData['file']->store('productPropertyFiles', 'public');
-                    $fileName = $propertyData['file']->getClientOriginalName();
+                if (isset($propertyData['files'])) {
+                    foreach ($propertyData['files'] as $file) {
+                        $path = $file['file_path'];
+                        $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                        $fileName = $file['file_name'] ?? 'Имя файла';
 
-                }
-                if (isset($propertyData['filename'])) {
-                    $fileName = $propertyData['filename'];
+                        $property->files()->create([
+                            'file' => $filePath,
+                            'filename' => $fileName,
+                        ]);
+
+                    }
                 }
 
                 $title = $propertyData['title'] ?? null;
@@ -459,7 +458,7 @@ class ProductController extends Controller
                 }])
                 ->orderBy('id');
             },
-            'properties' => function ($query) {
+            'properties.files' => function ($query) {
                 $query->orderBy('id');
             },
         ]);
@@ -593,6 +592,8 @@ class ProductController extends Controller
             Storage::disk('public')->delete('productPropertyFile' . basename($property->file));
         }
 
+        $property->files()->delete();
+
         $property->delete();
 
         return response()->json(null, 204);
@@ -647,4 +648,11 @@ class ProductController extends Controller
         }
     }
 
+    public function deletePropertyFile($property_id, $file_id)
+    {
+        $property = ProductProperty::findOrFail($property_id);
+        $file = $property->files()->findOrFail($file_id);
+        $file->delete();
+        return response()->noContent();
+    }
 }

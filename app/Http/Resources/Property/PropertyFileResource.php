@@ -5,7 +5,7 @@ namespace App\Http\Resources\Property;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PropertyResource extends JsonResource
+class PropertyFileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,8 @@ class PropertyResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'html' => $this->html,
-            'files' => PropertyFileResource::collection($this->whenLoaded('files')),
+            'file' => $this->file,
+            'filename' => $this->filename,
         ];
     }
 }

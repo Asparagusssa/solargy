@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('products/{product}/values/{value}', [ProductController::class, 'deletePivot']);
     Route::delete('products/{product}/options/{option}', [ProductController::class, 'deleteAllPivot']);
     Route::delete('productProperties/{property}', [ProductController::class, 'deleteProperty']);
+    Route::delete('productProperties/{property}/files/{file}', [ProductController::class, 'deletePropertyFile']);
     Route::post('products/{product}/related', [ProductController::class, 'addRelatedProducts']);
     Route::delete('products/{product}/related/{relatedProduct}', [ProductController::class, 'removeRelatedProduct']);
     Route::post('products/{product}/copy', [ProductController::class, 'copyProduct']);
