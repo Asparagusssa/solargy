@@ -155,7 +155,7 @@ class ProductController extends Controller
                     $query->whereHas('products', function ($query) use ($product) {
                         $query->where('product_id', $product->id);
                     })
-                    ->orderBy('value');
+                    ->orderByRaw("CASE WHEN value ~ '^[0-9]+(\.[0-9]+)?$' THEN NULLIF(value, '')::numeric ELSE NULL END NULLS LAST, value");
                 }])
                 ->orderBy('id');
             },
