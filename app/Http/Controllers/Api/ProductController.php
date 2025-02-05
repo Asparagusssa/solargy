@@ -29,6 +29,7 @@ class ProductController extends Controller
 
     public function getAllProducts(Request $request)
     {
+        $categoryId = (int) $request->query('category');
         $minPrice = 0;
         $maxPrice = Product::max('price');
 
@@ -61,7 +62,9 @@ class ProductController extends Controller
             $isTop = (bool) request('top');
             $query = $query->where('is_top', $isTop);
         }
-
+        if ($categoryId) {
+            $query = $query->where('category_id', $categoryId);
+        }
         $products = $query->paginate(10);
 
         return response()->json([
