@@ -427,12 +427,9 @@ class ProductController extends Controller
                     ]);
                 }
 
-                $product->properties()->create([
+                $property = $product->properties()->create([
                     'title' => $propertyData['title'],
                     'html' => $propertyData['html'],
-                    'file' => $filePath,
-                    'file_name' => $fileName,
-                    'image' => $imagePath,
                 ]);
 
                 if (isset($propertyData['files'])) {
