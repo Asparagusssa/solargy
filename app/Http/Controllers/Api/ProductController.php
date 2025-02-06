@@ -393,6 +393,7 @@ class ProductController extends Controller
 
                 // Обновление файлов свойства
                 if (isset($propertyData['files'])) {
+                    $property->files()->delete();
                     foreach ($propertyData['files'] as $file) {
                         $path = $file['file_path'];
                         $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
@@ -433,6 +434,7 @@ class ProductController extends Controller
                 ]);
 
                 if (isset($propertyData['files'])) {
+                    $property->files()->delete();
                     foreach ($propertyData['files'] as $file) {
                         $path = $file['file_path'];
                         $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
