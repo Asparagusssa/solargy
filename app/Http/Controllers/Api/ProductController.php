@@ -167,7 +167,7 @@ class ProductController extends Controller
                 }])
                 ->orderBy('id');
             },
-            'properties' => function ($query) {
+            'properties.files' => function ($query) {
                 $query->orderBy('id');
             },
             'relatedProducts.photos' => function ($query) {
