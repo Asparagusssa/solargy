@@ -376,7 +376,8 @@ class ProductController extends Controller
         foreach ($properties as $propertyData) {
             $propertyData['id'] = $propertyData['id'] ?? null;
             $property = $product->properties()->find($propertyData['id']);
-            if ($property) {if (isset($propertyData['image-library'])) {
+            if ($property) {
+                if (isset($propertyData['image-library'])) {
                     Storage::disk('public')->delete('productPropertyImages/' . basename($property->image));
                     $path = $propertyData['image-library'];
                     $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
@@ -417,20 +418,6 @@ class ProductController extends Controller
                     ? $propertyData['image']->store('productPropertyImages', 'public')
                     : null;
 
-                if (isset($propertyData['files'])) {
-                    foreach ($propertyData['files'] as $file) {
-                        $path = $file['file_path'];
-                        $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
-                        $fileName = $file['file_name'] ?? 'Имя файла';
-
-                        $property->files()->create([
-                            'file' => $filePath,
-                            'filename' => $fileName,
-                        ]);
-
-                    }
-                }
-
                 $title = $propertyData['title'] ?? null;
                 $html = $propertyData['html'] ?? null;
 
@@ -447,6 +434,20 @@ class ProductController extends Controller
                     'file_name' => $fileName,
                     'image' => $imagePath,
                 ]);
+
+                if (isset($propertyData['files'])) {
+                    foreach ($propertyData['files'] as $file) {
+                        $path = $file['file_path'];
+                        $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
+                        $fileName = $file['file_name'] ?? 'Имя файла';
+
+                        $property->files()->create([
+                            'file' => $filePath,
+                            'filename' => $fileName,
+                        ]);
+
+                    }
+                }
             }
         }
 
