@@ -98,7 +98,9 @@ class ProductController extends Controller
             'category' => function ($query) {
                 $query->orderBy('id');
             },
-        ])->orderBy('name');
+        ])
+            ->orderBy('category_id')
+            ->orderBy('name');
 
         if ($categoryId) {
             $products = $query->where('category_id', $categoryId)->paginate(8);
