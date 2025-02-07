@@ -18,6 +18,7 @@ class Value extends Model
         'value',
         'price',
         'image',
+        'order',
     ];
 
     public function getImageAttribute($value)

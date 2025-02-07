@@ -19,6 +19,7 @@ class ValueResource extends JsonResource
             'value' => $this->value,
             'price' => $this->price,
             'image' => $this->image,
+            'order' => $this->order,
         ];
     }
 }

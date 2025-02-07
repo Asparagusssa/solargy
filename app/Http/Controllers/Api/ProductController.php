@@ -160,10 +160,14 @@ class ProductController extends Controller
                     $query->whereHas('products', function ($query) use ($product) {
                         $query->where('product_id', $product->id);
                     })
-//                    ->orderByRaw("CASE WHEN value ~ '^[0-9]+(\.[0-9]+)?$' THEN NULLIF(value, '')::numeric ELSE NULL END NULLS LAST, value");
                         ->orderByRaw("
                             CASE
-                                WHEN value ~ '[0-9]' THEN CAST(NULLIF(regexp_replace(value, '\\D', '', 'g'), '') AS INTEGER)
+                                WHEN values.order = 0 THEN 0
+                                ELSE 1
+                            END ASC,
+                            values.order ASC,
+                            CASE
+                                WHEN value ~ '^[0-9]+' THEN CAST(NULLIF(regexp_replace(value, '\\D', '', 'g'), '') AS INTEGER)
                                 ELSE 99999999
                             END ASC,
                             value ASC
@@ -352,6 +356,9 @@ class ProductController extends Controller
                             $imagePath = $valueData['image']->store('optionValues', 'public');
                             $value->image = $imagePath;
                         }
+                        if (isset($valueData['order'])) {
+                            $value->order = $valueData['order'];
+                        }
                         $value->value = $valueData['value'] ?? $value->value;
                         $value->price = $valueData['price'] ?? $value->price;
                         $value->save();
@@ -361,10 +368,15 @@ class ProductController extends Controller
                         if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                             $imagePath = $valueData['image']->store('products', 'public');
                         }
+                        $orderOption = $valueData['order'] ?? 0;
+                        if (!isset($orderOption)) {
+                            $orderOption = 0;
+                        }
                         $newValue = $option->values()->create([
                             'value' => $valueData['value'],
                             'price' => $valueData['price'],
-                            'image' => $imagePath ?? null
+                            'image' => $imagePath ?? null,
+                            'order' => $orderOption,
                         ]);
                         $product->options()->attach($option->id, ['value_id' => $newValue->id]);
                     }
@@ -388,14 +400,6 @@ class ProductController extends Controller
                     $property->image = $imagePath;
                 }
 
-//                if (isset($propertyData['file-library'])) {
-//                    Storage::disk('public')->delete('productPropertyFiles/' . basename($property['file']));
-//                    $path = $propertyData['file-library'];
-//                    $filePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
-//                    $property->file = $filePath;
-//                }
-
-                // Обновление файлов свойства
                 if (isset($propertyData['files'])) {
                     $property->files()->delete();
                     foreach ($propertyData['files'] as $file) {
