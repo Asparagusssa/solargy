@@ -162,7 +162,11 @@ class ProductController extends Controller
                     })
 //                    ->orderByRaw("CASE WHEN value ~ '^[0-9]+(\.[0-9]+)?$' THEN NULLIF(value, '')::numeric ELSE NULL END NULLS LAST, value");
                         ->orderByRaw("
-                            CAST(NULLIF(regexp_replace(value, '\\D', '', 'g'), '') AS INTEGER) ASC
+                            CASE
+                                WHEN value ~ '[0-9]' THEN CAST(NULLIF(regexp_replace(value, '\\D', '', 'g'), '') AS INTEGER)
+                                ELSE 99999999
+                            END ASC,
+                            value ASC
                         ");
                 }])
                 ->orderBy('id');
