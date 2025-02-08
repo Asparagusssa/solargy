@@ -26,6 +26,7 @@ class OptionStoreRequest extends BaseFormRequest
             'values' => ['sometimes', 'array'],
             'values.*.value' => ['required_with:values:', 'string'],
             'values.*.price' => ['required_with:values', 'numeric'],
+            'values.*.order' => ['nullable', 'integer', 'min:0', 'max:155'],
             'values.*.from-library' => ['boolean'],
             'values.*.image-library' => ['string'],
             'values.*.image' => ['nullable', 'image', 'mimes:jpg,png,jpeg,gif', 'max:10240'],

@@ -47,10 +47,15 @@ class OptionController extends Controller
                     ? $value['image']->store('optionValues', 'public')
                     : null;
             }
+            $order = null;
+            if (isset($value['order'])) {
+                $order = $value['order'];
+            }
             $option->values()->create([
                 'value' => $value['value'],
                 'price' => $value['price'],
                 'image' => $imagePath,
+                'order' => $order,
             ]);
         }
 
@@ -81,8 +86,10 @@ class OptionController extends Controller
                 }
                 $value->value = $valueData['value'] ?? $value->value;
                 $value->price = $valueData['price'] ?? $value->price;
+                $value->order = $value['order'] ?? $value->order;
                 $value->save();
             } else {
+                $order = null;
                 if (isset($valueData['from-library']) && isset($valueData['image-library'])) {
                     $path = $valueData['image-library'];
                     $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));
@@ -90,9 +97,13 @@ class OptionController extends Controller
                 if (isset($valueData['image']) && $valueData['image'] instanceof UploadedFile) {
                     $imagePath = $valueData['image']->store('optionValues', 'public');
                 }
+                if (isset($valueData['order'])) {
+                    $order = $valueData['order'];
+                }
                 $option->values()->create([
                     'value' => $valueData['value'],
                     'price' => $valueData['price'],
+                    'order' => $order,
                     'image' => $imagePath ?? null
                 ]);
             }
