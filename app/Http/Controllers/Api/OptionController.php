@@ -86,7 +86,7 @@ class OptionController extends Controller
                 }
                 $value->value = $valueData['value'] ?? $value->value;
                 $value->price = $valueData['price'] ?? $value->price;
-                $value->order = $value['order'] ?? $value->order;
+                $value->order = $valueData['order'] ?? $value->order;
                 $value->save();
             } else {
                 $order = null;
