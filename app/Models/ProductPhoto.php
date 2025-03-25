@@ -19,7 +19,13 @@ class ProductPhoto extends Model
 
     public function getPhotoAttribute($value)
     {
-        return $value ? url('storage/' . $value) : null;
+        if (!$value) return null;
+
+        if (str_starts_with($value, 'http')) {
+            return $value;
+        }
+
+        return url('storage/' . $value);
     }
 
     public function product(): BelongsTo

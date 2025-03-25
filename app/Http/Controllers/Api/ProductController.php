@@ -210,14 +210,14 @@ class ProductController extends Controller
 
         $photos = $data['photos'] ?? [];
         foreach ($photos as $photo) {
-            $file = $photo['photo'];
-            $fileType = $file->getMimeType();
-            $isImage = str_starts_with($fileType, 'image/');
-            $isVideo = str_starts_with($fileType, 'video/');
-            $type = $isImage ? 'image' : ($isVideo ? 'video' : null);
-            $filePath = $file->store("products", 'public');
+            $file = $photo['photo'] ?? null;
+            $url = $photo['video'] ?? null;
+            $type = isset($file) ? 'image' : (isset($url) ? 'video' : null);
+            if (isset($file)) {
+                $filePath = $file->store("products", 'public');
+            }
             $product->photos()->create([
-                'photo' => $filePath,
+                'photo' => $filePath ?? $url,
                 'type' => $type,
                 'order' => $photo['order'] ?? null,
             ]);
@@ -306,6 +306,9 @@ class ProductController extends Controller
             $type = null;
 
             if ($photo) {
+                if (isset($photoData['video']) && $photo->type === 'video') {
+                    $photo->photo = $photoData['video'];
+                }
                 if (isset($photoData['photo']) && $photoData['photo'] instanceof UploadedFile) {
                     $fileType = $photoData['photo']->getMimeType();
                     $isImage = str_starts_with($fileType, 'image/');
@@ -321,14 +324,14 @@ class ProductController extends Controller
                 $photo->type = $type;
                 $photo->save();
             } else {
-                $file = $photoData['photo'];
-                $fileType = $file->getMimeType();
-                $isImage = str_starts_with($fileType, 'image/');
-                $isVideo = str_starts_with($fileType, 'video/');
-                $type = $isImage ? 'image' : ($isVideo ? 'video' : null);
-                $filePath = $file->store("products", 'public');
+                $file = $photoData['photo'] ?? null;
+                $url = $photoData['video'] ?? null;
+                $type = isset($file) ? 'image' : (isset($url) ? 'video' : null);
+                if (isset($file)) {
+                    $filePath = $file->store("products", 'public');
+                }
                 $product->photos()->create([
-                    'photo' => $filePath,
+                    'photo' => $filePath ?? $url,
                     'type' => $type,
                     'order' => $photoData['order'] ?? null,
                 ]);
