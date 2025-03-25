@@ -308,12 +308,10 @@ class ProductController extends Controller
             if ($photo) {
                 if (isset($photoData['video']) && $photo->type === 'video') {
                     $photo->photo = $photoData['video'];
+                    $type = 'video';
                 }
                 if (isset($photoData['photo']) && $photoData['photo'] instanceof UploadedFile) {
-                    $fileType = $photoData['photo']->getMimeType();
-                    $isImage = str_starts_with($fileType, 'image/');
-                    $isVideo = str_starts_with($fileType, 'video/');
-                    $type = $isImage ? 'image' : ($isVideo ? 'video' : null);
+                    $type = 'image';
                     Storage::disk('public')->delete('products/' . basename($photo->photo));
                     $filePath = $photoData['photo']->store('products', 'public');
                 }
