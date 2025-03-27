@@ -85,6 +85,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('sub-banners', SubBannerController::class)->except(['index', 'show']);
 
     Route::apiResource('promos', PromoController::class)->except(['index', 'show']);
+    Route::post('promos/{promo}/products/{product}', [PromoController::class, 'addProduct']);
+    Route::delete('promos/{promo}/products/{product}', [PromoController::class, 'removeProduct']);
     Route::apiResource('patents', PatentController::class)->except(['index', 'show']);
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
     Route::apiResource('seos', SeoController::class)->except(['index', 'show']);

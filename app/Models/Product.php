@@ -45,6 +45,11 @@ class Product extends Model
             ->withPivot('value_id');
     }
 
+    public function promos(): BelongsToMany
+    {
+        return $this->belongsToMany(Promo::class);
+    }
+
     public function values(): BelongsToMany
     {
         return $this->belongsToMany(Value::class, 'option_values', 'product_id', 'value_id')

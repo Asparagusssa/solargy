@@ -7,6 +7,7 @@ use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Promo\PromoStoreRequest;
 use App\Http\Requests\Promo\PromoUpdateRequest;
 use App\Http\Resources\Promo\PromoResource;
+use App\Models\Product;
 use App\Models\Promo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -86,5 +87,19 @@ class PromoController extends Controller
         }
         $promo->delete();
         return response()->json(null, 204);
+    }
+
+    public function addProduct(Promo $promo, Product $product)
+    {
+        $promo->products()->syncWithoutDetaching($product);
+        $promo->load('products');
+        return response()->json(new PromoResource($promo), 200);
+    }
+
+    public function removeProduct(Promo $promo, Product $product)
+    {
+        $promo->products()->detach($product);
+        $promo->load('products');
+        return response()->json(new PromoResource($promo), 200);
     }
 }

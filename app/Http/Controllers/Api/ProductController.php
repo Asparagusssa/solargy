@@ -52,6 +52,9 @@ class ProductController extends Controller
             },
             'category' => function ($query) {
                 $query->orderBy('id');
+            },
+            'promos' => function ($query) {
+                $query->orderBy('id');
             }
         ])
             ->where('price', '>=', $minPrice)
@@ -98,6 +101,9 @@ class ProductController extends Controller
             'category' => function ($query) {
                 $query->orderBy('id');
             },
+            'promos' => function ($query) {
+                $query->orderBy('id');
+            }
         ])
             ->orderBy('category_id')
             ->orderBy('name');
@@ -121,6 +127,9 @@ class ProductController extends Controller
                     'category' => function ($query) {
                         $query->orderBy('id');
                     },
+                    'promos' => function ($query) {
+                        $query->orderBy('id');
+                    }
                 ])->where('is_top', false)->orderBy('is_top')->limit(4 - $products->count())->get();
 
                 $products = $products->getCollection()->merge($additionalProducts)
@@ -182,6 +191,9 @@ class ProductController extends Controller
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
             },
             'optionPrices' => function ($query) {
+                $query->orderBy('id');
+            },
+            'promos' => function ($query) {
                 $query->orderBy('id');
             }
         ]);
@@ -275,6 +287,9 @@ class ProductController extends Controller
             'properties' => function ($query) {
                 $query->orderBy('id');
             },
+            'promos' => function ($query) {
+                $query->orderBy('id');
+            }
         ]);
 
         $product->options = $product->options->unique('id');
@@ -475,6 +490,9 @@ class ProductController extends Controller
             'properties.files' => function ($query) {
                 $query->orderBy('id');
             },
+            'promos' => function ($query) {
+                $query->orderBy('id');
+            }
         ]);
         $product->options = $product->options->unique('id');
 

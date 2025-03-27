@@ -6,7 +6,7 @@ use App\Http\Resources\Product\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PromoResource extends JsonResource
+class PromoProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,7 +23,6 @@ class PromoResource extends JsonResource
             'start' => $this->start,
             'end' => $this->end,
             'is_archived' => $this->is_archived,
-            'products' => ProductResource::collection($this->products),
         ];
     }
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Promo extends Model
 {
@@ -11,6 +13,7 @@ class Promo extends Model
     use HasFactory;
 
     protected $fillable = [
+        'product_id',
         'title',
         'description',
         'image',
@@ -23,4 +26,10 @@ class Promo extends Model
     {
         return $value ? url('storage/' . $value) : null;
     }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
+    }
+
 }
