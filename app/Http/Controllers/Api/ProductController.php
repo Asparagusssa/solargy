@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\ProductCopyAction;
 use App\Actions\ValueCopyAction;
+use App\Exports\ValueExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Http\Resources\Product\ProductAllResource;
 use App\Http\Resources\Product\ProductResource;
+use App\Imports\ValueImport;
 use App\Models\Option;
 use App\Models\Product;
 use App\Models\ProductPhoto;
@@ -18,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -204,7 +207,7 @@ class ProductController extends Controller
         })->values();
 
         $product->related_products = $product->relatedProducts->map(function ($relatedProduct) {
-            $relatedProduct->photo = $relatedProduct->photos->first()?->photo ?? null;
+            $relatedProduct->photo = $relatedProduct->photos->where('type', '!=', 'video')->first()?->photo ?? null;
             unset($relatedProduct->photos);
             return $relatedProduct;
         });
@@ -686,5 +689,23 @@ class ProductController extends Controller
         $file = $property->files()->findOrFail($file_id);
         $file->delete();
         return response()->noContent();
+    }
+
+    public function exportOptions($product_id)
+    {
+        $product = Product::findOrFail($product_id);
+        return Excel::download(new ValueExport($product), 'options.xlsx');
+    }
+
+    public function importOptions(Request $request, $product_id)
+    {
+        $file = $request->file('options');
+        $product = Product::findOrFail($product_id);
+        try {
+            Excel::import(new ValueImport($product), $file, 'xlsx');
+        }catch (\Throwable $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+        return response()->json(['message' => 'OK'], 200);
     }
 }

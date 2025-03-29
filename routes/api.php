@@ -67,6 +67,8 @@ Route::get('search-fast', [SearchController::class, 'searchFast']);
 Route::get('search/options', [SearchController::class, 'searchOptions']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('products/{product}/export-options', [ProductController::class, 'exportOptions']);
+    Route::post('products/{product}/import-options', [ProductController::class, 'importOptions']);
     Route::apiResource('products', ProductController::class)->except(['index', 'show']);
     Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
     Route::apiResource('options', OptionController::class)->except(['index', 'show']);
