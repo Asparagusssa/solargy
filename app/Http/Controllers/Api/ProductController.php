@@ -95,9 +95,6 @@ class ProductController extends Controller
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
             },
-            'options' => function ($query) {
-                $query->orderBy('id');
-            },
             'properties' => function ($query) {
                 $query->orderBy('id');
             },
@@ -120,9 +117,6 @@ class ProductController extends Controller
                 $additionalProducts = Product::with([
                     'photos' => function ($query) {
                         $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
-                    },
-                    'options' => function ($query) {
-                        $query->orderBy('id');
                     },
                     'properties' => function ($query) {
                         $query->orderBy('id');
