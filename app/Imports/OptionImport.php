@@ -5,9 +5,10 @@ namespace App\Imports;
 use App\Models\Option;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class OptionImport implements ToCollection, WithStartRow
+class OptionImport implements ToCollection, WithStartRow, WithChunkReading
 {
     public function collection(Collection $collection)
     {
@@ -28,5 +29,10 @@ class OptionImport implements ToCollection, WithStartRow
     public function startRow(): int
     {
         return 2;
+    }
+
+    public function chunkSize(): int
+    {
+        return 10;
     }
 }
