@@ -68,6 +68,9 @@ class SearchController extends Controller
         $products = Product::with([
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC')->get();
+            },
+            'category' => function ($query) {
+                $query->orderBy('id');
             }
         ])->whereRaw('lower(name) like ?', ["%{$q}%"])
             ->orWhereRaw('lower(description) like ?', ["%{$q}%"])
