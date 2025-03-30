@@ -89,16 +89,20 @@ class PromoController extends Controller
         return response()->json(null, 204);
     }
 
-    public function addProduct(Promo $promo, Product $product)
+    public function addProduct($promo_id, $product_id)
     {
-        $promo->products()->syncWithoutDetaching($product);
+        $promo = Promo::findOrFail($promo_id);
+        $product = Product::findOrFail($product_id);
+        $promo->products()->syncWithoutDetaching($product->id);
         $promo->load('products');
         return response()->json(new PromoResource($promo), 200);
     }
 
-    public function removeProduct(Promo $promo, Product $product)
+    public function removeProduct($promo_id, $product_id)
     {
-        $promo->products()->detach($product);
+        $promo = Promo::findOrFail($promo_id);
+        $product = Product::findOrFail($product_id);
+        $promo->products()->detach($product->id);
         $promo->load('products');
         return response()->json(new PromoResource($promo), 200);
     }
