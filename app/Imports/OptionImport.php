@@ -20,7 +20,6 @@ class OptionImport implements ToCollection, WithStartRow
                 'value' => $row[1],
                 'price' => $row[2],
                 'order' => $row[3],
-                'image' => $row[4],
             ]);
         }
         return null;
