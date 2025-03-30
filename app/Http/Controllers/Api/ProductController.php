@@ -693,7 +693,7 @@ class ProductController extends Controller
 
     public function importOptions(Request $request, $product_id)
     {
-        $file = $request->file('options');
+        $file = $request->file('file');
         $product = Product::findOrFail($product_id);
         try {
             Excel::import(new ValueImport($product), $file, 'xlsx');

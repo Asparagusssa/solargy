@@ -66,12 +66,17 @@ Route::get('search', [SearchController::class, 'search']);
 Route::get('search-fast', [SearchController::class, 'searchFast']);
 Route::get('search/options', [SearchController::class, 'searchOptions']);
 
+Route::get('options/{option}/export', [OptionController::class, 'export']);
+Route::post('options/import', [OptionController::class, 'import']);
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('products/{product}/export-options', [ProductController::class, 'exportOptions']);
     Route::post('products/{product}/import-options', [ProductController::class, 'importOptions']);
     Route::apiResource('products', ProductController::class)->except(['index', 'show']);
     Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
     Route::apiResource('options', OptionController::class)->except(['index', 'show']);
+//    Route::get('options/{option}/export', [OptionController::class, 'export']);
+//    Route::post('options/{option}/import', [OptionController::class, 'import']);
     Route::delete('options/{optionId}/values/{valueId}', [OptionController::class, 'destroyValue']);
     Route::delete('productPhoto/{ProductPhoto}', [ProductController::class, 'deletePhotos']);
     Route::delete('products/{product}/values/{value}', [ProductController::class, 'deletePivot']);

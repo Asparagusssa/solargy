@@ -17,20 +17,6 @@ class ValueImport implements ToCollection, WithStartRow
     {
         $this->product = $product;
     }
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-//    public function model(array $row)
-//    {
-//        $value = Value::findOrFail((int) $row['id'])->first();
-//        $option = Option::findOrFail((int) $row['option_id'])->first();
-//
-//        if ($value) {
-//            $this->product->values()->attach($value->id, ['option_id' => $option->id]);
-//        }
-//    }
 
     public function collection(Collection $collection)
     {

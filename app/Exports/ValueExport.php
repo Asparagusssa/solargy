@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\Product;
-use App\Models\Value;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 

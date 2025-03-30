@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exports\OptionExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Option\OptionStoreRequest;
 use App\Http\Requests\Option\OptionUpdateRequest;
 use App\Http\Resources\Option\OptionResource;
+use App\Imports\OptionImport;
 use App\Models\Option;
 use App\Models\Value;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OptionController extends Controller
 {
@@ -145,5 +148,22 @@ class OptionController extends Controller
         $value->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function export($option_id)
+    {
+        $option = Option::findOrFail($option_id);
+        return Excel::download(new OptionExport($option), 'option_' . $option->id . '.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $file = $request->file('file');
+        try {
+            Excel::import(new OptionImport(), $file, 'xlsx');
+        }catch (\Throwable $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+        return response()->json(['message' => 'OK'], 200);
     }
 }
