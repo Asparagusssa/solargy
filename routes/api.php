@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('productProperties/{property}/files/{file}', [ProductController::class, 'deletePropertyFile']);
     Route::post('products/{product}/related', [ProductController::class, 'addRelatedProducts']);
     Route::delete('products/{product}/related/{relatedProduct}', [ProductController::class, 'removeRelatedProduct']);
+    Route::delete('products/{product}/purchase-place/{purchasePlace}', [ProductController::class, 'removeMarket']);
     Route::post('products/{product}/copy', [ProductController::class, 'copyProduct']);
     Route::post('values/{value}/copy', [ProductController::class, 'copyValue']);
 

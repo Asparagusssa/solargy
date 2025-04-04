@@ -50,6 +50,9 @@ class ProductUpdateRequest extends BaseFormRequest
             'properties.*.files' => ['array'],
             'properties.*.files.*.file_path' => ['string', 'max:255'],
             'properties.*.files.*.file_name' => ['string', 'max:255'],
+            'markets' => ['array'],
+            'markets.*.id' => ['required_with:market', 'integer', 'exists:purchase_places,id'],
+            'markets.*.url' => ['required_with:market', 'url'],
         ];
     }
 
@@ -101,6 +104,10 @@ class ProductUpdateRequest extends BaseFormRequest
             'properties.*.image.image' => 'Поле "Изображение" должно быть изображением.',
             'properties.*.image.mimes' => 'Поле "Изображение" должно быть в формате: jpg, png, jpeg, gif.',
             'properties.*.image.max' => 'Размер файла изображения не должен превышать 10 МБ.',
+
+            'market.*.id.required_with' => 'Поле "id_market" обязательно при объявления market.',
+            'market.*.url.required_with' => 'Поле "url" обязательно при объявления market.',
+            'market.*.url.url' => 'Поле "url" должно быть ссылкой.',
         ];
     }
 

@@ -56,6 +56,12 @@ class Product extends Model
             ->withPivot('option_id');
     }
 
+    public function markets(): BelongsToMany
+    {
+        return $this->belongsToMany(PurchasePlace::class, 'market_product', 'product_id', 'purchase_place_id')
+            ->withPivot('url');
+    }
+
     public function relatedProducts(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'related_products', 'product_id', 'related_product_id');

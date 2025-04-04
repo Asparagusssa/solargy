@@ -15,6 +15,7 @@ use App\Models\Option;
 use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\ProductProperty;
+use App\Models\PurchasePlace;
 use App\Models\Value;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -192,6 +193,9 @@ class ProductController extends Controller
             },
             'promos' => function ($query) {
                 $query->orderBy('id');
+            },
+            'markets' => function ($query) {
+                $query->where('type', 'marketplace')->orderBy('id');
             }
         ]);
         $product->options = $product->options->unique('id');
@@ -471,6 +475,18 @@ class ProductController extends Controller
             }
         }
 
+        $markets = $data['markets'] ?? [];
+        $syncData = [];
+        foreach ($markets as $marketData) {
+            if (PurchasePlace::findOrFail($marketData['id'])->type !== 'marketplace') {
+                throw ValidationException::withMessages([
+                    'market' => ['Тип маркета должен быть "marketplace"']
+                ]);
+            }
+            $syncData[$marketData['id']] = ['url' => $marketData['url']];
+        }
+        $product->markets()->syncWithoutDetaching($syncData);
+
         $product->load([
             'photos' => function ($query) {
                 $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
@@ -489,6 +505,9 @@ class ProductController extends Controller
             },
             'promos' => function ($query) {
                 $query->orderBy('id');
+            },
+            'markets' => function ($query) {
+                $query->where('type', 'marketplace')->orderBy('id');
             }
         ]);
         $product->options = $product->options->unique('id');
@@ -654,6 +673,16 @@ class ProductController extends Controller
         return response()->json([
             'message' => 'Related product removed successfully.',
             'related_products' => $product->relatedProducts,
+        ]);
+    }
+
+    public function removeMarket(Request $request, Product $product, PurchasePlace $purchasePlace)
+    {
+        $product->markets()->detach($purchasePlace->id);
+
+        return response()->json([
+            'message' => 'Market removed successfully.',
+            'markets' => $product->markets,
         ]);
     }
 
