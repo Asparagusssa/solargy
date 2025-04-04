@@ -66,6 +66,9 @@ Route::get('search', [SearchController::class, 'search']);
 Route::get('search-fast', [SearchController::class, 'searchFast']);
 Route::get('search/options', [SearchController::class, 'searchOptions']);
 
+Route::get('my-storage/{path}', CustomStorageController::class)
+    ->where('path', '.*');
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('products/{product}/export-options', [ProductController::class, 'exportOptions']);
     Route::post('products/{product}/import-options', [ProductController::class, 'importOptions']);
@@ -100,8 +103,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('email-types', EmailTypeController::class)->except(['index', 'show']);
     Route::delete('email-types/{typeId}/emails/{emailId}', [EmailTypeController::class, 'destroyPivot']);
 
-    Route::get('my-storage/{path}', CustomStorageController::class)
-        ->where('path', '.*');
 
     Route::apiResource('contacts', ContactController::class)->except(['index', 'show']);
     Route::apiResource('socials', ContactSocialController::class)->except(['index', 'show']);
