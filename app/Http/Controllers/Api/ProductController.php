@@ -8,7 +8,9 @@ use App\Exports\ValueExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductStoreRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
+use App\Http\Resources\Option\ValueResource;
 use App\Http\Resources\Product\ProductAllResource;
+use App\Http\Resources\Product\ProductPhotoResource;
 use App\Http\Resources\Product\ProductResource;
 use App\Imports\ValueImport;
 use App\Models\Option;
@@ -335,6 +337,7 @@ class ProductController extends Controller
                     $photo->photo = $filePath;
                 }
                 $photo->order = $photoData['order'] ?? $photo->order;
+                $photo->value_id = $photoData['value_id'] ?? $photo->value_id;
                 $photo->type = $type;
                 $photo->save();
             } else {
@@ -348,6 +351,7 @@ class ProductController extends Controller
                     'photo' => $filePath ?? $url,
                     'type' => $type,
                     'order' => $photoData['order'] ?? null,
+                    'value_id' => $photoData['value_id'] ?? null,
                 ]);
             }
         }
@@ -597,6 +601,33 @@ class ProductController extends Controller
         $photo->delete();
 
         return response()->json(null, 204);
+    }
+
+    public function getProductPhotosByColor($productId, $color)
+    {
+        $images = ProductPhoto::whereHas('color', function ($query) use ($color) {
+            $query->where('value', $color);
+        })
+            ->orWhere('value_id', null)
+            ->where('product_id', $productId)
+            ->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC')
+            ->get();
+
+        return response()->json(ProductPhotoResource::collection($images));
+    }
+
+    public function getProductColorsForSelect($productId)
+    {
+        $product = Product::findOrFail($productId);
+
+        $values = $product->values()
+            ->whereHas('option', function ($q) {
+                $q->where('is_color', true);
+            })
+            ->orderBy('value')
+            ->get();
+
+        return response()->json(ValueResource::collection($values));
     }
 
     public function deletePivot($productId, $valueId)

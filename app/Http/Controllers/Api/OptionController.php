@@ -92,7 +92,7 @@ class OptionController extends Controller
                 $value->order = $valueData['order'] ?? $value->order;
                 $value->save();
             } else {
-                $order = null;
+                $order = 0;
                 if (isset($valueData['from-library']) && isset($valueData['image-library'])) {
                     $path = $valueData['image-library'];
                     $imagePath = str_replace('/storage/', '', parse_url($path, PHP_URL_PATH));

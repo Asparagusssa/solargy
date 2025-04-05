@@ -23,6 +23,7 @@ class OptionStoreRequest extends BaseFormRequest
     {
         return [
             'name' => ['required', 'string'],
+            'is_color' => ['nullable', 'boolean'],
             'values' => ['sometimes', 'array'],
             'values.*.value' => ['required_with:values:', 'string'],
             'values.*.price' => ['required_with:values', 'numeric'],
@@ -38,6 +39,8 @@ class OptionStoreRequest extends BaseFormRequest
         return [
             'name.required' => 'Поле "Название" обязательно для заполнения.',
             'name.string' => 'Поле "Название" должно быть строкой.',
+
+            'is_color.boolean' => 'Поле "Является ли цветом" должно быть булевым значением.',
 
             'values.sometimes' => 'Поле "Значения" не обязательно, но должно быть массивом при наличии.',
             'values.array' => 'Поле "Значения" должно быть массивом.',
@@ -67,6 +70,13 @@ class OptionStoreRequest extends BaseFormRequest
 
             $this->merge([
                 'values' => $values,
+            ]);
+        }
+
+        if (isset($this->is_color)) {
+            $is_color = filter_var($this->is_color, FILTER_VALIDATE_BOOLEAN);
+            $this->merge([
+                'is_color' => $is_color,
             ]);
         }
     }

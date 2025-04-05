@@ -13,7 +13,7 @@ class Option extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'name', 'is_color',
     ];
 
     public function values(): HasMany

@@ -66,6 +66,9 @@ Route::get('search', [SearchController::class, 'search']);
 Route::get('search-fast', [SearchController::class, 'searchFast']);
 Route::get('search/options', [SearchController::class, 'searchOptions']);
 
+Route::get('/products/{productId}/photos/{color}', [ProductController::class, 'getProductPhotosByColor']);
+Route::get('/products/{productId}/colors', [ProductController::class, 'getProductColorsForSelect']);
+
 Route::get('my-storage/{path}', CustomStorageController::class)
     ->where('path', '.*');
 

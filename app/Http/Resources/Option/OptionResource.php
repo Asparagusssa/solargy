@@ -17,6 +17,7 @@ class OptionResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'is_color' => $this->is_color,
             'values' => ValueResource::collection($this->values),
         ];
     }

@@ -14,7 +14,8 @@ class ProductPhoto extends Model
         'product_id',
         'photo',
         'order',
-        'type'
+        'type',
+        'value_id'
     ];
 
     public function getPhotoAttribute($value)
@@ -31,5 +32,10 @@ class ProductPhoto extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function color(): BelongsTo
+    {
+        return $this->belongsTo(Value::class, 'value_id');
     }
 }

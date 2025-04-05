@@ -15,6 +15,7 @@ class ProductPhotoResource extends JsonResource
             'photo' => $this->photo,
             'type' => $this->type,
             'order' => $this->order,
+            'value_id' => $this->value_id,
         ];
     }
 }

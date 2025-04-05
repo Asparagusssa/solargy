@@ -30,6 +30,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'photos.*.photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif', 'max:51200',],
             'photos.*.video' => ['nullable', 'url', 'starts_with:https://vkvideo.ru/'],
             'photos.*.order' => ['sometimes', 'integer'],
+            'photos.*.value_id' => ['nullable', 'integer', 'exists:values,id'],
             'options' => ['array'],
             'options.*.id' => ['integer', 'exists:options,id'],
             'options.*.name' => ['string'],
