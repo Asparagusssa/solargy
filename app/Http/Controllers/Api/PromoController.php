@@ -45,6 +45,11 @@ class PromoController extends Controller
      */
     public function show(Promo $promo)
     {
+        $promo->load([
+            'products.photos' => function ($query) {
+                $query->orderByRaw('"order" IS NULL, "order" ASC')->orderBy('id', 'ASC');
+            }
+        ]);
         return response()->json(new PromoResource($promo), 200);
     }
 
