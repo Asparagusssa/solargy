@@ -15,10 +15,22 @@ class PurchasePlace extends Model
         'name',
         'type',
         'image',
+        'image_active',
+        'image_disable',
         'url',
     ];
 
     public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
+    public function getImageActiveAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : null;
+    }
+
+    public function getImageDisableAttribute($value)
     {
         return $value ? url('storage/' . $value) : null;
     }

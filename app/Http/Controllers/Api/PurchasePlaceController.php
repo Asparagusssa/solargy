@@ -40,6 +40,16 @@ class PurchasePlaceController extends Controller
             $data['image'] = $imagePath;
         }
 
+        if ($request->hasFile('image_active')) {
+            $imageActivePath = $request->file('image_active')->store('purchasePlaces', 'public');
+            $data['image_active'] = $imageActivePath;
+        }
+
+        if ($request->hasFile('image_disable')) {
+            $imageDisablePath = $request->file('image_disable')->store('purchasePlaces', 'public');
+            $data['image_disable'] = $imageDisablePath;
+        }
+
         $purchasePlace = PurchasePlace::create($data);
 
         return response()->json(new PurchasePlaceResource($purchasePlace), 201);
@@ -66,6 +76,22 @@ class PurchasePlaceController extends Controller
             }
             $imagePath = $request->file('image')->store('purchasePlaces', 'public');
             $data['image'] = $imagePath;
+        }
+
+        if ($request->hasFile('image_active')) {
+            if ($purchasePlace->image_active) {
+                Storage::disk('public')->delete('purchasePlaces/' . basename($purchasePlace->image_active));
+            }
+            $imageActivePath = $request->file('image_active')->store('purchasePlaces', 'public');
+            $data['image_active'] = $imageActivePath;
+        }
+
+        if ($request->hasFile('image_disable')) {
+            if ($purchasePlace->image_disable) {
+                Storage::disk('public')->delete('purchasePlaces/' . basename($purchasePlace->image_disable));
+            }
+            $imageDisablePath = $request->file('image_disable')->store('purchasePlaces', 'public');
+            $data['image_disable'] = $imageDisablePath;
         }
 
         $purchasePlace->update($data);

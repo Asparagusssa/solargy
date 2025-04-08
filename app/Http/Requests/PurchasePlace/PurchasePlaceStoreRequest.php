@@ -26,6 +26,8 @@ class PurchasePlaceStoreRequest extends FormRequest
             'type' => ['required', 'string', 'in:marketplace,partner,store,retailer'],
             'url' => ['sometimes','nullable', 'url'],
             'image' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
+            'image_active' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
+            'image_disable' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
         ];
     }
 
@@ -49,6 +51,18 @@ class PurchasePlaceStoreRequest extends FormRequest
             'image.image' => 'Поле "Изображение" должно быть изображением.',
             'image.mimes' => 'Поле "Изображение" должно быть в формате: jpeg, png, jpg, gif, svg.',
             'image.max' => 'Размер изображения не должен превышать 10 МБ.',
+
+            'image_active.sometimes' => 'Поле "Изображение" может быть пустым.',
+            'image_active.nullable' => 'Поле "Изображение" может быть пустым.',
+            'image_active.image' => 'Поле "Изображение" должно быть изображением.',
+            'image_active.mimes' => 'Поле "Изображение" должно быть в формате: jpeg, png, jpg, gif, svg.',
+            'image_active.max' => 'Размер изображения не должен превышать 10 МБ.',
+
+            'image_disable.sometimes' => 'Поле "Изображение" может быть пустым.',
+            'image_disable.nullable' => 'Поле "Изображение" может быть пустым.',
+            'image_disable.image' => 'Поле "Изображение" должно быть изображением.',
+            'image_disable.mimes' => 'Поле "Изображение" должно быть в формате: jpeg, png, jpg, gif, svg.',
+            'image_disable.max' => 'Размер изображения не должен превышать 10 МБ.',
         ];
     }
 
