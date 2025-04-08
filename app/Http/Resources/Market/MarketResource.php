@@ -18,7 +18,8 @@ class MarketResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
-            'image' => $this->image,
+            'image_active' => $this->image_active,
+            'image_disable' => $this->image_disable,
             'url' => $this->url,
             'product_url' => $this->pivot->url,
         ];
