@@ -22,7 +22,6 @@ class MarketResource extends JsonResource
             'image_active' => $this->image_active,
             'image_disable' => $this->image_disable,
             'url' => $this->url,
-            'product_url' => $this->pivot->url ?? null,
         ];
     }
 }
