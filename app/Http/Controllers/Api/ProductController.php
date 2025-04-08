@@ -196,9 +196,9 @@ class ProductController extends Controller
             'promos' => function ($query) {
                 $query->orderBy('id');
             },
-            'markets' => function ($query) {
-                $query->where('type', 'marketplace')->orderBy('id');
-            }
+//            'markets' => function ($query) {
+//                $query->where('type', 'marketplace')->orderBy('id');
+//            }
         ]);
         $product->options = $product->options->unique('id');
 
@@ -212,7 +212,22 @@ class ProductController extends Controller
             return $relatedProduct;
         });
 
-        return response()->json(new ProductResource($product));
+        $allMarkets = PurchasePlace::where('type', 'marketplace')->get();
+        $attachedMarkets = $product->markets()->pluck('purchase_places.id')->toArray();
+
+        $markets = $allMarkets->map(function ($market) use ($attachedMarkets, $product) {
+            $market->is_attached = in_array($market->id, $attachedMarkets);
+            $market->url = optional(
+                $product->markets->firstWhere('id', $market->id)?->pivot
+            )->url;
+
+            return $market;
+        });
+
+        $productResource = new ProductResource($product);
+        $productResource->markets = $markets;
+
+        return response()->json($productResource);
     }
 
     public function store(ProductStoreRequest $request)

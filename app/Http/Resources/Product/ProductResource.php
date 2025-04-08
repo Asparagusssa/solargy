@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Product;
 
+use AllowDynamicProperties;
 use App\Http\Resources\Market\MarketResource;
 use App\Http\Resources\Option\ProductOptionResource;
 use App\Http\Resources\Promo\PromoProductResource;
@@ -9,6 +10,7 @@ use App\Http\Resources\Property\PropertyResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+#[AllowDynamicProperties]
 class ProductResource extends JsonResource
 {
     /**
@@ -31,7 +33,7 @@ class ProductResource extends JsonResource
             'related_products' => RelatedProductResource::collection($this->whenLoaded('relatedProducts')),
             'option_prices' => ProductOptionPriceResource::collection($this->whenLoaded('optionPrices')),
             'promos' => PromoProductResource::collection($this->whenLoaded('promos')),
-            'markets' => MarketResource::collection($this->whenLoaded('markets')),
+            'markets' => MarketResource::collection($this->markets),
         ];
     }
 }

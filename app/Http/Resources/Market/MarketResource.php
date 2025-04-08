@@ -18,10 +18,11 @@ class MarketResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
+            'is_attached' => $this->is_attached ?? false,
             'image_active' => $this->image_active,
             'image_disable' => $this->image_disable,
             'url' => $this->url,
-            'product_url' => $this->pivot->url,
+            'product_url' => $this->pivot->url ?? null,
         ];
     }
 }
