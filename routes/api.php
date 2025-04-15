@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\ImageLibraryController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MainBannerController;
+use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\OptionController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\PageSectionController;
@@ -54,6 +55,7 @@ Route::apiResource('companies', CompanyController::class)->only(['index', 'show'
 Route::apiResource('emails', EmailController::class)->only(['index', 'show']);
 Route::apiResource('email-types', EmailTypeController::class)->only(['index', 'show']);
 Route::apiResource('seos', SeoController::class)->only(['index', 'show']);
+Route::apiResource('news', NewsController::class)->only(['index', 'show']);
 
 Route::post('support', [SupportController::class, 'submitForm']);
 Route::post('order', [OrderController::class, 'submitForm']);
@@ -101,6 +103,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('patents', PatentController::class)->except(['index', 'show']);
     Route::apiResource('teams', TeamController::class)->except(['index', 'show']);
     Route::apiResource('seos', SeoController::class)->except(['index', 'show']);
+    Route::apiResource('news', NewsController::class)->except(['index', 'show']);
+    Route::delete('news/{news}/delete-image', [NewsController::class, 'deleteImage']);
 
     Route::apiResource('pages', PageSectionController::class)->except(['index', 'show']);
     Route::apiResource('emails', EmailController::class)->except(['index', 'show']);
