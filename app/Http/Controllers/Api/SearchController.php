@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\News;
 use App\Models\Option;
 use App\Models\PageSection;
 use App\Models\Product;
@@ -49,6 +50,11 @@ class SearchController extends Controller
             ->orderBy('title')
             ->get();
 
+        $news = News::query()
+            ->whereRaw('lower(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('lower(html) like ?', ["%{$q}%"])
+            ->orderBy('title')
+            ->get();
 
 
         $results = [
@@ -56,7 +62,8 @@ class SearchController extends Controller
             'newPromos' => $newPromos,
             'archivePromos' => $archivePromos,
             'categories' => $categories,
-            'pages' => $pages
+            'pages' => $pages,
+            'news' => $news
         ];
 
         return response()->json($results);
