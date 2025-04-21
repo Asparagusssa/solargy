@@ -21,11 +21,11 @@ class NewsController extends Controller
         $lastMonth = $request->input('last_month');
 
         if ($type) {
-            return NewsResource::collection(News::where('type', $type)->orderBy('date', 'desc')->paginate($perPage ?? 8));
+            return NewsResource::collection(News::where('type', $type)->orderBy('date', 'desc')->paginate($perPage ?? 6));
         } elseif (isset($lastMonth)) {
             return NewsResource::collection(News::where('date', '>', Carbon::now()->subMonth())->orderBy('date', 'desc')->get());
         } else {
-            return NewsResource::collection(News::orderBy('date', 'desc')->paginate($perPage ?? 8));
+            return NewsResource::collection(News::orderBy('date', 'desc')->paginate($perPage ?? 6));
         }
     }
 
