@@ -17,11 +17,15 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $type = $request->input('type');
+        $perPage = $request->input('per_page');
+        $lastMonth = $request->input('last_month');
 
         if ($type) {
-            return response()->json(NewsResource::collection(News::where('type', $type)->orderBy('date', 'desc')->get()));
+            return NewsResource::collection(News::where('type', $type)->orderBy('date', 'desc')->paginate($perPage ?? 8));
+        } elseif (isset($lastMonth)) {
+            return NewsResource::collection(News::where('date', '>', Carbon::now()->subMonth())->orderBy('date', 'desc')->get());
         } else {
-            return response()->json(NewsResource::collection(News::orderBy('date', 'desc')->get()));
+            return NewsResource::collection(News::orderBy('date', 'desc')->paginate($perPage ?? 8));
         }
     }
 
