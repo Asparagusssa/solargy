@@ -70,7 +70,7 @@ class NewsController extends Controller
         return response()->json(new NewsResource($news), 200);
     }
 
-    public function delete($news_id)
+    public function destroy($news_id)
     {
         $news = News::findOrFail($news_id);
         $news->delete();
