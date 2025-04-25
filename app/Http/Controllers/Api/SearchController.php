@@ -92,9 +92,23 @@ class SearchController extends Controller
             ->orderBy('title')
             ->get();
 
+        $news = News::query()
+            ->whereRaw('lower(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('lower(html) like ?', ["%{$q}%"])
+            ->orderBy('title')
+            ->limit(10)
+            ->get();
+
+        $news_count = News::query()
+            ->whereRaw('lower(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('lower(html) like ?', ["%{$q}%"])
+            ->count();
+
         $results = [
             'products' => $products,
             'newPromos' => $newPromos,
+            'news' => $news,
+            'news_count' => $news_count,
         ];
 
         return response()->json($results);
