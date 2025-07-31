@@ -25,6 +25,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'description' => ['string'],
             'price' => ['numeric'],
             'is_top' => ['boolean'],
+            'keywords' => ['nullable', 'string'],
             'photos' => ['array'],
             'photos.*.id' => ['integer', 'exists:product_photos,id'],
             'photos.*.photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif', 'max:51200',],

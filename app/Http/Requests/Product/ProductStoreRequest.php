@@ -25,6 +25,7 @@ class ProductStoreRequest extends BaseFormRequest
             'description' => ['required'],
             'price' => ['required', 'numeric'],
             'is_top' => ['nullable', 'boolean'],
+            'keywords' => ['nullable', 'string'],
             'photos' => ['array'],
             'photos.*.photo' => ['nullable', 'file', 'mimes:jpeg,png,jpg,gif', 'max:51200',],
             'photos.*.video' => ['nullable', 'url', 'starts_with:https://vkvideo.ru/'],

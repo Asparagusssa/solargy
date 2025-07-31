@@ -20,6 +20,7 @@ class Product extends Model
         'description',
         'price',
         'is_top',
+        'keywords',
     ];
 
     public function category(): BelongsTo
