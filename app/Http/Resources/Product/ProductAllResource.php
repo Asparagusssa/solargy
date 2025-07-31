@@ -24,6 +24,7 @@ class ProductAllResource extends JsonResource
             'description' => $this->description,
             'price' => $this->price,
             'is_top' => $this->is_top,
+            'keywords' => $this->keywords,
             'photos' => ProductPhotoResource::collection($this->whenLoaded('photos')),
             'options' => ProductOptionResource::collection($this->whenLoaded('options')),
             'properties' => PropertyResource::collection($this->whenLoaded('properties')),
