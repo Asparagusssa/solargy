@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\SeoController;
 use App\Http\Controllers\Api\SubBannerController;
 use App\Http\Controllers\Api\SupportController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\YMLController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,7 +38,7 @@ Route::get('/user', function (Request $request){
 
 Route::post('/login', [LoginController::class, 'index'])->name('login');
 
-//Route::get('/yml-feed', [YMLController::class, 'generate'])->name('yml-feed');
+Route::get('/yml-feed', [YMLController::class, 'generate'])->name('yml-feed');
 
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
