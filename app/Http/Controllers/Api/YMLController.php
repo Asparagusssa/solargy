@@ -7,7 +7,6 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Storage;
 use SimpleXMLElement;
 
 class YMLController extends Controller
@@ -41,10 +40,7 @@ class YMLController extends Controller
         // Товары
         $offers = $shop->addChild('offers');
         foreach ($products as $product) {
-            // Пропускаем товары без категории
-            if (!$product->category) {
-                continue;
-            }
+            if (!$product->category) continue;
 
             $offer = $offers->addChild('offer');
             $offer->addAttribute('id', $product->id);
@@ -55,38 +51,46 @@ class YMLController extends Controller
             $offer->addChild('currencyId', 'RUB');
             $offer->addChild('categoryId', $product->category->id);
 
-            // Основное изображение
             if ($mainPhoto = $product->photos->first()) {
                 $offer->addChild('picture', $mainPhoto->photo);
             }
 
             $offer->addChild('name', htmlspecialchars($product->name));
 
-            // Описание через CDATA
+            // Описание
             $description = $offer->addChild('description');
             $node = dom_import_simplexml($description);
             $owner = $node->ownerDocument;
-            $node->appendChild($owner->createCDATASection($product->description));
+            $node->appendChild($owner->createCDATASection($this->sanitizeText($product->description)));
 
             // Свойства
             foreach ($product->properties as $prop) {
-                $param = $offer->addChild('param', strip_tags($prop->html));
-                $param->addAttribute('name', $prop->title);
+                $safeName = $this->sanitizeText($prop->title);
+                $safeValue = $this->sanitizeText($prop->html);
+                $param = $offer->addChild('param', $safeValue);
+                $param->addAttribute('name', $safeName);
             }
 
-            // Опции
             foreach ($product->options as $option) {
                 foreach ($option->values as $value) {
-                    $param = $offer->addChild('param', $value->value);
-                    $param->addAttribute('name', $option->name);
-                    if ($value->price > 0) {
-                        $param->addAttribute('price', $value->price);
-                    }
+                    $valueText = $value->price > 0
+                        ? $value->value . ' (+' . $value->price . ' руб.)'
+                        : $value->value;
+
+                    $param = $offer->addChild('param', $valueText);
+                    $param->addAttribute('name', $this->sanitizeText($option->name));
                 }
             }
         }
 
-        // Отдаём XML
         return Response::make($xml->asXML(), 200)->header('Content-Type', 'application/xml');
+    }
+
+    private function sanitizeText(string $text): string
+    {
+        $text = str_replace('&nbsp;', ' ', $text);
+        $text = strip_tags($text);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_XML1, 'UTF-8');
+        return trim(preg_replace('/\s+/', ' ', $text));
     }
 }
