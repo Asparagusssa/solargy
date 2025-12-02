@@ -15,11 +15,15 @@ class Order extends Mailable
 
     public $items;
     public $userInfo;
+    public $keoInfo;
+    public $attachments;
 
-    public function __construct($items, $userInfo)
+    public function __construct($items, $userInfo, $keoInfo, $attachments)
     {
         $this->items = $items;
         $this->userInfo = $userInfo;
+        $this->keoInfo     = $keoInfo;
+        $this->attachments = $attachments;
     }
 
     public function build(): Order
@@ -35,7 +39,19 @@ class Order extends Mailable
         ->with([
             'items' => $this->items,
             'userInfo' => $this->userInfo,
+            'keoInfo'     => $this->keoInfo,
+            'attachments' => $this->attachments,
         ]);
+
+        foreach ($this->attachments as $file) {
+            $disk = $file['disk'] ?? 'public';
+            $path = $file['path'] ?? null;
+            $name = $file['original_name'] ?? null;
+
+            if ($path) {
+                $mail->attachFromStorageDisk($disk, $path, $name);
+            }
+        }
 
         return $mail;
     }
