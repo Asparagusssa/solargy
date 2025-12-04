@@ -26,8 +26,9 @@ class NewsStoreRequest extends FormRequest
             'image' => ['required_without:video', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
             'video' => ['nullable', 'url', 'starts_with:https://vkvideo.ru/'],
             'date' => ['nullable', 'date'],
-            'type' => ['required', 'in:Новости,Блог'],
+            'type' => ['required', 'in:Новости,Блог,Акция'],
             'html' => ['nullable'],
+            'promo_id' => ['nullable', 'required_if:type,Акция', 'exists:promos,id'],
         ];
     }
 
@@ -43,7 +44,7 @@ class NewsStoreRequest extends FormRequest
             'video.url' => 'Поле "Видео" должно быть ссылкой.',
             'video.starts_with' => 'Поле "Видео" должно начинаться с https://vkvideo.ru/',
             'date.date' => 'Поле "Дата" должно быть датой (ГГГГ-MM-ДД).',
-            'type.in' => 'Поле "Тип" должно быть одним из следующих значений: Новости, Блог.',
+            'type.in' => 'Поле "Тип" должно быть одним из следующих значений: Новости, Блог, Акция.',
             'type.required' => 'Поле "Тип" должно быть указано.',
         ];
     }

@@ -40,45 +40,59 @@
     @endforeach
 </ul>
     @php
-        $hasKeoData = !empty($keoInfo) && (
-            !empty($keoInfo['city']) ||
-            !empty($keoInfo['company_name']) ||
-            !empty($keoInfo['job_title']) ||
-            !empty($keoInfo['object_address']) ||
-            !empty($keoInfo['contact_method']) ||
-            (!empty($keoInfo['request_features']) && is_array($keoInfo['request_features']) && count($keoInfo['request_features']) > 0) ||
-            !empty($keoInfo['description'])
-        ) || (!empty($attachments) && count($attachments) > 0);;
-    @endphp
+    $hasKeoData =
+        (
+            isset($keoInfo) &&
+            (
+                (isset($keoInfo['city']) && $keoInfo['city'] !== '') ||
+                (isset($keoInfo['company_name']) && $keoInfo['company_name'] !== '') ||
+                (isset($keoInfo['job_title']) && $keoInfo['job_title'] !== '') ||
+                (isset($keoInfo['object_address']) && $keoInfo['object_address'] !== '') ||
+                (isset($keoInfo['contact_method']) && $keoInfo['contact_method'] !== '') ||
+                (
+                    isset($keoInfo['request_features']) &&
+                    is_array($keoInfo['request_features']) &&
+                    count($keoInfo['request_features']) > 0
+                ) ||
+                (isset($keoInfo['description']) && $keoInfo['description'] !== '')
+            )
+        )
+        ||
+        (
+            isset($attachments) &&
+            is_array($attachments) &&
+            count($attachments) > 0
+        );
+@endphp
     @if ($hasKeoData)
         <h3>Расчет КЕО</h3>
 
         <ul>
-            @if (!empty($keoInfo['city']))
+            @if (isset($keoInfo['city']) && $keoInfo['city'] !== '')
                 <li>
                     <strong>Город: </strong>{{ $keoInfo['city'] }}
                 </li>
             @endif
 
-            @if (!empty($keoInfo['company_name']))
+            @if (isset($keoInfo['company_name']) && $keoInfo['company_name'] !== '')
                 <li>
                     <strong>Наименование организации: </strong>{{ $keoInfo['company_name'] }}
                 </li>
             @endif
 
-            @if (!empty($keoInfo['job_title']))
+            @if (isset($keoInfo['job_title']) && $keoInfo['job_title'] !== '')
                 <li>
                     <strong>Должность: </strong>{{ $keoInfo['job_title'] }}
                 </li>
             @endif
 
-            @if (!empty($keoInfo['object_address']))
+            @if (isset($keoInfo['object_address']) && $keoInfo['object_address'] !== '')
                 <li>
                     <strong>Адрес местоположения объекта: </strong>{{ $keoInfo['object_address'] }}
                 </li>
             @endif
 
-            @if (!empty($keoInfo['contact_method']))
+            @if (isset($keoInfo['contact_method']) && $keoInfo['contact_method'] !== '')
                 @php
                     $methods = [
                         'telegram' => 'Telegram',
@@ -94,7 +108,7 @@
                 </li>
             @endif
 
-            @if (!empty($keoInfo['request_features']) && is_array($keoInfo['request_features']))
+            @if (isset($keoInfo['request_features']) && is_array($keoInfo['request_features']) && count($keoInfo['request_features']) > 0)
                 @php
                     $featuresMap = [
                         'before_expertise' => 'Перед сдачей в экспертизу',
@@ -114,13 +128,14 @@
                 </li>
             @endif
 
-            @if (!empty($keoInfo['description']))
+            @if (isset($keoInfo['description']) && $keoInfo['description'] !== '')
                 <li>
                     <strong>Описание: </strong>{{ $keoInfo['description'] }}
                 </li>
             @endif
         </ul>
-        @if (!empty($attachments))
+
+        @if (isset($attachments) && is_array($attachments) && count($attachments) > 0)
             <h3>Прикреплённые файлы</h3>
             <ul>
                 @foreach ($attachments as $file)
