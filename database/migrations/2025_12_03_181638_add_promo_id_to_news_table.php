@@ -15,9 +15,9 @@ return new class extends Migration
         Schema::table('news', function (Blueprint $table) {
             $table->foreignIdFor(Promo::class)
                 ->nullable()
-                ->after('id')
                 ->constrained()
-                ->nullOnDelete();
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
@@ -27,7 +27,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('news', function (Blueprint $table) {
-            // сначала убираем foreign key, потом колонку
             $table->dropForeign(['promo_id']);
             $table->dropColumn('promo_id');
         });
