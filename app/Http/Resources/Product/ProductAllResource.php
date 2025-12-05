@@ -23,6 +23,7 @@ class ProductAllResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
+            'discount' => $this->discount,
             'is_top' => $this->is_top,
             'keywords' => $this->keywords,
             'photos' => ProductPhotoResource::collection($this->whenLoaded('photos')),
