@@ -19,6 +19,7 @@ class Product extends Model
         'name',
         'description',
         'price',
+        'discount',
         'is_top',
         'keywords',
     ];

@@ -24,6 +24,7 @@ class ProductUpdateRequest extends BaseFormRequest
             'name' => ['string', 'max:255'],
             'description' => ['string'],
             'price' => ['numeric'],
+            'discount' => ['sometimes', 'nullable', 'integer', 'between:0,100'],
             'is_top' => ['boolean'],
             'keywords' => ['nullable', 'string'],
             'photos' => ['array'],
@@ -69,6 +70,10 @@ class ProductUpdateRequest extends BaseFormRequest
             'description.string' => 'Поле "Описание" должно быть строкой.',
 
             'price.numeric' => 'Поле "Цена" должно быть числовым значением.',
+
+            'discount.integer' => 'Поле "Скидка" должно быть целым числом.',
+            'discount.between' => 'Поле "Скидка" должно быть в диапазоне от 0 до 100.',
+
 
             'is_top.boolean' => 'Поле "Является ли топом" должно быть булевым значением.',
 
