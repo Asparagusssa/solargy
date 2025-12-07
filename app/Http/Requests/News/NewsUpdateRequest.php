@@ -27,6 +27,7 @@ class NewsUpdateRequest extends FormRequest
             'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
             'video' => ['nullable', 'url', 'starts_with:https://vkvideo.ru/'],
             'date' => ['nullable', 'date'],
+            'pinned_until' => ['nullable', 'date'],
             'type' => ['nullable', 'in:Новости,Блог,Акция'],
             'html' => ['nullable'],
             'promo_id' => ['nullable', 'required_if:type,Акция', 'exists:promos,id'],

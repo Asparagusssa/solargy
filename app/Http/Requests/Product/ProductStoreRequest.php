@@ -24,6 +24,7 @@ class ProductStoreRequest extends BaseFormRequest
             'name' => ['required', 'max:255'],
             'description' => ['required'],
             'price' => ['required', 'numeric'],
+            'discount' => ['nullable', 'integer', 'between:0,100'],
             'is_top' => ['nullable', 'boolean'],
             'keywords' => ['nullable', 'string'],
             'photos' => ['array'],
@@ -58,6 +59,10 @@ class ProductStoreRequest extends BaseFormRequest
 
             'price.required' => 'Поле "Цена" обязательно для заполнения.',
             'price.numeric' => 'Поле "Цена" должно быть числовым значением.',
+
+            'discount.integer' => 'Поле "Скидка" должно быть целым числом.',
+            'discount.between' => 'Поле "Скидка" должно быть в диапазоне от 0 до 100.',
+
 
             'is_top.nullable' => 'Поле "Является ли топом" может быть пустым.',
             'is_top.boolean' => 'Поле "Является ли топом" должно быть булевым значением.',
