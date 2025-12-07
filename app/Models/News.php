@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class News extends Model
 {
     protected $fillable = [
-        'title', 'image', 'video', 'date', 'type', 'html', 'promo_id',
+        'title', 'image', 'video', 'date', 'type', 'html', 'promo_id', 'pinned_until',
     ];
 
     public function getImageAttribute($value)

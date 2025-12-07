@@ -26,6 +26,7 @@ class NewsStoreRequest extends FormRequest
             'image' => ['required_without:video', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:10240'],
             'video' => ['nullable', 'url', 'starts_with:https://vkvideo.ru/'],
             'date' => ['nullable', 'date'],
+            'pinned_until' => ['nullable', 'date'],
             'type' => ['required', 'in:Новости,Блог,Акция'],
             'html' => ['nullable'],
             'promo_id' => ['nullable', 'required_if:type,Акция', 'exists:promos,id'],

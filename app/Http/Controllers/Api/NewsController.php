@@ -19,11 +19,18 @@ class NewsController extends Controller
         $type = $request->input('type');
         $perPage = $request->input('per_page');
         $lastMonth = $request->input('last_month');
+        $pinned = $request->boolean('pinned');
 
         if ($type) {
             return NewsResource::collection(News::where('type', $type)->orderBy('date', 'desc')->paginate($perPage ?? 6));
         } elseif (isset($lastMonth)) {
-            return NewsResource::collection(News::where('date', '>', Carbon::now()->subMonth())->orderBy('date', 'desc')->get());
+            return NewsResource::collection(
+            News::whereNotNull('pinned_until')
+                ->where('pinned_until', '>', Carbon::now())
+                ->orderBy('pinned_until', 'desc')
+                ->orderBy('date', 'desc')
+                ->get()
+            );
         } else {
             return NewsResource::collection(News::orderBy('date', 'desc')->paginate($perPage ?? 6));
         }
@@ -38,9 +45,15 @@ class NewsController extends Controller
     public function store(NewsStoreRequest $request)
     {
         $data = $request->validated();
+
         if (!isset($data['date'])) {
             $data['date'] = Carbon::now();
         }
+
+        if (!isset($data['pinned_until'])) {
+            $data['pinned_until'] = Carbon::now()->addMonth();
+        }
+
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('news', 'public');

@@ -21,6 +21,9 @@ class NewsResource extends JsonResource
             'image' => $this->image,
             'video' => $this->video,
             'date' => Carbon::parse($this->date)->format('d.m.Y'),
+            'pinned_until' => $this->pinned_until
+            ? Carbon::parse($this->pinned_until)->format('d.m.Y')
+            : null,
             'type' => $this->type,
             'html' => $this->html,
         ];
