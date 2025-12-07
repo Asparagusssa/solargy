@@ -11,8 +11,7 @@ return new class extends Migration
         Schema::table('products', function (Blueprint $table) {
             // скидка в процентах 0..100, поле необязательное
             $table->unsignedTinyInteger('discount')
-                ->nullable()
-                ->after('price');
+                ->nullable();
         });
     }
 
