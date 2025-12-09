@@ -46,6 +46,7 @@ class OrderController extends Controller
             'email-type' => 'required|exists:email_types,id',
         ]);
 
+
         $keo = null;
         if (!empty($validatedData['keoInfo']) && is_array($validatedData['keoInfo'])) {
             $keo = $validatedData['keoInfo'][0];
@@ -60,6 +61,7 @@ class OrderController extends Controller
                     'disk' => 'public',
                     'path' => $path,
                     'original_name' => $file->getClientOriginalName(),
+                    'file' => $path,
                 ];
             }
         }
