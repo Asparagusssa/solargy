@@ -26,6 +26,7 @@ class NewsResource extends JsonResource
             : null,
             'type' => $this->type,
             'html' => $this->html,
+            'promo_id' => $this->promo_id,
         ];
     }
 }

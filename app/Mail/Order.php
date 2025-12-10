@@ -91,5 +91,29 @@ class Order extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array { return array_map(function ($file) { return Attachment::fromStorageDisk( $file['disk'] ?? 'public', $file['path'] )->as( $file['original_name'] ?? basename($file['path']) ); }, $this->storedAttachments ?? []); }
+    public function attachments(): array
+    {
+        return array_map(function ($file) {
+
+            $disk = $file['disk'] ?? 'public';
+            $path = $file['path'] ?? null;
+
+            if (!$path) {
+                return null; // или выбрось исключение, если path обязателен
+            }
+
+            $name = $file['original_name'] ?? basename($path);
+
+            $attachment = Attachment::fromStorageDisk($disk, $path)
+                ->as($name);
+
+            // если у тебя хранится mime — можно добавить
+            if (!empty($file['mime'])) {
+                $attachment->withMime($file['mime']);
+            }
+
+            return $attachment;
+
+        }, $this->storedAttachments ?? []);
+    }
 }
