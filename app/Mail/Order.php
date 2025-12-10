@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Attachment;
 
 class Order extends Mailable
 {
@@ -16,14 +17,14 @@ class Order extends Mailable
     public $items;
     public $userInfo;
     public $keoInfo;
-    public $attachments;
+    public $uploadedFiles;
 
-    public function __construct($items, $userInfo, $keoInfo, $attachments)
+    public function __construct($items, $userInfo, $keoInfo, $uploadedFiles = [])
     {
         $this->items = $items;
         $this->userInfo = $userInfo;
         $this->keoInfo     = $keoInfo;
-        $this->attachments = $attachments;
+        $this->uploadedFiles = is_array($uploadedFiles) ? $uploadedFiles : [];
     }
 
     public function build(): Order
@@ -40,17 +41,26 @@ class Order extends Mailable
             'items' => $this->items,
             'userInfo' => $this->userInfo,
             'keoInfo'     => $this->keoInfo,
-            'attachments' => $this->attachments,
+            // 'attachment' => $this->storedAttachments,
         ]);
 
-        foreach ($this->attachments as $file) {
-            $disk = $file['disk'] ?? 'public';
-            $path = $file['path'] ?? null;
-            $name = $file['original_name'] ?? null;
+        // foreach ($this->storedAttachments as $file) {
+        //     $disk = $file['disk'] ?? 'public';
+        //     $path = $file['path'] ?? null;
+        //     $name = $file['original_name'] ?? null;
 
-            if ($path) {
-                $mail->attachFromStorageDisk($disk, $path, $name);
-            }
+        //     if ($path) {
+        //         $mail->attachFromStorageDisk($disk, $path, $name);
+        //     }
+        // }
+        foreach ($this->uploadedFiles as $file) {
+            $mail->attach(
+            $file->getRealPath(),
+                [
+                    'as'   => $file->getClientOriginalName(),
+                    'mime' => $file->getMimeType(),
+                ]
+            );
         }
 
         return $mail;
@@ -81,8 +91,5 @@ class Order extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-    public function attachments(): array
-    {
-        return [];
-    }
+    public function attachments(): array { return array_map(function ($file) { return Attachment::fromStorageDisk( $file['disk'] ?? 'public', $file['path'] )->as( $file['original_name'] ?? basename($file['path']) ); }, $this->storedAttachments ?? []); }
 }

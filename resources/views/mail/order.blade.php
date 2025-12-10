@@ -59,10 +59,10 @@
         )
         ||
         (
-            isset($attachments) &&
-            is_array($attachments) &&
-            count($attachments) > 0
-        );
+            isset($attachment) &&
+            is_array($attachment) &&
+            count($attachment) > 0
+        )
 @endphp
     @if ($hasKeoData)
         <h3>Расчет КЕО</h3>
@@ -135,20 +135,11 @@
             @endif
         </ul>
 
-        @if (isset($attachments) && is_array($attachments) && count($attachments) > 0)
+        @if (isset($attachment) && is_array($attachment) && count($attachment) > 0)
             <h3>Прикреплённые файлы</h3>
             <ul>
-                @foreach ($attachments as $file)
-                    @php
-                        $url = asset('storage/' . $file['path']);
-                        $name = $file['original_name'] ?? basename($file['path']);
-                    @endphp
-
-                    <li>
-                        <a href="{{ $url }}" style="text-decoration: none; color: blue">
-                            {{ $name }}
-                        </a>
-                    </li>
+                @foreach ($attachment as $file)
+                    <li>{{ $file['original_name'] ?? basename($file['path']) }}</li>
                 @endforeach
             </ul>
         @endif

@@ -16,17 +16,18 @@ class OrderController extends Controller
 {
     public function submitForm(Request $request)
     {
+        
         $validatedData = $request->validate([
             'items' => 'required|array',
             'items.*.name' => 'required|string',
             'items.*.url' => 'required|url',
             'items.*.photo' => 'sometimes',
             'items.*.price' => 'required|numeric',
-            'items.*.quantity' => 'sometimes|required|numeric',
-            'items.*.options' => 'sometimes|array',
-            'items.*.options.*.name' => 'sometimes|string',
-            'items.*.options.*.values' => 'sometimes|array',
-            'items.*.options.*.values.*.value' => 'sometimes|string',
+            'items.*.quantity' => 'numeric',
+            'items.*.options' => 'nullable|array',
+            'items.*.options.*.name' => 'nullable|string',
+            'items.*.options.*.values' => 'nullable|array',
+            'items.*.options.*.values.*.value' => 'nullable|string',
             'userInfo' => 'required|array',
             'userInfo.*.name' => 'required|string',
             'userInfo.*.phone' => 'required|string',
@@ -41,10 +42,17 @@ class OrderController extends Controller
             'keoInfo.*.request_features' => 'array',
             'keoInfo.*.request_features.*' => 'string|nullable|in:before_expertise,after_expertise,keo_calc,system_selection',
             'keoInfo.*.description' => 'string|nullable',
-            'attachments'   => 'sometimes|array',
-            'attachments.*' => 'file|mimes:pdf,doc,docx,png,jpg,jpeg,zip|max:51200',
+            'attachment'   => 'sometimes|array',
+            'attachment.*' => 'file|mimes:pdf,doc,docx,png,jpg,jpeg,zip|max:51200',
             'email-type' => 'required|exists:email_types,id',
         ]);
+
+
+        $items = $validatedData['items'];
+        foreach ($items as &$item) {
+            $item['options'] = $item['options'] ?? [];
+        }
+        unset($item);
 
 
         $keo = null;
@@ -54,14 +62,18 @@ class OrderController extends Controller
 
 
         $storedAttachments = [];
-        if ($request->hasFile('attachments')) {
-            foreach ($request->file('attachments') as $file) {
-                $path = $file->store('orders', 'public'); 
+
+        if ($request->hasFile('attachment')) {
+            $files = $request->file('attachment');
+            $files = is_array($files) ? $files : [$files];
+
+            foreach ($files as $file) {
+                $path = $file->store('orders/tmp', 'public');
+
                 $storedAttachments[] = [
                     'disk' => 'public',
                     'path' => $path,
                     'original_name' => $file->getClientOriginalName(),
-                    'file' => $path,
                 ];
             }
         }
@@ -71,25 +83,30 @@ class OrderController extends Controller
         $type = EmailType::findOrFail($request->input('email-type'));
         $emailAddresses = $type->emails->pluck('email')->toArray();
 
-        Mail::to($emailAddresses)->send(
-  new Order(
-                $validatedData['items'], 
-                $validatedData['userInfo'],
-                $keo,
-                $storedAttachments,
-            )
-        );
-
         // отправка клиенту
         $user = $validatedData['userInfo'][0] ?? $validatedData['userInfo'];
         $clientEmail = $user['email'];
 
-        Mail::to($clientEmail)->send(
-  new ClientOrder(
-                $validatedData['items'], 
-                $user,
-            )
-        );
+
+        try {
+            // 1) менеджеру
+            Mail::to($emailAddresses)->send(
+                new Order($items, $validatedData['userInfo'], $keo, $storedAttachments)
+            );
+
+            // 2) клиенту
+            Mail::to($user['email'])->send(
+                new ClientOrder($items, $user)
+            );
+
+        } finally {
+            // удаляем временные файлы всегда
+            foreach ($storedAttachments as $f) {
+                if (!empty($f['path'])) {
+                    Storage::disk($f['disk'] ?? 'public')->delete($f['path']);
+                }
+            }
+        }
 
         return response()->json('OK', 200);
     }
