@@ -77,6 +77,14 @@ class NewsController extends Controller
             $imagePath = $request->file('image')->store('news', 'public');
             $data['image'] = $imagePath;
         }
+
+        $promoType = 'Акция';
+        $finalType = $data['type'] ?? $news->type;
+        
+        if ($finalType !== $promoType) {
+            $data['promo_id'] = null;
+        }
+
         $news->update($data);
         $news->refresh();
 
