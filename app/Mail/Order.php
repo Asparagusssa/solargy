@@ -3,72 +3,36 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 
 class Order extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $items;
-    public $userInfo;
-    public $keoInfo;
-    public $uploadedFiles;
+    public array $items;
+    public array $userInfo;
+    public ?array $keoInfo;
+    public array $storedAttachments;
 
-    public function __construct($items, $userInfo, $keoInfo, $uploadedFiles = [])
+    public function __construct($items, $userInfo, $keoInfo, $storedAttachments = [])
     {
-        $this->items = $items;
-        $this->userInfo = $userInfo;
-        $this->keoInfo     = $keoInfo;
-        $this->uploadedFiles = is_array($uploadedFiles) ? $uploadedFiles : [];
-    }
-
-    public function build(): Order
-    {
-
-        foreach ($this->items as &$item) {
+        $this->items = array_map(function ($item) {
             if (isset($item['photo'])) {
                 $item['photo_url'] = $item['photo'];
             }
-        }
+            $item['options'] = $item['options'] ?? [];
+            return $item;
+        }, is_array($items) ? $items : []);
 
-        $mail = $this->view('mail.order')
-        ->with([
-            'items' => $this->items,
-            'userInfo' => $this->userInfo,
-            'keoInfo'     => $this->keoInfo,
-            // 'attachment' => $this->storedAttachments,
-        ]);
-
-        // foreach ($this->storedAttachments as $file) {
-        //     $disk = $file['disk'] ?? 'public';
-        //     $path = $file['path'] ?? null;
-        //     $name = $file['original_name'] ?? null;
-
-        //     if ($path) {
-        //         $mail->attachFromStorageDisk($disk, $path, $name);
-        //     }
-        // }
-        foreach ($this->uploadedFiles as $file) {
-            $mail->attach(
-            $file->getRealPath(),
-                [
-                    'as'   => $file->getClientOriginalName(),
-                    'mime' => $file->getMimeType(),
-                ]
-            );
-        }
-
-        return $mail;
+        $this->userInfo = is_array($userInfo) ? $userInfo : [];
+        $this->keoInfo = $keoInfo;
+        $this->storedAttachments = is_array($storedAttachments) ? $storedAttachments : [];
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -76,30 +40,28 @@ class Order extends Mailable
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
             view: 'mail.order',
+            with: [
+                'items' => $this->items,
+                'userInfo' => $this->userInfo,
+                'keoInfo' => $this->keoInfo,
+            ],
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
     public function attachments(): array
     {
-        return array_map(function ($file) {
+        $result = [];
 
+        foreach ($this->storedAttachments as $file) {
             $disk = $file['disk'] ?? 'public';
             $path = $file['path'] ?? null;
 
             if (!$path) {
-                return null; // или выбрось исключение, если path обязателен
+                continue;
             }
 
             $name = $file['original_name'] ?? basename($path);
@@ -107,13 +69,13 @@ class Order extends Mailable
             $attachment = Attachment::fromStorageDisk($disk, $path)
                 ->as($name);
 
-            // если у тебя хранится mime — можно добавить
             if (!empty($file['mime'])) {
                 $attachment->withMime($file['mime']);
             }
 
-            return $attachment;
+            $result[] = $attachment;
+        }
 
-        }, $this->storedAttachments ?? []);
+        return $result;
     }
 }
