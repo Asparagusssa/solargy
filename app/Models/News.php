@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
@@ -19,5 +18,9 @@ class News extends Model
     public function promo(): BelongsTo
     {
         return $this->belongsTo(Promo::class);
+    }
+
+    public function products(){
+        return $this->belongsToMany(Product::class)->withTimestamps();
     }
 }

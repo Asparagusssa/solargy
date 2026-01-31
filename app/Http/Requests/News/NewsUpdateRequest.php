@@ -28,6 +28,8 @@ class NewsUpdateRequest extends FormRequest
             'video' => ['nullable', 'url', 'starts_with:https://vkvideo.ru/'],
             'date' => ['nullable', 'date'],
             'pinned_until' => ['nullable', 'date'],
+            'products' => ['nullable', 'array'],
+            'products.*' => ['integer', 'distinct', 'exists:products,id'],
             'type' => ['nullable', 'in:Новости,Блог,Акция'],
             'html' => ['nullable'],
             'promo_id' => ['nullable', 'required_if:type,Акция', 'exists:promos,id'],
@@ -39,12 +41,21 @@ class NewsUpdateRequest extends FormRequest
         return [
             'title.string' => 'Поле "Заголовок" должно быть строкой.',
             'title.max' => 'Поле "Заголовок" не должно превышать 255 символов.',
+
             'image.image' => 'Поле "Изображение" должно быть файлом изображения.',
             'image.mimes' => 'Поле "Изображение" должно быть одним из следующих типов: jpeg, png, jpg, gif, svg.',
             'image.max' => 'Поле "Изображение" не должно превышать 10 МБ.',
+
             'video.url' => 'Поле "Видео" должно быть ссылкой.',
             'video.starts_with' => 'Поле "Видео" должно начинаться с https://vkvideo.ru/',
+
             'date.date' => 'Поле "Дата" должно быть датой (ГГГГ-MM-ДД).',
+
+            'products.array' => 'Поле "Товары" должен быть массивом',
+            'products.*.integer' => 'ID товара должен быть числом',
+            'products.*.distinct' => 'Один и тот же товар нельзя прикрепить дважды',
+            'products.*.exists' => 'Один из выбранных товаров не найден',
+
             'type.in' => 'Поле "Тип" должно быть одним из следующих значений: Новости, Блог, Акция.',
         ];
     }

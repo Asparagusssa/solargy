@@ -78,14 +78,22 @@ class NewsController extends Controller
             $data['image'] = $imagePath;
         }
 
+        $productIds = $data['products'] ?? null;
+        unset($data['products']);
+
         $promoType = 'Акция';
         $finalType = $data['type'] ?? $news->type;
-        
+
         if ($finalType !== $promoType) {
             $data['promo_id'] = null;
         }
 
         $news->update($data);
+
+        if($productIds !== null) {
+            $news->products()->sync($productIds);
+        }
+
         $news->refresh();
 
         return response()->json(new NewsResource($news), 200);
