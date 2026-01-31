@@ -38,6 +38,30 @@ class CategoryController extends Controller
         return response()->json(new CategoryResource($category), 200);
     }
 
+    public function indexWithServices()
+    {
+        $categories = Category::whereNull('parent_id')->orderBy('id')->get();
+
+        foreach ($categories as $category) {
+            $category->children = $category->children()->orderBy('id')->get();
+            $category->products = $category->products()->orderBy('name')->get();
+        }
+
+        $servicesCategory = new Category([
+            'id' => 0,
+            'name' => 'Услуги',
+            'parent_id' => null,
+            'level' => 0,
+            'photo' => null,
+        ]);
+
+        $servicesCategory->children = collect();
+        $servicesCategory->products = collect();
+
+        $categories->prepend($servicesCategory);
+
+        return response()->json(CategoryChildrenResource::collection($categories), 200);
+    }
     public function store(CategoryStoreRequest $request)
     {
         $data = $request->validated();

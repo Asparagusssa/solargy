@@ -40,6 +40,8 @@ Route::post('/login', [LoginController::class, 'index'])->name('login');
 
 Route::get('/yml-feed', [YMLController::class, 'generate'])->name('yml-feed');
 
+Route::get('categories-with-services', [CategoryController::class, 'indexWithServices']);
+
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('options', OptionController::class)->only(['index', 'show']);
@@ -126,3 +128,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('/library-images', ImageLibraryController::class);
     Route::apiResource('/library-files', FileLibraryController::class);
 });
+
