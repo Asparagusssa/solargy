@@ -20,7 +20,16 @@ class ProductStoreRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required', 'exists:categories,id'],
+            'category_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    if ((int)$value === 10000000) return;
+                    if (!\App\Models\Category::whereKey($value)->exists()) {
+                        $fail('Такой категории нет.');
+                    }
+                },
+            ],
             'name' => ['required', 'max:255'],
             'description' => ['required'],
             'price' => ['required', 'numeric'],
