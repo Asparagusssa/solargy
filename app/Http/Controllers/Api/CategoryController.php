@@ -48,12 +48,13 @@ class CategoryController extends Controller
         }
 
         $servicesCategory = new Category([
-            'id' => 0,
             'name' => 'Услуги',
             'parent_id' => null,
             'level' => 0,
             'photo' => null,
         ]);
+
+        $servicesCategory->setAttribute('id', 10000000);
 
         $servicesCategory->children = collect();
         $servicesCategory->products = collect();
